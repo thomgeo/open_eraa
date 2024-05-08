@@ -1,0 +1,17 @@
+jobs: 20
+cluster:     
+    sbatch 
+    --partition C7
+    --cpus-per-task 1 
+    --time 14-0:0:0 
+    --nodes 1
+    --ntasks-per-node 1
+    --output logs/{rule}_{wildcards}.o
+    --error logs/{rule}_{wildcards}.e
+    --job-name ERAA-{rule}-{wildcards}
+restart-times: 3
+resources:
+    - gurobi=1
+rerun-incomplete: True
+latency-wait: 5
+keep-going: True

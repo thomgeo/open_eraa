@@ -1,0 +1,4036 @@
+Restricted license - for non-production use only - expires 2025-11-24
+/trinity/home/thomgeo/.conda/envs/pypsa-training/lib/python3.10/site-packages/pulp/apis/gurobi_api.py:170: UserWarning: GUROBI error: Unknown parameter '_test'.
+  warnings.warn("GUROBI error: {}.".format(e))
+Using profile cluster for setting default command line arguments.
+/trinity/home/thomgeo/.conda/envs/pypsa-training/lib/python3.10/site-packages/pulp/apis/gurobi_api.py:170: UserWarning: GUROBI error: Unknown parameter '_test'.
+  warnings.warn("GUROBI error: {}.".format(e))
+Building DAG of jobs...
+Executing subworkflow technology_data.
+Config file config.yaml is extended by additional config specified via the command line.
+Building DAG of jobs...
+Nothing to be done (all requested files are present and up to date).
+Complete log: .snakemake/log/2024-04-24T142810.546299.snakemake.log
+Executing main workflow.
+Using shell: /usr/bin/bash
+Provided cluster nodes: 20
+Provided resources: gurobi=1
+Job stats:
+job                    count
+-------------------  -------
+all                        1
+capacity_adjustment        2
+solve_model               30
+update_capacities         30
+total                     63
+
+Select jobs to execute...
+
+[Wed Apr 24 14:28:10 2024]
+rule update_capacities:
+    input: resources/networks/0/cy1983_ty2026.nc, resources/capacity_tables/1.csv
+    output: resources/networks/1/cy1983_ty2026.nc
+    jobid: 56
+    reason: Missing output files: resources/networks/1/cy1983_ty2026.nc
+    wildcards: iter=1, cy=1983, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 56 with external jobid 'Submitted batch job 488'.
+
+[Wed Apr 24 14:28:10 2024]
+rule update_capacities:
+    input: resources/networks/0/cy1983_ty2027.nc, resources/capacity_tables/1.csv
+    output: resources/networks/1/cy1983_ty2027.nc
+    jobid: 58
+    reason: Missing output files: resources/networks/1/cy1983_ty2027.nc
+    wildcards: iter=1, cy=1983, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 58 with external jobid 'Submitted batch job 489'.
+
+[Wed Apr 24 14:28:10 2024]
+rule update_capacities:
+    input: resources/networks/0/cy1984_ty2025.nc, resources/capacity_tables/1.csv
+    output: resources/networks/1/cy1984_ty2025.nc
+    jobid: 60
+    reason: Code has changed since last execution
+    wildcards: iter=1, cy=1984, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 60 with external jobid 'Submitted batch job 490'.
+
+[Wed Apr 24 14:28:10 2024]
+rule update_capacities:
+    input: resources/networks/0/cy1984_ty2026.nc, resources/capacity_tables/1.csv
+    output: resources/networks/1/cy1984_ty2026.nc
+    jobid: 62
+    reason: Missing output files: resources/networks/1/cy1984_ty2026.nc
+    wildcards: iter=1, cy=1984, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 62 with external jobid 'Submitted batch job 491'.
+
+[Wed Apr 24 14:28:10 2024]
+rule update_capacities:
+    input: resources/networks/0/cy1984_ty2027.nc, resources/capacity_tables/1.csv
+    output: resources/networks/1/cy1984_ty2027.nc
+    jobid: 64
+    reason: Missing output files: resources/networks/1/cy1984_ty2027.nc
+    wildcards: iter=1, cy=1984, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 64 with external jobid 'Submitted batch job 492'.
+
+[Wed Apr 24 14:28:10 2024]
+rule update_capacities:
+    input: resources/networks/0/cy1982_ty2025.nc, resources/capacity_tables/1.csv
+    output: resources/networks/1/cy1982_ty2025.nc
+    jobid: 6
+    reason: Code has changed since last execution
+    wildcards: iter=1, cy=1982, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 6 with external jobid 'Submitted batch job 493'.
+
+[Wed Apr 24 14:28:10 2024]
+rule update_capacities:
+    input: resources/networks/0/cy1985_ty2025.nc, resources/capacity_tables/1.csv
+    output: resources/networks/1/cy1985_ty2025.nc
+    jobid: 66
+    reason: Code has changed since last execution
+    wildcards: iter=1, cy=1985, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 66 with external jobid 'Submitted batch job 494'.
+
+[Wed Apr 24 14:28:10 2024]
+rule update_capacities:
+    input: resources/networks/0/cy1985_ty2026.nc, resources/capacity_tables/1.csv
+    output: resources/networks/1/cy1985_ty2026.nc
+    jobid: 68
+    reason: Missing output files: resources/networks/1/cy1985_ty2026.nc
+    wildcards: iter=1, cy=1985, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 68 with external jobid 'Submitted batch job 495'.
+
+[Wed Apr 24 14:28:10 2024]
+rule update_capacities:
+    input: resources/networks/0/cy1985_ty2027.nc, resources/capacity_tables/1.csv
+    output: resources/networks/1/cy1985_ty2027.nc
+    jobid: 70
+    reason: Missing output files: resources/networks/1/cy1985_ty2027.nc
+    wildcards: iter=1, cy=1985, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 70 with external jobid 'Submitted batch job 496'.
+
+[Wed Apr 24 14:28:10 2024]
+rule update_capacities:
+    input: resources/networks/0/cy1986_ty2025.nc, resources/capacity_tables/1.csv
+    output: resources/networks/1/cy1986_ty2025.nc
+    jobid: 72
+    reason: Code has changed since last execution
+    wildcards: iter=1, cy=1986, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 72 with external jobid 'Submitted batch job 497'.
+
+[Wed Apr 24 14:28:10 2024]
+rule update_capacities:
+    input: resources/networks/0/cy1986_ty2026.nc, resources/capacity_tables/1.csv
+    output: resources/networks/1/cy1986_ty2026.nc
+    jobid: 74
+    reason: Missing output files: resources/networks/1/cy1986_ty2026.nc
+    wildcards: iter=1, cy=1986, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 74 with external jobid 'Submitted batch job 498'.
+
+[Wed Apr 24 14:28:10 2024]
+rule update_capacities:
+    input: resources/networks/0/cy1986_ty2027.nc, resources/capacity_tables/1.csv
+    output: resources/networks/1/cy1986_ty2027.nc
+    jobid: 76
+    reason: Missing output files: resources/networks/1/cy1986_ty2027.nc
+    wildcards: iter=1, cy=1986, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 76 with external jobid 'Submitted batch job 499'.
+
+[Wed Apr 24 14:28:10 2024]
+rule update_capacities:
+    input: resources/networks/0/cy1982_ty2026.nc, resources/capacity_tables/1.csv
+    output: resources/networks/1/cy1982_ty2026.nc
+    jobid: 50
+    reason: Missing output files: resources/networks/1/cy1982_ty2026.nc
+    wildcards: iter=1, cy=1982, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 50 with external jobid 'Submitted batch job 500'.
+
+[Wed Apr 24 14:28:10 2024]
+rule update_capacities:
+    input: resources/networks/0/cy1982_ty2027.nc, resources/capacity_tables/1.csv
+    output: resources/networks/1/cy1982_ty2027.nc
+    jobid: 52
+    reason: Missing output files: resources/networks/1/cy1982_ty2027.nc
+    wildcards: iter=1, cy=1982, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 52 with external jobid 'Submitted batch job 501'.
+
+[Wed Apr 24 14:28:10 2024]
+rule update_capacities:
+    input: resources/networks/0/cy1983_ty2025.nc, resources/capacity_tables/1.csv
+    output: resources/networks/1/cy1983_ty2025.nc
+    jobid: 54
+    reason: Code has changed since last execution
+    wildcards: iter=1, cy=1983, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 54 with external jobid 'Submitted batch job 502'.
+[Wed Apr 24 14:28:20 2024]
+Finished job 56.
+1 of 63 steps (2%) done
+Select jobs to execute...
+
+[Wed Apr 24 14:28:20 2024]
+rule solve_model:
+    input: resources/networks/1/cy1983_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/1/cy1983_ty2026.nc, results/revenues/1/cy1983_ty2026.nc
+    jobid: 55
+    reason: Missing output files: results/revenues/1/cy1983_ty2026.nc; Input files updated by another job: resources/networks/1/cy1983_ty2026.nc
+    wildcards: iter=1, cy=1983, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 55 with external jobid 'Submitted batch job 503'.
+[Wed Apr 24 14:28:20 2024]
+Finished job 58.
+2 of 63 steps (3%) done
+[Wed Apr 24 14:28:20 2024]
+Finished job 60.
+3 of 63 steps (5%) done
+[Wed Apr 24 14:28:20 2024]
+Finished job 62.
+4 of 63 steps (6%) done
+[Wed Apr 24 14:28:20 2024]
+Finished job 64.
+5 of 63 steps (8%) done
+[Wed Apr 24 14:28:20 2024]
+Finished job 6.
+6 of 63 steps (10%) done
+[Wed Apr 24 14:28:20 2024]
+Finished job 66.
+7 of 63 steps (11%) done
+[Wed Apr 24 14:28:20 2024]
+Finished job 68.
+8 of 63 steps (13%) done
+[Wed Apr 24 14:28:20 2024]
+Finished job 70.
+9 of 63 steps (14%) done
+[Wed Apr 24 14:28:20 2024]
+Finished job 72.
+10 of 63 steps (16%) done
+Select jobs to execute...
+
+[Wed Apr 24 14:28:20 2024]
+rule solve_model:
+    input: resources/networks/1/cy1986_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/1/cy1986_ty2025.nc, results/revenues/1/cy1986_ty2025.nc
+    jobid: 71
+    reason: Input files updated by another job: resources/networks/1/cy1986_ty2025.nc
+    wildcards: iter=1, cy=1986, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 71 with external jobid 'Submitted batch job 504'.
+
+[Wed Apr 24 14:28:20 2024]
+rule solve_model:
+    input: resources/networks/1/cy1983_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/1/cy1983_ty2027.nc, results/revenues/1/cy1983_ty2027.nc
+    jobid: 57
+    reason: Missing output files: results/revenues/1/cy1983_ty2027.nc; Input files updated by another job: resources/networks/1/cy1983_ty2027.nc
+    wildcards: iter=1, cy=1983, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 57 with external jobid 'Submitted batch job 505'.
+
+[Wed Apr 24 14:28:20 2024]
+rule solve_model:
+    input: resources/networks/1/cy1984_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/1/cy1984_ty2025.nc, results/revenues/1/cy1984_ty2025.nc
+    jobid: 59
+    reason: Input files updated by another job: resources/networks/1/cy1984_ty2025.nc
+    wildcards: iter=1, cy=1984, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 59 with external jobid 'Submitted batch job 506'.
+
+[Wed Apr 24 14:28:20 2024]
+rule solve_model:
+    input: resources/networks/1/cy1984_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/1/cy1984_ty2026.nc, results/revenues/1/cy1984_ty2026.nc
+    jobid: 61
+    reason: Missing output files: results/revenues/1/cy1984_ty2026.nc; Input files updated by another job: resources/networks/1/cy1984_ty2026.nc
+    wildcards: iter=1, cy=1984, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 61 with external jobid 'Submitted batch job 507'.
+
+[Wed Apr 24 14:28:20 2024]
+rule solve_model:
+    input: resources/networks/1/cy1984_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/1/cy1984_ty2027.nc, results/revenues/1/cy1984_ty2027.nc
+    jobid: 63
+    reason: Missing output files: results/revenues/1/cy1984_ty2027.nc; Input files updated by another job: resources/networks/1/cy1984_ty2027.nc
+    wildcards: iter=1, cy=1984, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 63 with external jobid 'Submitted batch job 508'.
+
+[Wed Apr 24 14:28:20 2024]
+rule solve_model:
+    input: resources/networks/1/cy1982_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/1/cy1982_ty2025.nc, results/revenues/1/cy1982_ty2025.nc
+    jobid: 48
+    reason: Input files updated by another job: resources/networks/1/cy1982_ty2025.nc
+    wildcards: iter=1, cy=1982, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 48 with external jobid 'Submitted batch job 509'.
+
+[Wed Apr 24 14:28:20 2024]
+rule solve_model:
+    input: resources/networks/1/cy1985_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/1/cy1985_ty2025.nc, results/revenues/1/cy1985_ty2025.nc
+    jobid: 65
+    reason: Input files updated by another job: resources/networks/1/cy1985_ty2025.nc
+    wildcards: iter=1, cy=1985, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 65 with external jobid 'Submitted batch job 510'.
+
+[Wed Apr 24 14:28:20 2024]
+rule solve_model:
+    input: resources/networks/1/cy1985_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/1/cy1985_ty2026.nc, results/revenues/1/cy1985_ty2026.nc
+    jobid: 67
+    reason: Missing output files: results/revenues/1/cy1985_ty2026.nc; Input files updated by another job: resources/networks/1/cy1985_ty2026.nc
+    wildcards: iter=1, cy=1985, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 67 with external jobid 'Submitted batch job 511'.
+
+[Wed Apr 24 14:28:20 2024]
+rule solve_model:
+    input: resources/networks/1/cy1985_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/1/cy1985_ty2027.nc, results/revenues/1/cy1985_ty2027.nc
+    jobid: 69
+    reason: Missing output files: results/revenues/1/cy1985_ty2027.nc; Input files updated by another job: resources/networks/1/cy1985_ty2027.nc
+    wildcards: iter=1, cy=1985, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 69 with external jobid 'Submitted batch job 512'.
+[Wed Apr 24 14:28:21 2024]
+Finished job 74.
+11 of 63 steps (17%) done
+[Wed Apr 24 14:28:21 2024]
+Finished job 76.
+12 of 63 steps (19%) done
+Select jobs to execute...
+
+[Wed Apr 24 14:28:21 2024]
+rule solve_model:
+    input: resources/networks/1/cy1986_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/1/cy1986_ty2027.nc, results/revenues/1/cy1986_ty2027.nc
+    jobid: 75
+    reason: Missing output files: results/revenues/1/cy1986_ty2027.nc; Input files updated by another job: resources/networks/1/cy1986_ty2027.nc
+    wildcards: iter=1, cy=1986, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 75 with external jobid 'Submitted batch job 513'.
+
+[Wed Apr 24 14:28:21 2024]
+rule solve_model:
+    input: resources/networks/1/cy1986_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/1/cy1986_ty2026.nc, results/revenues/1/cy1986_ty2026.nc
+    jobid: 73
+    reason: Missing output files: results/revenues/1/cy1986_ty2026.nc; Input files updated by another job: resources/networks/1/cy1986_ty2026.nc
+    wildcards: iter=1, cy=1986, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 73 with external jobid 'Submitted batch job 514'.
+[Wed Apr 24 14:28:21 2024]
+Finished job 50.
+13 of 63 steps (21%) done
+[Wed Apr 24 14:28:21 2024]
+Finished job 52.
+14 of 63 steps (22%) done
+[Wed Apr 24 14:28:21 2024]
+Finished job 54.
+15 of 63 steps (24%) done
+Select jobs to execute...
+
+[Wed Apr 24 14:28:21 2024]
+rule solve_model:
+    input: resources/networks/1/cy1982_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/1/cy1982_ty2026.nc, results/revenues/1/cy1982_ty2026.nc
+    jobid: 49
+    reason: Missing output files: results/revenues/1/cy1982_ty2026.nc; Input files updated by another job: resources/networks/1/cy1982_ty2026.nc
+    wildcards: iter=1, cy=1982, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 49 with external jobid 'Submitted batch job 515'.
+
+[Wed Apr 24 14:28:21 2024]
+rule solve_model:
+    input: resources/networks/1/cy1982_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/1/cy1982_ty2027.nc, results/revenues/1/cy1982_ty2027.nc
+    jobid: 51
+    reason: Missing output files: results/revenues/1/cy1982_ty2027.nc; Input files updated by another job: resources/networks/1/cy1982_ty2027.nc
+    wildcards: iter=1, cy=1982, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 51 with external jobid 'Submitted batch job 516'.
+
+[Wed Apr 24 14:28:21 2024]
+rule solve_model:
+    input: resources/networks/1/cy1983_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/1/cy1983_ty2025.nc, results/revenues/1/cy1983_ty2025.nc
+    jobid: 53
+    reason: Input files updated by another job: resources/networks/1/cy1983_ty2025.nc
+    wildcards: iter=1, cy=1983, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 53 with external jobid 'Submitted batch job 517'.
+[Wed Apr 24 16:32:35 2024]
+Finished job 65.
+16 of 63 steps (25%) done
+[Wed Apr 24 16:33:41 2024]
+Finished job 48.
+17 of 63 steps (27%) done
+[Wed Apr 24 16:33:52 2024]
+Finished job 67.
+18 of 63 steps (29%) done
+[Wed Apr 24 16:34:14 2024]
+Finished job 69.
+19 of 63 steps (30%) done
+[Wed Apr 24 16:34:37 2024]
+Finished job 53.
+20 of 63 steps (32%) done
+[Wed Apr 24 16:35:07 2024]
+Finished job 57.
+21 of 63 steps (33%) done
+[Wed Apr 24 16:35:07 2024]
+Finished job 61.
+22 of 63 steps (35%) done
+[Wed Apr 24 16:35:07 2024]
+Finished job 75.
+23 of 63 steps (37%) done
+[Wed Apr 24 16:35:27 2024]
+Finished job 59.
+24 of 63 steps (38%) done
+[Wed Apr 24 16:35:37 2024]
+Finished job 51.
+25 of 63 steps (40%) done
+[Wed Apr 24 16:36:17 2024]
+Finished job 73.
+26 of 63 steps (41%) done
+[Wed Apr 24 16:36:37 2024]
+Finished job 71.
+27 of 63 steps (43%) done
+[Wed Apr 24 16:36:37 2024]
+Finished job 49.
+28 of 63 steps (44%) done
+[Wed Apr 24 16:36:47 2024]
+Finished job 63.
+29 of 63 steps (46%) done
+[Wed Apr 24 16:37:37 2024]
+Finished job 55.
+30 of 63 steps (48%) done
+Select jobs to execute...
+
+[Wed Apr 24 16:37:37 2024]
+rule capacity_adjustment:
+    input: resources/demand.h5, results/revenues/1/cy1982_ty2025.nc, results/revenues/1/cy1982_ty2026.nc, results/revenues/1/cy1982_ty2027.nc, results/revenues/1/cy1983_ty2025.nc, results/revenues/1/cy1983_ty2026.nc, results/revenues/1/cy1983_ty2027.nc, results/revenues/1/cy1984_ty2025.nc, results/revenues/1/cy1984_ty2026.nc, results/revenues/1/cy1984_ty2027.nc, results/revenues/1/cy1985_ty2025.nc, results/revenues/1/cy1985_ty2026.nc, results/revenues/1/cy1985_ty2027.nc, results/revenues/1/cy1986_ty2025.nc, results/revenues/1/cy1986_ty2026.nc, results/revenues/1/cy1986_ty2027.nc, resources/capacity_tables/1.csv, /trinity/home/thomgeo/technology-data/outputs/costs_2025.csv
+    output: resources/capacity_tables/2.csv
+    jobid: 47
+    reason: Missing output files: resources/capacity_tables/2.csv; Input files updated by another job: results/revenues/1/cy1984_ty2026.nc, results/revenues/1/cy1983_ty2026.nc, results/revenues/1/cy1982_ty2025.nc, results/revenues/1/cy1984_ty2025.nc, results/revenues/1/cy1984_ty2027.nc, results/revenues/1/cy1985_ty2026.nc, results/revenues/1/cy1985_ty2027.nc, results/revenues/1/cy1986_ty2026.nc, results/revenues/1/cy1985_ty2025.nc, results/revenues/1/cy1983_ty2027.nc, results/revenues/1/cy1986_ty2025.nc, results/revenues/1/cy1982_ty2026.nc, results/revenues/1/cy1983_ty2025.nc, results/revenues/1/cy1982_ty2027.nc, results/revenues/1/cy1986_ty2027.nc
+    wildcards: iter=2
+    resources: mem_mb=1585, mem_mib=1512, disk_mb=1585, disk_mib=1512, tmpdir=<TBD>
+
+Submitted job 47 with external jobid 'Submitted batch job 519'.
+[Wed Apr 24 16:37:57 2024]
+Finished job 47.
+31 of 63 steps (49%) done
+Select jobs to execute...
+
+[Wed Apr 24 16:37:57 2024]
+rule update_capacities:
+    input: resources/networks/1/cy1983_ty2026.nc, resources/capacity_tables/2.csv
+    output: resources/networks/2/cy1983_ty2026.nc
+    jobid: 84
+    reason: Missing output files: resources/networks/2/cy1983_ty2026.nc; Input files updated by another job: resources/networks/1/cy1983_ty2026.nc, resources/capacity_tables/2.csv
+    wildcards: iter=2, cy=1983, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 84 with external jobid 'Submitted batch job 520'.
+
+[Wed Apr 24 16:37:57 2024]
+rule update_capacities:
+    input: resources/networks/1/cy1983_ty2027.nc, resources/capacity_tables/2.csv
+    output: resources/networks/2/cy1983_ty2027.nc
+    jobid: 86
+    reason: Missing output files: resources/networks/2/cy1983_ty2027.nc; Input files updated by another job: resources/networks/1/cy1983_ty2027.nc, resources/capacity_tables/2.csv
+    wildcards: iter=2, cy=1983, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 86 with external jobid 'Submitted batch job 521'.
+
+[Wed Apr 24 16:37:57 2024]
+rule update_capacities:
+    input: resources/networks/1/cy1984_ty2025.nc, resources/capacity_tables/2.csv
+    output: resources/networks/2/cy1984_ty2025.nc
+    jobid: 88
+    reason: Missing output files: resources/networks/2/cy1984_ty2025.nc; Input files updated by another job: resources/networks/1/cy1984_ty2025.nc, resources/capacity_tables/2.csv
+    wildcards: iter=2, cy=1984, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 88 with external jobid 'Submitted batch job 522'.
+
+[Wed Apr 24 16:37:57 2024]
+rule update_capacities:
+    input: resources/networks/1/cy1984_ty2026.nc, resources/capacity_tables/2.csv
+    output: resources/networks/2/cy1984_ty2026.nc
+    jobid: 90
+    reason: Missing output files: resources/networks/2/cy1984_ty2026.nc; Input files updated by another job: resources/networks/1/cy1984_ty2026.nc, resources/capacity_tables/2.csv
+    wildcards: iter=2, cy=1984, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 90 with external jobid 'Submitted batch job 523'.
+
+[Wed Apr 24 16:37:57 2024]
+rule update_capacities:
+    input: resources/networks/1/cy1984_ty2027.nc, resources/capacity_tables/2.csv
+    output: resources/networks/2/cy1984_ty2027.nc
+    jobid: 92
+    reason: Missing output files: resources/networks/2/cy1984_ty2027.nc; Input files updated by another job: resources/networks/1/cy1984_ty2027.nc, resources/capacity_tables/2.csv
+    wildcards: iter=2, cy=1984, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 92 with external jobid 'Submitted batch job 524'.
+
+[Wed Apr 24 16:37:57 2024]
+rule update_capacities:
+    input: resources/networks/1/cy1985_ty2025.nc, resources/capacity_tables/2.csv
+    output: resources/networks/2/cy1985_ty2025.nc
+    jobid: 94
+    reason: Missing output files: resources/networks/2/cy1985_ty2025.nc; Input files updated by another job: resources/networks/1/cy1985_ty2025.nc, resources/capacity_tables/2.csv
+    wildcards: iter=2, cy=1985, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 94 with external jobid 'Submitted batch job 525'.
+
+[Wed Apr 24 16:37:57 2024]
+rule update_capacities:
+    input: resources/networks/1/cy1985_ty2026.nc, resources/capacity_tables/2.csv
+    output: resources/networks/2/cy1985_ty2026.nc
+    jobid: 96
+    reason: Missing output files: resources/networks/2/cy1985_ty2026.nc; Input files updated by another job: resources/networks/1/cy1985_ty2026.nc, resources/capacity_tables/2.csv
+    wildcards: iter=2, cy=1985, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 96 with external jobid 'Submitted batch job 526'.
+
+[Wed Apr 24 16:37:57 2024]
+rule update_capacities:
+    input: resources/networks/1/cy1985_ty2027.nc, resources/capacity_tables/2.csv
+    output: resources/networks/2/cy1985_ty2027.nc
+    jobid: 98
+    reason: Missing output files: resources/networks/2/cy1985_ty2027.nc; Input files updated by another job: resources/networks/1/cy1985_ty2027.nc, resources/capacity_tables/2.csv
+    wildcards: iter=2, cy=1985, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 98 with external jobid 'Submitted batch job 527'.
+
+[Wed Apr 24 16:37:57 2024]
+rule update_capacities:
+    input: resources/networks/1/cy1986_ty2025.nc, resources/capacity_tables/2.csv
+    output: resources/networks/2/cy1986_ty2025.nc
+    jobid: 100
+    reason: Missing output files: resources/networks/2/cy1986_ty2025.nc; Input files updated by another job: resources/networks/1/cy1986_ty2025.nc, resources/capacity_tables/2.csv
+    wildcards: iter=2, cy=1986, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 100 with external jobid 'Submitted batch job 528'.
+
+[Wed Apr 24 16:37:57 2024]
+rule update_capacities:
+    input: resources/networks/1/cy1986_ty2026.nc, resources/capacity_tables/2.csv
+    output: resources/networks/2/cy1986_ty2026.nc
+    jobid: 102
+    reason: Missing output files: resources/networks/2/cy1986_ty2026.nc; Input files updated by another job: resources/networks/1/cy1986_ty2026.nc, resources/capacity_tables/2.csv
+    wildcards: iter=2, cy=1986, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 102 with external jobid 'Submitted batch job 529'.
+
+[Wed Apr 24 16:37:57 2024]
+rule update_capacities:
+    input: resources/networks/1/cy1986_ty2027.nc, resources/capacity_tables/2.csv
+    output: resources/networks/2/cy1986_ty2027.nc
+    jobid: 104
+    reason: Missing output files: resources/networks/2/cy1986_ty2027.nc; Input files updated by another job: resources/networks/1/cy1986_ty2027.nc, resources/capacity_tables/2.csv
+    wildcards: iter=2, cy=1986, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 104 with external jobid 'Submitted batch job 530'.
+
+[Wed Apr 24 16:37:57 2024]
+rule update_capacities:
+    input: resources/networks/1/cy1982_ty2025.nc, resources/capacity_tables/2.csv
+    output: resources/networks/2/cy1982_ty2025.nc
+    jobid: 5
+    reason: Missing output files: resources/networks/2/cy1982_ty2025.nc; Input files updated by another job: resources/networks/1/cy1982_ty2025.nc, resources/capacity_tables/2.csv
+    wildcards: iter=2, cy=1982, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 5 with external jobid 'Submitted batch job 531'.
+
+[Wed Apr 24 16:37:57 2024]
+rule update_capacities:
+    input: resources/networks/1/cy1982_ty2026.nc, resources/capacity_tables/2.csv
+    output: resources/networks/2/cy1982_ty2026.nc
+    jobid: 78
+    reason: Missing output files: resources/networks/2/cy1982_ty2026.nc; Input files updated by another job: resources/networks/1/cy1982_ty2026.nc, resources/capacity_tables/2.csv
+    wildcards: iter=2, cy=1982, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 78 with external jobid 'Submitted batch job 532'.
+
+[Wed Apr 24 16:37:57 2024]
+rule update_capacities:
+    input: resources/networks/1/cy1982_ty2027.nc, resources/capacity_tables/2.csv
+    output: resources/networks/2/cy1982_ty2027.nc
+    jobid: 80
+    reason: Missing output files: resources/networks/2/cy1982_ty2027.nc; Input files updated by another job: resources/capacity_tables/2.csv, resources/networks/1/cy1982_ty2027.nc
+    wildcards: iter=2, cy=1982, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 80 with external jobid 'Submitted batch job 533'.
+
+[Wed Apr 24 16:37:57 2024]
+rule update_capacities:
+    input: resources/networks/1/cy1983_ty2025.nc, resources/capacity_tables/2.csv
+    output: resources/networks/2/cy1983_ty2025.nc
+    jobid: 82
+    reason: Missing output files: resources/networks/2/cy1983_ty2025.nc; Input files updated by another job: resources/networks/1/cy1983_ty2025.nc, resources/capacity_tables/2.csv
+    wildcards: iter=2, cy=1983, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 82 with external jobid 'Submitted batch job 534'.
+[Wed Apr 24 16:38:07 2024]
+Finished job 84.
+32 of 63 steps (51%) done
+Select jobs to execute...
+
+[Wed Apr 24 16:38:07 2024]
+rule solve_model:
+    input: resources/networks/2/cy1983_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/2/cy1983_ty2026.nc, results/revenues/2/cy1983_ty2026.nc
+    jobid: 83
+    reason: Missing output files: results/revenues/2/cy1983_ty2026.nc; Input files updated by another job: resources/networks/2/cy1983_ty2026.nc
+    wildcards: iter=2, cy=1983, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 83 with external jobid 'Submitted batch job 535'.
+[Wed Apr 24 16:38:07 2024]
+Finished job 86.
+33 of 63 steps (52%) done
+[Wed Apr 24 16:38:07 2024]
+Finished job 88.
+34 of 63 steps (54%) done
+[Wed Apr 24 16:38:07 2024]
+Finished job 90.
+35 of 63 steps (56%) done
+[Wed Apr 24 16:38:07 2024]
+Finished job 92.
+36 of 63 steps (57%) done
+[Wed Apr 24 16:38:07 2024]
+Finished job 94.
+37 of 63 steps (59%) done
+[Wed Apr 24 16:38:07 2024]
+Finished job 96.
+38 of 63 steps (60%) done
+[Wed Apr 24 16:38:07 2024]
+Finished job 98.
+39 of 63 steps (62%) done
+[Wed Apr 24 16:38:07 2024]
+Finished job 100.
+40 of 63 steps (63%) done
+[Wed Apr 24 16:38:07 2024]
+Finished job 102.
+41 of 63 steps (65%) done
+Select jobs to execute...
+
+[Wed Apr 24 16:38:07 2024]
+rule solve_model:
+    input: resources/networks/2/cy1986_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/2/cy1986_ty2025.nc, results/revenues/2/cy1986_ty2025.nc
+    jobid: 99
+    reason: Missing output files: results/revenues/2/cy1986_ty2025.nc; Input files updated by another job: resources/networks/2/cy1986_ty2025.nc
+    wildcards: iter=2, cy=1986, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 99 with external jobid 'Submitted batch job 536'.
+
+[Wed Apr 24 16:38:07 2024]
+rule solve_model:
+    input: resources/networks/2/cy1986_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/2/cy1986_ty2026.nc, results/revenues/2/cy1986_ty2026.nc
+    jobid: 101
+    reason: Missing output files: results/revenues/2/cy1986_ty2026.nc; Input files updated by another job: resources/networks/2/cy1986_ty2026.nc
+    wildcards: iter=2, cy=1986, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 101 with external jobid 'Submitted batch job 537'.
+
+[Wed Apr 24 16:38:07 2024]
+rule solve_model:
+    input: resources/networks/2/cy1983_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/2/cy1983_ty2027.nc, results/revenues/2/cy1983_ty2027.nc
+    jobid: 85
+    reason: Missing output files: results/revenues/2/cy1983_ty2027.nc; Input files updated by another job: resources/networks/2/cy1983_ty2027.nc
+    wildcards: iter=2, cy=1983, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 85 with external jobid 'Submitted batch job 538'.
+
+[Wed Apr 24 16:38:07 2024]
+rule solve_model:
+    input: resources/networks/2/cy1984_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/2/cy1984_ty2025.nc, results/revenues/2/cy1984_ty2025.nc
+    jobid: 87
+    reason: Missing output files: results/revenues/2/cy1984_ty2025.nc; Input files updated by another job: resources/networks/2/cy1984_ty2025.nc
+    wildcards: iter=2, cy=1984, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 87 with external jobid 'Submitted batch job 539'.
+
+[Wed Apr 24 16:38:07 2024]
+rule solve_model:
+    input: resources/networks/2/cy1984_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/2/cy1984_ty2026.nc, results/revenues/2/cy1984_ty2026.nc
+    jobid: 89
+    reason: Missing output files: results/revenues/2/cy1984_ty2026.nc; Input files updated by another job: resources/networks/2/cy1984_ty2026.nc
+    wildcards: iter=2, cy=1984, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 89 with external jobid 'Submitted batch job 540'.
+
+[Wed Apr 24 16:38:07 2024]
+rule solve_model:
+    input: resources/networks/2/cy1984_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/2/cy1984_ty2027.nc, results/revenues/2/cy1984_ty2027.nc
+    jobid: 91
+    reason: Missing output files: results/revenues/2/cy1984_ty2027.nc; Input files updated by another job: resources/networks/2/cy1984_ty2027.nc
+    wildcards: iter=2, cy=1984, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 91 with external jobid 'Submitted batch job 541'.
+
+[Wed Apr 24 16:38:07 2024]
+rule solve_model:
+    input: resources/networks/2/cy1985_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/2/cy1985_ty2025.nc, results/revenues/2/cy1985_ty2025.nc
+    jobid: 93
+    reason: Missing output files: results/revenues/2/cy1985_ty2025.nc; Input files updated by another job: resources/networks/2/cy1985_ty2025.nc
+    wildcards: iter=2, cy=1985, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 93 with external jobid 'Submitted batch job 542'.
+
+[Wed Apr 24 16:38:07 2024]
+rule solve_model:
+    input: resources/networks/2/cy1985_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/2/cy1985_ty2026.nc, results/revenues/2/cy1985_ty2026.nc
+    jobid: 95
+    reason: Missing output files: results/revenues/2/cy1985_ty2026.nc; Input files updated by another job: resources/networks/2/cy1985_ty2026.nc
+    wildcards: iter=2, cy=1985, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 95 with external jobid 'Submitted batch job 543'.
+
+[Wed Apr 24 16:38:07 2024]
+rule solve_model:
+    input: resources/networks/2/cy1985_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/2/cy1985_ty2027.nc, results/revenues/2/cy1985_ty2027.nc
+    jobid: 97
+    reason: Missing output files: results/revenues/2/cy1985_ty2027.nc; Input files updated by another job: resources/networks/2/cy1985_ty2027.nc
+    wildcards: iter=2, cy=1985, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 97 with external jobid 'Submitted batch job 544'.
+[Wed Apr 24 16:38:08 2024]
+Finished job 104.
+42 of 63 steps (67%) done
+Select jobs to execute...
+
+[Wed Apr 24 16:38:08 2024]
+rule solve_model:
+    input: resources/networks/2/cy1986_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/2/cy1986_ty2027.nc, results/revenues/2/cy1986_ty2027.nc
+    jobid: 103
+    reason: Missing output files: results/revenues/2/cy1986_ty2027.nc; Input files updated by another job: resources/networks/2/cy1986_ty2027.nc
+    wildcards: iter=2, cy=1986, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 103 with external jobid 'Submitted batch job 545'.
+[Wed Apr 24 16:38:08 2024]
+Finished job 5.
+43 of 63 steps (68%) done
+[Wed Apr 24 16:38:08 2024]
+Finished job 78.
+44 of 63 steps (70%) done
+[Wed Apr 24 16:38:08 2024]
+Finished job 80.
+45 of 63 steps (71%) done
+[Wed Apr 24 16:38:08 2024]
+Finished job 82.
+46 of 63 steps (73%) done
+Select jobs to execute...
+
+[Wed Apr 24 16:38:08 2024]
+rule solve_model:
+    input: resources/networks/2/cy1982_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/2/cy1982_ty2026.nc, results/revenues/2/cy1982_ty2026.nc
+    jobid: 77
+    reason: Missing output files: results/revenues/2/cy1982_ty2026.nc; Input files updated by another job: resources/networks/2/cy1982_ty2026.nc
+    wildcards: iter=2, cy=1982, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 77 with external jobid 'Submitted batch job 546'.
+
+[Wed Apr 24 16:38:08 2024]
+rule solve_model:
+    input: resources/networks/2/cy1982_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/2/cy1982_ty2027.nc, results/revenues/2/cy1982_ty2027.nc
+    jobid: 79
+    reason: Missing output files: results/revenues/2/cy1982_ty2027.nc; Input files updated by another job: resources/networks/2/cy1982_ty2027.nc
+    wildcards: iter=2, cy=1982, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 79 with external jobid 'Submitted batch job 547'.
+
+[Wed Apr 24 16:38:08 2024]
+rule solve_model:
+    input: resources/networks/2/cy1983_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/2/cy1983_ty2025.nc, results/revenues/2/cy1983_ty2025.nc
+    jobid: 81
+    reason: Missing output files: results/revenues/2/cy1983_ty2025.nc; Input files updated by another job: resources/networks/2/cy1983_ty2025.nc
+    wildcards: iter=2, cy=1983, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 81 with external jobid 'Submitted batch job 548'.
+
+[Wed Apr 24 16:38:08 2024]
+rule solve_model:
+    input: resources/networks/2/cy1982_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/2/cy1982_ty2025.nc, results/revenues/2/cy1982_ty2025.nc
+    jobid: 4
+    reason: Missing output files: results/revenues/2/cy1982_ty2025.nc; Input files updated by another job: resources/networks/2/cy1982_ty2025.nc
+    wildcards: iter=2, cy=1982, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 4 with external jobid 'Submitted batch job 549'.
+[Wed Apr 24 18:41:16 2024]
+Finished job 87.
+47 of 63 steps (75%) done
+[Wed Apr 24 18:41:38 2024]
+Finished job 97.
+48 of 63 steps (76%) done
+[Wed Apr 24 18:42:55 2024]
+Finished job 89.
+49 of 63 steps (78%) done
+[Wed Apr 24 18:44:12 2024]
+Finished job 85.
+50 of 63 steps (79%) done
+[Wed Apr 24 18:44:46 2024]
+Finished job 103.
+51 of 63 steps (81%) done
+[Wed Apr 24 18:44:46 2024]
+Finished job 79.
+52 of 63 steps (83%) done
+[Wed Apr 24 18:44:57 2024]
+Finished job 83.
+53 of 63 steps (84%) done
+[Wed Apr 24 18:45:07 2024]
+Finished job 101.
+54 of 63 steps (86%) done
+[Wed Apr 24 18:45:07 2024]
+Finished job 91.
+55 of 63 steps (87%) done
+[Wed Apr 24 18:45:27 2024]
+Finished job 93.
+56 of 63 steps (89%) done
+[Wed Apr 24 18:45:57 2024]
+Finished job 99.
+57 of 63 steps (90%) done
+[Wed Apr 24 18:46:17 2024]
+Finished job 81.
+58 of 63 steps (92%) done
+[Wed Apr 24 18:46:27 2024]
+Finished job 77.
+59 of 63 steps (94%) done
+[Wed Apr 24 18:46:37 2024]
+Finished job 4.
+60 of 63 steps (95%) done
+[Wed Apr 24 18:47:07 2024]
+Finished job 95.
+61 of 63 steps (97%) done
+Select jobs to execute...
+
+[Wed Apr 24 18:47:07 2024]
+rule capacity_adjustment:
+    input: resources/demand.h5, results/revenues/2/cy1982_ty2025.nc, results/revenues/2/cy1982_ty2026.nc, results/revenues/2/cy1982_ty2027.nc, results/revenues/2/cy1983_ty2025.nc, results/revenues/2/cy1983_ty2026.nc, results/revenues/2/cy1983_ty2027.nc, results/revenues/2/cy1984_ty2025.nc, results/revenues/2/cy1984_ty2026.nc, results/revenues/2/cy1984_ty2027.nc, results/revenues/2/cy1985_ty2025.nc, results/revenues/2/cy1985_ty2026.nc, results/revenues/2/cy1985_ty2027.nc, results/revenues/2/cy1986_ty2025.nc, results/revenues/2/cy1986_ty2026.nc, results/revenues/2/cy1986_ty2027.nc, resources/capacity_tables/2.csv, /trinity/home/thomgeo/technology-data/outputs/costs_2025.csv
+    output: resources/capacity_tables/3.csv
+    jobid: 1
+    reason: Missing output files: resources/capacity_tables/3.csv; Input files updated by another job: results/revenues/2/cy1982_ty2027.nc, results/revenues/2/cy1985_ty2025.nc, resources/capacity_tables/2.csv, results/revenues/2/cy1983_ty2026.nc, results/revenues/2/cy1984_ty2027.nc, results/revenues/2/cy1984_ty2026.nc, results/revenues/2/cy1986_ty2025.nc, results/revenues/2/cy1982_ty2026.nc, results/revenues/2/cy1986_ty2027.nc, results/revenues/2/cy1983_ty2027.nc, results/revenues/2/cy1984_ty2025.nc, results/revenues/2/cy1986_ty2026.nc, results/revenues/2/cy1985_ty2026.nc, results/revenues/2/cy1982_ty2025.nc, results/revenues/2/cy1985_ty2027.nc, results/revenues/2/cy1983_ty2025.nc
+    wildcards: iter=3
+    resources: mem_mb=1585, mem_mib=1512, disk_mb=1585, disk_mib=1512, tmpdir=<TBD>
+
+Submitted job 1 with external jobid 'Submitted batch job 552'.
+[Wed Apr 24 18:47:17 2024]
+Finished job 1.
+62 of 63 steps (98%) done
+Select jobs to execute...
+
+[Wed Apr 24 18:47:17 2024]
+localrule all:
+    input: resources/capacity_tables/3.csv
+    jobid: 0
+    reason: Input files updated by another job: resources/capacity_tables/3.csv
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=/tmp
+
+[Wed Apr 24 18:47:17 2024]
+Finished job 0.
+63 of 63 steps (100%) done
+Complete log: ../technology-data/.snakemake/log/2024-04-24T142810.546299.snakemake.log
+Restricted license - for non-production use only - expires 2025-11-24
+/trinity/home/thomgeo/.conda/envs/pypsa-training/lib/python3.10/site-packages/pulp/apis/gurobi_api.py:170: UserWarning: GUROBI error: Unknown parameter '_test'.
+  warnings.warn("GUROBI error: {}.".format(e))
+Using profile cluster for setting default command line arguments.
+/trinity/home/thomgeo/.conda/envs/pypsa-training/lib/python3.10/site-packages/pulp/apis/gurobi_api.py:170: UserWarning: GUROBI error: Unknown parameter '_test'.
+  warnings.warn("GUROBI error: {}.".format(e))
+Building DAG of jobs...
+Executing subworkflow technology_data.
+Config file config.yaml is extended by additional config specified via the command line.
+Building DAG of jobs...
+Nothing to be done (all requested files are present and up to date).
+Complete log: .snakemake/log/2024-04-29T142525.665992.snakemake.log
+Executing main workflow.
+Using shell: /usr/bin/bash
+Provided cluster nodes: 20
+Provided resources: gurobi=1
+Job stats:
+job                    count
+-------------------  -------
+all                        1
+capacity_adjustment        7
+solve_model              105
+update_capacities        105
+total                    218
+
+Select jobs to execute...
+
+[Mon Apr 29 14:25:25 2024]
+rule update_capacities:
+    input: resources/networks/2/cy1983_ty2026.nc, resources/capacity_tables/3.csv
+    output: resources/networks/3/cy1983_ty2026.nc
+    jobid: 123
+    reason: Missing output files: resources/networks/3/cy1983_ty2026.nc
+    wildcards: iter=3, cy=1983, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 123 with external jobid 'Submitted batch job 631'.
+
+[Mon Apr 29 14:25:25 2024]
+rule update_capacities:
+    input: resources/networks/2/cy1983_ty2027.nc, resources/capacity_tables/3.csv
+    output: resources/networks/3/cy1983_ty2027.nc
+    jobid: 125
+    reason: Missing output files: resources/networks/3/cy1983_ty2027.nc
+    wildcards: iter=3, cy=1983, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 125 with external jobid 'Submitted batch job 632'.
+
+[Mon Apr 29 14:25:25 2024]
+rule update_capacities:
+    input: resources/networks/2/cy1984_ty2025.nc, resources/capacity_tables/3.csv
+    output: resources/networks/3/cy1984_ty2025.nc
+    jobid: 127
+    reason: Missing output files: resources/networks/3/cy1984_ty2025.nc
+    wildcards: iter=3, cy=1984, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 127 with external jobid 'Submitted batch job 633'.
+
+[Mon Apr 29 14:25:25 2024]
+rule update_capacities:
+    input: resources/networks/2/cy1984_ty2026.nc, resources/capacity_tables/3.csv
+    output: resources/networks/3/cy1984_ty2026.nc
+    jobid: 129
+    reason: Missing output files: resources/networks/3/cy1984_ty2026.nc
+    wildcards: iter=3, cy=1984, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 129 with external jobid 'Submitted batch job 634'.
+
+[Mon Apr 29 14:25:25 2024]
+rule update_capacities:
+    input: resources/networks/2/cy1984_ty2027.nc, resources/capacity_tables/3.csv
+    output: resources/networks/3/cy1984_ty2027.nc
+    jobid: 131
+    reason: Missing output files: resources/networks/3/cy1984_ty2027.nc
+    wildcards: iter=3, cy=1984, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 131 with external jobid 'Submitted batch job 635'.
+
+[Mon Apr 29 14:25:25 2024]
+rule update_capacities:
+    input: resources/networks/2/cy1985_ty2025.nc, resources/capacity_tables/3.csv
+    output: resources/networks/3/cy1985_ty2025.nc
+    jobid: 133
+    reason: Missing output files: resources/networks/3/cy1985_ty2025.nc
+    wildcards: iter=3, cy=1985, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 133 with external jobid 'Submitted batch job 636'.
+
+[Mon Apr 29 14:25:25 2024]
+rule update_capacities:
+    input: resources/networks/2/cy1985_ty2026.nc, resources/capacity_tables/3.csv
+    output: resources/networks/3/cy1985_ty2026.nc
+    jobid: 135
+    reason: Missing output files: resources/networks/3/cy1985_ty2026.nc
+    wildcards: iter=3, cy=1985, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 135 with external jobid 'Submitted batch job 637'.
+
+[Mon Apr 29 14:25:25 2024]
+rule update_capacities:
+    input: resources/networks/2/cy1985_ty2027.nc, resources/capacity_tables/3.csv
+    output: resources/networks/3/cy1985_ty2027.nc
+    jobid: 137
+    reason: Missing output files: resources/networks/3/cy1985_ty2027.nc
+    wildcards: iter=3, cy=1985, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 137 with external jobid 'Submitted batch job 638'.
+
+[Mon Apr 29 14:25:25 2024]
+rule update_capacities:
+    input: resources/networks/2/cy1983_ty2025.nc, resources/capacity_tables/3.csv
+    output: resources/networks/3/cy1983_ty2025.nc
+    jobid: 121
+    reason: Missing output files: resources/networks/3/cy1983_ty2025.nc
+    wildcards: iter=3, cy=1983, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 121 with external jobid 'Submitted batch job 639'.
+
+[Mon Apr 29 14:25:25 2024]
+rule update_capacities:
+    input: resources/networks/2/cy1986_ty2025.nc, resources/capacity_tables/3.csv
+    output: resources/networks/3/cy1986_ty2025.nc
+    jobid: 139
+    reason: Missing output files: resources/networks/3/cy1986_ty2025.nc
+    wildcards: iter=3, cy=1986, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 139 with external jobid 'Submitted batch job 640'.
+
+[Mon Apr 29 14:25:25 2024]
+rule update_capacities:
+    input: resources/networks/2/cy1986_ty2026.nc, resources/capacity_tables/3.csv
+    output: resources/networks/3/cy1986_ty2026.nc
+    jobid: 141
+    reason: Missing output files: resources/networks/3/cy1986_ty2026.nc
+    wildcards: iter=3, cy=1986, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 141 with external jobid 'Submitted batch job 641'.
+
+[Mon Apr 29 14:25:25 2024]
+rule update_capacities:
+    input: resources/networks/2/cy1986_ty2027.nc, resources/capacity_tables/3.csv
+    output: resources/networks/3/cy1986_ty2027.nc
+    jobid: 143
+    reason: Missing output files: resources/networks/3/cy1986_ty2027.nc
+    wildcards: iter=3, cy=1986, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 143 with external jobid 'Submitted batch job 642'.
+
+[Mon Apr 29 14:25:25 2024]
+rule update_capacities:
+    input: resources/networks/2/cy1982_ty2026.nc, resources/capacity_tables/3.csv
+    output: resources/networks/3/cy1982_ty2026.nc
+    jobid: 117
+    reason: Missing output files: resources/networks/3/cy1982_ty2026.nc
+    wildcards: iter=3, cy=1982, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 117 with external jobid 'Submitted batch job 643'.
+
+[Mon Apr 29 14:25:25 2024]
+rule update_capacities:
+    input: resources/networks/2/cy1982_ty2027.nc, resources/capacity_tables/3.csv
+    output: resources/networks/3/cy1982_ty2027.nc
+    jobid: 119
+    reason: Missing output files: resources/networks/3/cy1982_ty2027.nc
+    wildcards: iter=3, cy=1982, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 119 with external jobid 'Submitted batch job 644'.
+
+[Mon Apr 29 14:25:25 2024]
+rule update_capacities:
+    input: resources/networks/2/cy1982_ty2025.nc, resources/capacity_tables/3.csv
+    output: resources/networks/3/cy1982_ty2025.nc
+    jobid: 11
+    reason: Missing output files: resources/networks/3/cy1982_ty2025.nc
+    wildcards: iter=3, cy=1982, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 11 with external jobid 'Submitted batch job 645'.
+[Mon Apr 29 14:25:35 2024]
+Finished job 123.
+1 of 218 steps (0.5%) done
+Select jobs to execute...
+
+[Mon Apr 29 14:25:35 2024]
+rule solve_model:
+    input: resources/networks/3/cy1983_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/3/cy1983_ty2026.nc, results/revenues/3/cy1983_ty2026.nc
+    jobid: 122
+    reason: Missing output files: results/revenues/3/cy1983_ty2026.nc; Input files updated by another job: resources/networks/3/cy1983_ty2026.nc
+    wildcards: iter=3, cy=1983, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 122 with external jobid 'Submitted batch job 646'.
+[Mon Apr 29 14:25:35 2024]
+Finished job 125.
+2 of 218 steps (1%) done
+[Mon Apr 29 14:25:35 2024]
+Finished job 127.
+3 of 218 steps (1%) done
+[Mon Apr 29 14:25:35 2024]
+Finished job 129.
+4 of 218 steps (2%) done
+[Mon Apr 29 14:25:35 2024]
+Finished job 131.
+5 of 218 steps (2%) done
+[Mon Apr 29 14:25:35 2024]
+Finished job 133.
+6 of 218 steps (3%) done
+[Mon Apr 29 14:25:35 2024]
+Finished job 135.
+7 of 218 steps (3%) done
+[Mon Apr 29 14:25:35 2024]
+Finished job 137.
+8 of 218 steps (4%) done
+[Mon Apr 29 14:25:35 2024]
+Finished job 121.
+9 of 218 steps (4%) done
+[Mon Apr 29 14:25:35 2024]
+Finished job 139.
+10 of 218 steps (5%) done
+Select jobs to execute...
+
+[Mon Apr 29 14:25:35 2024]
+rule solve_model:
+    input: resources/networks/3/cy1986_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/3/cy1986_ty2025.nc, results/revenues/3/cy1986_ty2025.nc
+    jobid: 138
+    reason: Missing output files: results/revenues/3/cy1986_ty2025.nc; Input files updated by another job: resources/networks/3/cy1986_ty2025.nc
+    wildcards: iter=3, cy=1986, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 138 with external jobid 'Submitted batch job 647'.
+
+[Mon Apr 29 14:25:35 2024]
+rule solve_model:
+    input: resources/networks/3/cy1983_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/3/cy1983_ty2025.nc, results/revenues/3/cy1983_ty2025.nc
+    jobid: 120
+    reason: Missing output files: results/revenues/3/cy1983_ty2025.nc; Input files updated by another job: resources/networks/3/cy1983_ty2025.nc
+    wildcards: iter=3, cy=1983, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 120 with external jobid 'Submitted batch job 648'.
+
+[Mon Apr 29 14:25:35 2024]
+rule solve_model:
+    input: resources/networks/3/cy1983_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/3/cy1983_ty2027.nc, results/revenues/3/cy1983_ty2027.nc
+    jobid: 124
+    reason: Missing output files: results/revenues/3/cy1983_ty2027.nc; Input files updated by another job: resources/networks/3/cy1983_ty2027.nc
+    wildcards: iter=3, cy=1983, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 124 with external jobid 'Submitted batch job 649'.
+
+[Mon Apr 29 14:25:35 2024]
+rule solve_model:
+    input: resources/networks/3/cy1984_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/3/cy1984_ty2025.nc, results/revenues/3/cy1984_ty2025.nc
+    jobid: 126
+    reason: Missing output files: results/revenues/3/cy1984_ty2025.nc; Input files updated by another job: resources/networks/3/cy1984_ty2025.nc
+    wildcards: iter=3, cy=1984, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 126 with external jobid 'Submitted batch job 650'.
+
+[Mon Apr 29 14:25:35 2024]
+rule solve_model:
+    input: resources/networks/3/cy1984_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/3/cy1984_ty2026.nc, results/revenues/3/cy1984_ty2026.nc
+    jobid: 128
+    reason: Missing output files: results/revenues/3/cy1984_ty2026.nc; Input files updated by another job: resources/networks/3/cy1984_ty2026.nc
+    wildcards: iter=3, cy=1984, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 128 with external jobid 'Submitted batch job 651'.
+
+[Mon Apr 29 14:25:35 2024]
+rule solve_model:
+    input: resources/networks/3/cy1984_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/3/cy1984_ty2027.nc, results/revenues/3/cy1984_ty2027.nc
+    jobid: 130
+    reason: Missing output files: results/revenues/3/cy1984_ty2027.nc; Input files updated by another job: resources/networks/3/cy1984_ty2027.nc
+    wildcards: iter=3, cy=1984, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 130 with external jobid 'Submitted batch job 652'.
+
+[Mon Apr 29 14:25:35 2024]
+rule solve_model:
+    input: resources/networks/3/cy1985_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/3/cy1985_ty2025.nc, results/revenues/3/cy1985_ty2025.nc
+    jobid: 132
+    reason: Missing output files: results/revenues/3/cy1985_ty2025.nc; Input files updated by another job: resources/networks/3/cy1985_ty2025.nc
+    wildcards: iter=3, cy=1985, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 132 with external jobid 'Submitted batch job 653'.
+
+[Mon Apr 29 14:25:35 2024]
+rule solve_model:
+    input: resources/networks/3/cy1985_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/3/cy1985_ty2026.nc, results/revenues/3/cy1985_ty2026.nc
+    jobid: 134
+    reason: Missing output files: results/revenues/3/cy1985_ty2026.nc; Input files updated by another job: resources/networks/3/cy1985_ty2026.nc
+    wildcards: iter=3, cy=1985, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 134 with external jobid 'Submitted batch job 654'.
+
+[Mon Apr 29 14:25:35 2024]
+rule solve_model:
+    input: resources/networks/3/cy1985_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/3/cy1985_ty2027.nc, results/revenues/3/cy1985_ty2027.nc
+    jobid: 136
+    reason: Missing output files: results/revenues/3/cy1985_ty2027.nc; Input files updated by another job: resources/networks/3/cy1985_ty2027.nc
+    wildcards: iter=3, cy=1985, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 136 with external jobid 'Submitted batch job 655'.
+[Mon Apr 29 14:25:36 2024]
+Finished job 141.
+11 of 218 steps (5%) done
+Select jobs to execute...
+
+[Mon Apr 29 14:25:36 2024]
+rule solve_model:
+    input: resources/networks/3/cy1986_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/3/cy1986_ty2026.nc, results/revenues/3/cy1986_ty2026.nc
+    jobid: 140
+    reason: Missing output files: results/revenues/3/cy1986_ty2026.nc; Input files updated by another job: resources/networks/3/cy1986_ty2026.nc
+    wildcards: iter=3, cy=1986, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 140 with external jobid 'Submitted batch job 656'.
+[Mon Apr 29 14:25:36 2024]
+Finished job 143.
+12 of 218 steps (6%) done
+[Mon Apr 29 14:25:36 2024]
+Finished job 117.
+13 of 218 steps (6%) done
+[Mon Apr 29 14:25:36 2024]
+Finished job 119.
+14 of 218 steps (6%) done
+[Mon Apr 29 14:25:36 2024]
+Finished job 11.
+15 of 218 steps (7%) done
+Select jobs to execute...
+
+[Mon Apr 29 14:25:36 2024]
+rule solve_model:
+    input: resources/networks/3/cy1986_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/3/cy1986_ty2027.nc, results/revenues/3/cy1986_ty2027.nc
+    jobid: 142
+    reason: Missing output files: results/revenues/3/cy1986_ty2027.nc; Input files updated by another job: resources/networks/3/cy1986_ty2027.nc
+    wildcards: iter=3, cy=1986, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 142 with external jobid 'Submitted batch job 657'.
+
+[Mon Apr 29 14:25:36 2024]
+rule solve_model:
+    input: resources/networks/3/cy1982_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/3/cy1982_ty2025.nc, results/revenues/3/cy1982_ty2025.nc
+    jobid: 115
+    reason: Missing output files: results/revenues/3/cy1982_ty2025.nc; Input files updated by another job: resources/networks/3/cy1982_ty2025.nc
+    wildcards: iter=3, cy=1982, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 115 with external jobid 'Submitted batch job 658'.
+
+[Mon Apr 29 14:25:36 2024]
+rule solve_model:
+    input: resources/networks/3/cy1982_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/3/cy1982_ty2026.nc, results/revenues/3/cy1982_ty2026.nc
+    jobid: 116
+    reason: Missing output files: results/revenues/3/cy1982_ty2026.nc; Input files updated by another job: resources/networks/3/cy1982_ty2026.nc
+    wildcards: iter=3, cy=1982, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 116 with external jobid 'Submitted batch job 659'.
+
+[Mon Apr 29 14:25:36 2024]
+rule solve_model:
+    input: resources/networks/3/cy1982_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/3/cy1982_ty2027.nc, results/revenues/3/cy1982_ty2027.nc
+    jobid: 118
+    reason: Missing output files: results/revenues/3/cy1982_ty2027.nc; Input files updated by another job: resources/networks/3/cy1982_ty2027.nc
+    wildcards: iter=3, cy=1982, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 118 with external jobid 'Submitted batch job 660'.
+[Mon Apr 29 16:27:28 2024]
+Finished job 116.
+16 of 218 steps (7%) done
+[Mon Apr 29 16:29:17 2024]
+Finished job 128.
+17 of 218 steps (8%) done
+[Mon Apr 29 16:29:18 2024]
+Finished job 115.
+18 of 218 steps (8%) done
+[Mon Apr 29 16:31:40 2024]
+Finished job 138.
+19 of 218 steps (9%) done
+[Mon Apr 29 16:31:40 2024]
+Finished job 130.
+20 of 218 steps (9%) done
+[Mon Apr 29 16:32:21 2024]
+Finished job 126.
+21 of 218 steps (10%) done
+[Mon Apr 29 16:33:21 2024]
+Finished job 136.
+22 of 218 steps (10%) done
+[Mon Apr 29 16:33:31 2024]
+Finished job 122.
+23 of 218 steps (11%) done
+[Mon Apr 29 16:33:31 2024]
+Finished job 134.
+24 of 218 steps (11%) done
+[Mon Apr 29 16:33:41 2024]
+Finished job 142.
+25 of 218 steps (11%) done
+[Mon Apr 29 16:33:51 2024]
+Finished job 120.
+26 of 218 steps (12%) done
+[Mon Apr 29 16:33:51 2024]
+Finished job 140.
+27 of 218 steps (12%) done
+[Mon Apr 29 16:34:01 2024]
+Finished job 118.
+28 of 218 steps (13%) done
+[Mon Apr 29 16:34:11 2024]
+Finished job 132.
+29 of 218 steps (13%) done
+[Mon Apr 29 16:34:51 2024]
+Finished job 124.
+30 of 218 steps (14%) done
+Select jobs to execute...
+
+[Mon Apr 29 16:34:51 2024]
+rule capacity_adjustment:
+    input: resources/demand.h5, results/revenues/3/cy1982_ty2025.nc, results/revenues/3/cy1982_ty2026.nc, results/revenues/3/cy1982_ty2027.nc, results/revenues/3/cy1983_ty2025.nc, results/revenues/3/cy1983_ty2026.nc, results/revenues/3/cy1983_ty2027.nc, results/revenues/3/cy1984_ty2025.nc, results/revenues/3/cy1984_ty2026.nc, results/revenues/3/cy1984_ty2027.nc, results/revenues/3/cy1985_ty2025.nc, results/revenues/3/cy1985_ty2026.nc, results/revenues/3/cy1985_ty2027.nc, results/revenues/3/cy1986_ty2025.nc, results/revenues/3/cy1986_ty2026.nc, results/revenues/3/cy1986_ty2027.nc, resources/capacity_tables/3.csv, /trinity/home/thomgeo/technology-data/outputs/costs_2025.csv
+    output: resources/capacity_tables/4.csv
+    jobid: 114
+    reason: Missing output files: resources/capacity_tables/4.csv; Input files updated by another job: results/revenues/3/cy1985_ty2027.nc, results/revenues/3/cy1986_ty2025.nc, results/revenues/3/cy1986_ty2026.nc, results/revenues/3/cy1982_ty2026.nc, results/revenues/3/cy1984_ty2027.nc, results/revenues/3/cy1985_ty2026.nc, results/revenues/3/cy1983_ty2027.nc, results/revenues/3/cy1984_ty2025.nc, results/revenues/3/cy1984_ty2026.nc, results/revenues/3/cy1982_ty2027.nc, results/revenues/3/cy1983_ty2026.nc, results/revenues/3/cy1985_ty2025.nc, results/revenues/3/cy1982_ty2025.nc, results/revenues/3/cy1983_ty2025.nc, results/revenues/3/cy1986_ty2027.nc
+    wildcards: iter=4
+    resources: mem_mb=1585, mem_mib=1512, disk_mb=1585, disk_mib=1512, tmpdir=<TBD>
+
+Submitted job 114 with external jobid 'Submitted batch job 676'.
+[Mon Apr 29 16:35:11 2024]
+Finished job 114.
+31 of 218 steps (14%) done
+Select jobs to execute...
+
+[Mon Apr 29 16:35:12 2024]
+rule update_capacities:
+    input: resources/networks/3/cy1983_ty2025.nc, resources/capacity_tables/4.csv
+    output: resources/networks/4/cy1983_ty2025.nc
+    jobid: 151
+    reason: Missing output files: resources/networks/4/cy1983_ty2025.nc; Input files updated by another job: resources/networks/3/cy1983_ty2025.nc, resources/capacity_tables/4.csv
+    wildcards: iter=4, cy=1983, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 151 with external jobid 'Submitted batch job 677'.
+
+[Mon Apr 29 16:35:12 2024]
+rule update_capacities:
+    input: resources/networks/3/cy1983_ty2026.nc, resources/capacity_tables/4.csv
+    output: resources/networks/4/cy1983_ty2026.nc
+    jobid: 153
+    reason: Missing output files: resources/networks/4/cy1983_ty2026.nc; Input files updated by another job: resources/networks/3/cy1983_ty2026.nc, resources/capacity_tables/4.csv
+    wildcards: iter=4, cy=1983, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 153 with external jobid 'Submitted batch job 678'.
+
+[Mon Apr 29 16:35:12 2024]
+rule update_capacities:
+    input: resources/networks/3/cy1983_ty2027.nc, resources/capacity_tables/4.csv
+    output: resources/networks/4/cy1983_ty2027.nc
+    jobid: 155
+    reason: Missing output files: resources/networks/4/cy1983_ty2027.nc; Input files updated by another job: resources/capacity_tables/4.csv, resources/networks/3/cy1983_ty2027.nc
+    wildcards: iter=4, cy=1983, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 155 with external jobid 'Submitted batch job 679'.
+
+[Mon Apr 29 16:35:12 2024]
+rule update_capacities:
+    input: resources/networks/3/cy1984_ty2025.nc, resources/capacity_tables/4.csv
+    output: resources/networks/4/cy1984_ty2025.nc
+    jobid: 157
+    reason: Missing output files: resources/networks/4/cy1984_ty2025.nc; Input files updated by another job: resources/networks/3/cy1984_ty2025.nc, resources/capacity_tables/4.csv
+    wildcards: iter=4, cy=1984, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 157 with external jobid 'Submitted batch job 680'.
+
+[Mon Apr 29 16:35:12 2024]
+rule update_capacities:
+    input: resources/networks/3/cy1984_ty2026.nc, resources/capacity_tables/4.csv
+    output: resources/networks/4/cy1984_ty2026.nc
+    jobid: 159
+    reason: Missing output files: resources/networks/4/cy1984_ty2026.nc; Input files updated by another job: resources/capacity_tables/4.csv, resources/networks/3/cy1984_ty2026.nc
+    wildcards: iter=4, cy=1984, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 159 with external jobid 'Submitted batch job 681'.
+
+[Mon Apr 29 16:35:12 2024]
+rule update_capacities:
+    input: resources/networks/3/cy1984_ty2027.nc, resources/capacity_tables/4.csv
+    output: resources/networks/4/cy1984_ty2027.nc
+    jobid: 161
+    reason: Missing output files: resources/networks/4/cy1984_ty2027.nc; Input files updated by another job: resources/networks/3/cy1984_ty2027.nc, resources/capacity_tables/4.csv
+    wildcards: iter=4, cy=1984, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 161 with external jobid 'Submitted batch job 682'.
+
+[Mon Apr 29 16:35:12 2024]
+rule update_capacities:
+    input: resources/networks/3/cy1985_ty2025.nc, resources/capacity_tables/4.csv
+    output: resources/networks/4/cy1985_ty2025.nc
+    jobid: 163
+    reason: Missing output files: resources/networks/4/cy1985_ty2025.nc; Input files updated by another job: resources/networks/3/cy1985_ty2025.nc, resources/capacity_tables/4.csv
+    wildcards: iter=4, cy=1985, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 163 with external jobid 'Submitted batch job 683'.
+
+[Mon Apr 29 16:35:12 2024]
+rule update_capacities:
+    input: resources/networks/3/cy1982_ty2025.nc, resources/capacity_tables/4.csv
+    output: resources/networks/4/cy1982_ty2025.nc
+    jobid: 10
+    reason: Missing output files: resources/networks/4/cy1982_ty2025.nc; Input files updated by another job: resources/networks/3/cy1982_ty2025.nc, resources/capacity_tables/4.csv
+    wildcards: iter=4, cy=1982, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 10 with external jobid 'Submitted batch job 684'.
+
+[Mon Apr 29 16:35:12 2024]
+rule update_capacities:
+    input: resources/networks/3/cy1985_ty2026.nc, resources/capacity_tables/4.csv
+    output: resources/networks/4/cy1985_ty2026.nc
+    jobid: 165
+    reason: Missing output files: resources/networks/4/cy1985_ty2026.nc; Input files updated by another job: resources/networks/3/cy1985_ty2026.nc, resources/capacity_tables/4.csv
+    wildcards: iter=4, cy=1985, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 165 with external jobid 'Submitted batch job 685'.
+
+[Mon Apr 29 16:35:12 2024]
+rule update_capacities:
+    input: resources/networks/3/cy1985_ty2027.nc, resources/capacity_tables/4.csv
+    output: resources/networks/4/cy1985_ty2027.nc
+    jobid: 167
+    reason: Missing output files: resources/networks/4/cy1985_ty2027.nc; Input files updated by another job: resources/capacity_tables/4.csv, resources/networks/3/cy1985_ty2027.nc
+    wildcards: iter=4, cy=1985, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 167 with external jobid 'Submitted batch job 686'.
+
+[Mon Apr 29 16:35:12 2024]
+rule update_capacities:
+    input: resources/networks/3/cy1986_ty2025.nc, resources/capacity_tables/4.csv
+    output: resources/networks/4/cy1986_ty2025.nc
+    jobid: 169
+    reason: Missing output files: resources/networks/4/cy1986_ty2025.nc; Input files updated by another job: resources/networks/3/cy1986_ty2025.nc, resources/capacity_tables/4.csv
+    wildcards: iter=4, cy=1986, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 169 with external jobid 'Submitted batch job 687'.
+
+[Mon Apr 29 16:35:12 2024]
+rule update_capacities:
+    input: resources/networks/3/cy1986_ty2026.nc, resources/capacity_tables/4.csv
+    output: resources/networks/4/cy1986_ty2026.nc
+    jobid: 171
+    reason: Missing output files: resources/networks/4/cy1986_ty2026.nc; Input files updated by another job: resources/networks/3/cy1986_ty2026.nc, resources/capacity_tables/4.csv
+    wildcards: iter=4, cy=1986, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 171 with external jobid 'Submitted batch job 688'.
+
+[Mon Apr 29 16:35:12 2024]
+rule update_capacities:
+    input: resources/networks/3/cy1986_ty2027.nc, resources/capacity_tables/4.csv
+    output: resources/networks/4/cy1986_ty2027.nc
+    jobid: 173
+    reason: Missing output files: resources/networks/4/cy1986_ty2027.nc; Input files updated by another job: resources/networks/3/cy1986_ty2027.nc, resources/capacity_tables/4.csv
+    wildcards: iter=4, cy=1986, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 173 with external jobid 'Submitted batch job 689'.
+
+[Mon Apr 29 16:35:12 2024]
+rule update_capacities:
+    input: resources/networks/3/cy1982_ty2026.nc, resources/capacity_tables/4.csv
+    output: resources/networks/4/cy1982_ty2026.nc
+    jobid: 147
+    reason: Missing output files: resources/networks/4/cy1982_ty2026.nc; Input files updated by another job: resources/networks/3/cy1982_ty2026.nc, resources/capacity_tables/4.csv
+    wildcards: iter=4, cy=1982, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 147 with external jobid 'Submitted batch job 690'.
+
+[Mon Apr 29 16:35:12 2024]
+rule update_capacities:
+    input: resources/networks/3/cy1982_ty2027.nc, resources/capacity_tables/4.csv
+    output: resources/networks/4/cy1982_ty2027.nc
+    jobid: 149
+    reason: Missing output files: resources/networks/4/cy1982_ty2027.nc; Input files updated by another job: resources/capacity_tables/4.csv, resources/networks/3/cy1982_ty2027.nc
+    wildcards: iter=4, cy=1982, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 149 with external jobid 'Submitted batch job 691'.
+[Mon Apr 29 16:35:21 2024]
+Finished job 151.
+32 of 218 steps (15%) done
+Select jobs to execute...
+
+[Mon Apr 29 16:35:21 2024]
+rule solve_model:
+    input: resources/networks/4/cy1983_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/4/cy1983_ty2025.nc, results/revenues/4/cy1983_ty2025.nc
+    jobid: 150
+    reason: Missing output files: results/revenues/4/cy1983_ty2025.nc; Input files updated by another job: resources/networks/4/cy1983_ty2025.nc
+    wildcards: iter=4, cy=1983, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 150 with external jobid 'Submitted batch job 692'.
+[Mon Apr 29 16:35:22 2024]
+Finished job 153.
+33 of 218 steps (15%) done
+[Mon Apr 29 16:35:22 2024]
+Finished job 155.
+34 of 218 steps (16%) done
+[Mon Apr 29 16:35:22 2024]
+Finished job 157.
+35 of 218 steps (16%) done
+[Mon Apr 29 16:35:22 2024]
+Finished job 159.
+36 of 218 steps (17%) done
+[Mon Apr 29 16:35:22 2024]
+Finished job 161.
+37 of 218 steps (17%) done
+[Mon Apr 29 16:35:22 2024]
+Finished job 163.
+38 of 218 steps (17%) done
+[Mon Apr 29 16:35:22 2024]
+Finished job 10.
+39 of 218 steps (18%) done
+[Mon Apr 29 16:35:22 2024]
+Finished job 165.
+40 of 218 steps (18%) done
+[Mon Apr 29 16:35:22 2024]
+Finished job 167.
+41 of 218 steps (19%) done
+Select jobs to execute...
+
+[Mon Apr 29 16:35:22 2024]
+rule solve_model:
+    input: resources/networks/4/cy1985_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/4/cy1985_ty2027.nc, results/revenues/4/cy1985_ty2027.nc
+    jobid: 166
+    reason: Missing output files: results/revenues/4/cy1985_ty2027.nc; Input files updated by another job: resources/networks/4/cy1985_ty2027.nc
+    wildcards: iter=4, cy=1985, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 166 with external jobid 'Submitted batch job 693'.
+
+[Mon Apr 29 16:35:22 2024]
+rule solve_model:
+    input: resources/networks/4/cy1983_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/4/cy1983_ty2026.nc, results/revenues/4/cy1983_ty2026.nc
+    jobid: 152
+    reason: Missing output files: results/revenues/4/cy1983_ty2026.nc; Input files updated by another job: resources/networks/4/cy1983_ty2026.nc
+    wildcards: iter=4, cy=1983, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 152 with external jobid 'Submitted batch job 694'.
+
+[Mon Apr 29 16:35:22 2024]
+rule solve_model:
+    input: resources/networks/4/cy1983_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/4/cy1983_ty2027.nc, results/revenues/4/cy1983_ty2027.nc
+    jobid: 154
+    reason: Missing output files: results/revenues/4/cy1983_ty2027.nc; Input files updated by another job: resources/networks/4/cy1983_ty2027.nc
+    wildcards: iter=4, cy=1983, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 154 with external jobid 'Submitted batch job 695'.
+
+[Mon Apr 29 16:35:22 2024]
+rule solve_model:
+    input: resources/networks/4/cy1984_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/4/cy1984_ty2025.nc, results/revenues/4/cy1984_ty2025.nc
+    jobid: 156
+    reason: Missing output files: results/revenues/4/cy1984_ty2025.nc; Input files updated by another job: resources/networks/4/cy1984_ty2025.nc
+    wildcards: iter=4, cy=1984, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 156 with external jobid 'Submitted batch job 696'.
+
+[Mon Apr 29 16:35:22 2024]
+rule solve_model:
+    input: resources/networks/4/cy1984_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/4/cy1984_ty2026.nc, results/revenues/4/cy1984_ty2026.nc
+    jobid: 158
+    reason: Missing output files: results/revenues/4/cy1984_ty2026.nc; Input files updated by another job: resources/networks/4/cy1984_ty2026.nc
+    wildcards: iter=4, cy=1984, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 158 with external jobid 'Submitted batch job 697'.
+
+[Mon Apr 29 16:35:22 2024]
+rule solve_model:
+    input: resources/networks/4/cy1984_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/4/cy1984_ty2027.nc, results/revenues/4/cy1984_ty2027.nc
+    jobid: 160
+    reason: Missing output files: results/revenues/4/cy1984_ty2027.nc; Input files updated by another job: resources/networks/4/cy1984_ty2027.nc
+    wildcards: iter=4, cy=1984, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 160 with external jobid 'Submitted batch job 698'.
+
+[Mon Apr 29 16:35:22 2024]
+rule solve_model:
+    input: resources/networks/4/cy1982_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/4/cy1982_ty2025.nc, results/revenues/4/cy1982_ty2025.nc
+    jobid: 145
+    reason: Missing output files: results/revenues/4/cy1982_ty2025.nc; Input files updated by another job: resources/networks/4/cy1982_ty2025.nc
+    wildcards: iter=4, cy=1982, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 145 with external jobid 'Submitted batch job 699'.
+
+[Mon Apr 29 16:35:22 2024]
+rule solve_model:
+    input: resources/networks/4/cy1985_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/4/cy1985_ty2025.nc, results/revenues/4/cy1985_ty2025.nc
+    jobid: 162
+    reason: Missing output files: results/revenues/4/cy1985_ty2025.nc; Input files updated by another job: resources/networks/4/cy1985_ty2025.nc
+    wildcards: iter=4, cy=1985, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 162 with external jobid 'Submitted batch job 700'.
+
+[Mon Apr 29 16:35:22 2024]
+rule solve_model:
+    input: resources/networks/4/cy1985_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/4/cy1985_ty2026.nc, results/revenues/4/cy1985_ty2026.nc
+    jobid: 164
+    reason: Missing output files: results/revenues/4/cy1985_ty2026.nc; Input files updated by another job: resources/networks/4/cy1985_ty2026.nc
+    wildcards: iter=4, cy=1985, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 164 with external jobid 'Submitted batch job 701'.
+[Mon Apr 29 16:35:22 2024]
+Finished job 169.
+42 of 218 steps (19%) done
+Select jobs to execute...
+
+[Mon Apr 29 16:35:23 2024]
+rule solve_model:
+    input: resources/networks/4/cy1986_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/4/cy1986_ty2025.nc, results/revenues/4/cy1986_ty2025.nc
+    jobid: 168
+    reason: Missing output files: results/revenues/4/cy1986_ty2025.nc; Input files updated by another job: resources/networks/4/cy1986_ty2025.nc
+    wildcards: iter=4, cy=1986, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 168 with external jobid 'Submitted batch job 702'.
+[Mon Apr 29 16:35:23 2024]
+Finished job 171.
+43 of 218 steps (20%) done
+[Mon Apr 29 16:35:23 2024]
+Finished job 173.
+44 of 218 steps (20%) done
+[Mon Apr 29 16:35:23 2024]
+Finished job 147.
+45 of 218 steps (21%) done
+[Mon Apr 29 16:35:23 2024]
+Finished job 149.
+46 of 218 steps (21%) done
+Select jobs to execute...
+
+[Mon Apr 29 16:35:23 2024]
+rule solve_model:
+    input: resources/networks/4/cy1986_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/4/cy1986_ty2027.nc, results/revenues/4/cy1986_ty2027.nc
+    jobid: 172
+    reason: Missing output files: results/revenues/4/cy1986_ty2027.nc; Input files updated by another job: resources/networks/4/cy1986_ty2027.nc
+    wildcards: iter=4, cy=1986, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 172 with external jobid 'Submitted batch job 703'.
+
+[Mon Apr 29 16:35:23 2024]
+rule solve_model:
+    input: resources/networks/4/cy1982_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/4/cy1982_ty2026.nc, results/revenues/4/cy1982_ty2026.nc
+    jobid: 146
+    reason: Missing output files: results/revenues/4/cy1982_ty2026.nc; Input files updated by another job: resources/networks/4/cy1982_ty2026.nc
+    wildcards: iter=4, cy=1982, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 146 with external jobid 'Submitted batch job 704'.
+
+[Mon Apr 29 16:35:23 2024]
+rule solve_model:
+    input: resources/networks/4/cy1986_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/4/cy1986_ty2026.nc, results/revenues/4/cy1986_ty2026.nc
+    jobid: 170
+    reason: Missing output files: results/revenues/4/cy1986_ty2026.nc; Input files updated by another job: resources/networks/4/cy1986_ty2026.nc
+    wildcards: iter=4, cy=1986, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 170 with external jobid 'Submitted batch job 705'.
+
+[Mon Apr 29 16:35:23 2024]
+rule solve_model:
+    input: resources/networks/4/cy1982_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/4/cy1982_ty2027.nc, results/revenues/4/cy1982_ty2027.nc
+    jobid: 148
+    reason: Missing output files: results/revenues/4/cy1982_ty2027.nc; Input files updated by another job: resources/networks/4/cy1982_ty2027.nc
+    wildcards: iter=4, cy=1982, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 148 with external jobid 'Submitted batch job 706'.
+[Mon Apr 29 18:39:14 2024]
+Finished job 145.
+47 of 218 steps (22%) done
+[Mon Apr 29 18:40:43 2024]
+Finished job 164.
+48 of 218 steps (22%) done
+[Mon Apr 29 18:41:16 2024]
+Finished job 154.
+49 of 218 steps (22%) done
+[Mon Apr 29 18:41:27 2024]
+Finished job 150.
+50 of 218 steps (23%) done
+[Mon Apr 29 18:41:49 2024]
+Finished job 158.
+51 of 218 steps (23%) done
+[Mon Apr 29 18:42:20 2024]
+Finished job 152.
+52 of 218 steps (24%) done
+[Mon Apr 29 18:42:30 2024]
+Finished job 162.
+53 of 218 steps (24%) done
+[Mon Apr 29 18:42:40 2024]
+Finished job 166.
+54 of 218 steps (25%) done
+[Mon Apr 29 18:42:50 2024]
+Finished job 172.
+55 of 218 steps (25%) done
+[Mon Apr 29 18:42:50 2024]
+Finished job 170.
+56 of 218 steps (26%) done
+[Mon Apr 29 18:43:10 2024]
+Finished job 168.
+57 of 218 steps (26%) done
+[Mon Apr 29 18:43:40 2024]
+Finished job 160.
+58 of 218 steps (27%) done
+[Mon Apr 29 18:43:40 2024]
+Finished job 146.
+59 of 218 steps (27%) done
+[Mon Apr 29 18:44:00 2024]
+Finished job 156.
+60 of 218 steps (28%) done
+[Mon Apr 29 18:44:00 2024]
+Finished job 148.
+61 of 218 steps (28%) done
+Select jobs to execute...
+
+[Mon Apr 29 18:44:00 2024]
+rule capacity_adjustment:
+    input: resources/demand.h5, results/revenues/4/cy1982_ty2025.nc, results/revenues/4/cy1982_ty2026.nc, results/revenues/4/cy1982_ty2027.nc, results/revenues/4/cy1983_ty2025.nc, results/revenues/4/cy1983_ty2026.nc, results/revenues/4/cy1983_ty2027.nc, results/revenues/4/cy1984_ty2025.nc, results/revenues/4/cy1984_ty2026.nc, results/revenues/4/cy1984_ty2027.nc, results/revenues/4/cy1985_ty2025.nc, results/revenues/4/cy1985_ty2026.nc, results/revenues/4/cy1985_ty2027.nc, results/revenues/4/cy1986_ty2025.nc, results/revenues/4/cy1986_ty2026.nc, results/revenues/4/cy1986_ty2027.nc, resources/capacity_tables/4.csv, /trinity/home/thomgeo/technology-data/outputs/costs_2025.csv
+    output: resources/capacity_tables/5.csv
+    jobid: 144
+    reason: Missing output files: resources/capacity_tables/5.csv; Input files updated by another job: results/revenues/4/cy1984_ty2026.nc, results/revenues/4/cy1986_ty2027.nc, resources/capacity_tables/4.csv, results/revenues/4/cy1985_ty2026.nc, results/revenues/4/cy1984_ty2025.nc, results/revenues/4/cy1986_ty2026.nc, results/revenues/4/cy1982_ty2027.nc, results/revenues/4/cy1983_ty2025.nc, results/revenues/4/cy1985_ty2027.nc, results/revenues/4/cy1983_ty2026.nc, results/revenues/4/cy1982_ty2026.nc, results/revenues/4/cy1986_ty2025.nc, results/revenues/4/cy1985_ty2025.nc, results/revenues/4/cy1983_ty2027.nc, results/revenues/4/cy1982_ty2025.nc, results/revenues/4/cy1984_ty2027.nc
+    wildcards: iter=5
+    resources: mem_mb=1585, mem_mib=1512, disk_mb=1585, disk_mib=1512, tmpdir=<TBD>
+
+Submitted job 144 with external jobid 'Submitted batch job 707'.
+[Mon Apr 29 18:44:20 2024]
+Finished job 144.
+62 of 218 steps (28%) done
+Select jobs to execute...
+
+[Mon Apr 29 18:44:20 2024]
+rule update_capacities:
+    input: resources/networks/4/cy1983_ty2026.nc, resources/capacity_tables/5.csv
+    output: resources/networks/5/cy1983_ty2026.nc
+    jobid: 183
+    reason: Missing output files: resources/networks/5/cy1983_ty2026.nc; Input files updated by another job: resources/networks/4/cy1983_ty2026.nc, resources/capacity_tables/5.csv
+    wildcards: iter=5, cy=1983, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 183 with external jobid 'Submitted batch job 708'.
+
+[Mon Apr 29 18:44:20 2024]
+rule update_capacities:
+    input: resources/networks/4/cy1983_ty2027.nc, resources/capacity_tables/5.csv
+    output: resources/networks/5/cy1983_ty2027.nc
+    jobid: 185
+    reason: Missing output files: resources/networks/5/cy1983_ty2027.nc; Input files updated by another job: resources/capacity_tables/5.csv, resources/networks/4/cy1983_ty2027.nc
+    wildcards: iter=5, cy=1983, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 185 with external jobid 'Submitted batch job 709'.
+
+[Mon Apr 29 18:44:20 2024]
+rule update_capacities:
+    input: resources/networks/4/cy1984_ty2025.nc, resources/capacity_tables/5.csv
+    output: resources/networks/5/cy1984_ty2025.nc
+    jobid: 187
+    reason: Missing output files: resources/networks/5/cy1984_ty2025.nc; Input files updated by another job: resources/capacity_tables/5.csv, resources/networks/4/cy1984_ty2025.nc
+    wildcards: iter=5, cy=1984, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 187 with external jobid 'Submitted batch job 710'.
+
+[Mon Apr 29 18:44:20 2024]
+rule update_capacities:
+    input: resources/networks/4/cy1984_ty2026.nc, resources/capacity_tables/5.csv
+    output: resources/networks/5/cy1984_ty2026.nc
+    jobid: 189
+    reason: Missing output files: resources/networks/5/cy1984_ty2026.nc; Input files updated by another job: resources/capacity_tables/5.csv, resources/networks/4/cy1984_ty2026.nc
+    wildcards: iter=5, cy=1984, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 189 with external jobid 'Submitted batch job 711'.
+
+[Mon Apr 29 18:44:20 2024]
+rule update_capacities:
+    input: resources/networks/4/cy1982_ty2025.nc, resources/capacity_tables/5.csv
+    output: resources/networks/5/cy1982_ty2025.nc
+    jobid: 9
+    reason: Missing output files: resources/networks/5/cy1982_ty2025.nc; Input files updated by another job: resources/capacity_tables/5.csv, resources/networks/4/cy1982_ty2025.nc
+    wildcards: iter=5, cy=1982, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 9 with external jobid 'Submitted batch job 712'.
+
+[Mon Apr 29 18:44:20 2024]
+rule update_capacities:
+    input: resources/networks/4/cy1984_ty2027.nc, resources/capacity_tables/5.csv
+    output: resources/networks/5/cy1984_ty2027.nc
+    jobid: 191
+    reason: Missing output files: resources/networks/5/cy1984_ty2027.nc; Input files updated by another job: resources/capacity_tables/5.csv, resources/networks/4/cy1984_ty2027.nc
+    wildcards: iter=5, cy=1984, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 191 with external jobid 'Submitted batch job 713'.
+
+[Mon Apr 29 18:44:20 2024]
+rule update_capacities:
+    input: resources/networks/4/cy1985_ty2025.nc, resources/capacity_tables/5.csv
+    output: resources/networks/5/cy1985_ty2025.nc
+    jobid: 193
+    reason: Missing output files: resources/networks/5/cy1985_ty2025.nc; Input files updated by another job: resources/capacity_tables/5.csv, resources/networks/4/cy1985_ty2025.nc
+    wildcards: iter=5, cy=1985, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 193 with external jobid 'Submitted batch job 714'.
+
+[Mon Apr 29 18:44:20 2024]
+rule update_capacities:
+    input: resources/networks/4/cy1985_ty2026.nc, resources/capacity_tables/5.csv
+    output: resources/networks/5/cy1985_ty2026.nc
+    jobid: 195
+    reason: Missing output files: resources/networks/5/cy1985_ty2026.nc; Input files updated by another job: resources/capacity_tables/5.csv, resources/networks/4/cy1985_ty2026.nc
+    wildcards: iter=5, cy=1985, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 195 with external jobid 'Submitted batch job 715'.
+
+[Mon Apr 29 18:44:20 2024]
+rule update_capacities:
+    input: resources/networks/4/cy1985_ty2027.nc, resources/capacity_tables/5.csv
+    output: resources/networks/5/cy1985_ty2027.nc
+    jobid: 197
+    reason: Missing output files: resources/networks/5/cy1985_ty2027.nc; Input files updated by another job: resources/capacity_tables/5.csv, resources/networks/4/cy1985_ty2027.nc
+    wildcards: iter=5, cy=1985, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 197 with external jobid 'Submitted batch job 716'.
+
+[Mon Apr 29 18:44:20 2024]
+rule update_capacities:
+    input: resources/networks/4/cy1986_ty2025.nc, resources/capacity_tables/5.csv
+    output: resources/networks/5/cy1986_ty2025.nc
+    jobid: 199
+    reason: Missing output files: resources/networks/5/cy1986_ty2025.nc; Input files updated by another job: resources/networks/4/cy1986_ty2025.nc, resources/capacity_tables/5.csv
+    wildcards: iter=5, cy=1986, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 199 with external jobid 'Submitted batch job 717'.
+
+[Mon Apr 29 18:44:20 2024]
+rule update_capacities:
+    input: resources/networks/4/cy1986_ty2026.nc, resources/capacity_tables/5.csv
+    output: resources/networks/5/cy1986_ty2026.nc
+    jobid: 201
+    reason: Missing output files: resources/networks/5/cy1986_ty2026.nc; Input files updated by another job: resources/capacity_tables/5.csv, resources/networks/4/cy1986_ty2026.nc
+    wildcards: iter=5, cy=1986, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 201 with external jobid 'Submitted batch job 718'.
+
+[Mon Apr 29 18:44:20 2024]
+rule update_capacities:
+    input: resources/networks/4/cy1986_ty2027.nc, resources/capacity_tables/5.csv
+    output: resources/networks/5/cy1986_ty2027.nc
+    jobid: 203
+    reason: Missing output files: resources/networks/5/cy1986_ty2027.nc; Input files updated by another job: resources/capacity_tables/5.csv, resources/networks/4/cy1986_ty2027.nc
+    wildcards: iter=5, cy=1986, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 203 with external jobid 'Submitted batch job 719'.
+
+[Mon Apr 29 18:44:20 2024]
+rule update_capacities:
+    input: resources/networks/4/cy1982_ty2026.nc, resources/capacity_tables/5.csv
+    output: resources/networks/5/cy1982_ty2026.nc
+    jobid: 177
+    reason: Missing output files: resources/networks/5/cy1982_ty2026.nc; Input files updated by another job: resources/capacity_tables/5.csv, resources/networks/4/cy1982_ty2026.nc
+    wildcards: iter=5, cy=1982, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 177 with external jobid 'Submitted batch job 720'.
+
+[Mon Apr 29 18:44:20 2024]
+rule update_capacities:
+    input: resources/networks/4/cy1982_ty2027.nc, resources/capacity_tables/5.csv
+    output: resources/networks/5/cy1982_ty2027.nc
+    jobid: 179
+    reason: Missing output files: resources/networks/5/cy1982_ty2027.nc; Input files updated by another job: resources/capacity_tables/5.csv, resources/networks/4/cy1982_ty2027.nc
+    wildcards: iter=5, cy=1982, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 179 with external jobid 'Submitted batch job 721'.
+
+[Mon Apr 29 18:44:20 2024]
+rule update_capacities:
+    input: resources/networks/4/cy1983_ty2025.nc, resources/capacity_tables/5.csv
+    output: resources/networks/5/cy1983_ty2025.nc
+    jobid: 181
+    reason: Missing output files: resources/networks/5/cy1983_ty2025.nc; Input files updated by another job: resources/capacity_tables/5.csv, resources/networks/4/cy1983_ty2025.nc
+    wildcards: iter=5, cy=1983, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 181 with external jobid 'Submitted batch job 722'.
+[Mon Apr 29 18:44:30 2024]
+Finished job 183.
+63 of 218 steps (29%) done
+Select jobs to execute...
+
+[Mon Apr 29 18:44:30 2024]
+rule solve_model:
+    input: resources/networks/5/cy1983_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/5/cy1983_ty2026.nc, results/revenues/5/cy1983_ty2026.nc
+    jobid: 182
+    reason: Missing output files: results/revenues/5/cy1983_ty2026.nc; Input files updated by another job: resources/networks/5/cy1983_ty2026.nc
+    wildcards: iter=5, cy=1983, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 182 with external jobid 'Submitted batch job 723'.
+[Mon Apr 29 18:44:30 2024]
+Finished job 185.
+64 of 218 steps (29%) done
+[Mon Apr 29 18:44:30 2024]
+Finished job 187.
+65 of 218 steps (30%) done
+[Mon Apr 29 18:44:30 2024]
+Finished job 189.
+66 of 218 steps (30%) done
+[Mon Apr 29 18:44:30 2024]
+Finished job 9.
+67 of 218 steps (31%) done
+[Mon Apr 29 18:44:30 2024]
+Finished job 191.
+68 of 218 steps (31%) done
+[Mon Apr 29 18:44:30 2024]
+Finished job 193.
+69 of 218 steps (32%) done
+[Mon Apr 29 18:44:30 2024]
+Finished job 195.
+70 of 218 steps (32%) done
+[Mon Apr 29 18:44:30 2024]
+Finished job 197.
+71 of 218 steps (33%) done
+[Mon Apr 29 18:44:30 2024]
+Finished job 199.
+72 of 218 steps (33%) done
+Select jobs to execute...
+
+[Mon Apr 29 18:44:30 2024]
+rule solve_model:
+    input: resources/networks/5/cy1986_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/5/cy1986_ty2025.nc, results/revenues/5/cy1986_ty2025.nc
+    jobid: 198
+    reason: Missing output files: results/revenues/5/cy1986_ty2025.nc; Input files updated by another job: resources/networks/5/cy1986_ty2025.nc
+    wildcards: iter=5, cy=1986, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 198 with external jobid 'Submitted batch job 724'.
+
+[Mon Apr 29 18:44:30 2024]
+rule solve_model:
+    input: resources/networks/5/cy1983_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/5/cy1983_ty2027.nc, results/revenues/5/cy1983_ty2027.nc
+    jobid: 184
+    reason: Missing output files: results/revenues/5/cy1983_ty2027.nc; Input files updated by another job: resources/networks/5/cy1983_ty2027.nc
+    wildcards: iter=5, cy=1983, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 184 with external jobid 'Submitted batch job 725'.
+
+[Mon Apr 29 18:44:30 2024]
+rule solve_model:
+    input: resources/networks/5/cy1984_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/5/cy1984_ty2025.nc, results/revenues/5/cy1984_ty2025.nc
+    jobid: 186
+    reason: Missing output files: results/revenues/5/cy1984_ty2025.nc; Input files updated by another job: resources/networks/5/cy1984_ty2025.nc
+    wildcards: iter=5, cy=1984, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 186 with external jobid 'Submitted batch job 726'.
+
+[Mon Apr 29 18:44:30 2024]
+rule solve_model:
+    input: resources/networks/5/cy1984_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/5/cy1984_ty2026.nc, results/revenues/5/cy1984_ty2026.nc
+    jobid: 188
+    reason: Missing output files: results/revenues/5/cy1984_ty2026.nc; Input files updated by another job: resources/networks/5/cy1984_ty2026.nc
+    wildcards: iter=5, cy=1984, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 188 with external jobid 'Submitted batch job 727'.
+
+[Mon Apr 29 18:44:30 2024]
+rule solve_model:
+    input: resources/networks/5/cy1984_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/5/cy1984_ty2027.nc, results/revenues/5/cy1984_ty2027.nc
+    jobid: 190
+    reason: Missing output files: results/revenues/5/cy1984_ty2027.nc; Input files updated by another job: resources/networks/5/cy1984_ty2027.nc
+    wildcards: iter=5, cy=1984, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 190 with external jobid 'Submitted batch job 728'.
+
+[Mon Apr 29 18:44:30 2024]
+rule solve_model:
+    input: resources/networks/5/cy1982_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/5/cy1982_ty2025.nc, results/revenues/5/cy1982_ty2025.nc
+    jobid: 175
+    reason: Missing output files: results/revenues/5/cy1982_ty2025.nc; Input files updated by another job: resources/networks/5/cy1982_ty2025.nc
+    wildcards: iter=5, cy=1982, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 175 with external jobid 'Submitted batch job 729'.
+
+[Mon Apr 29 18:44:30 2024]
+rule solve_model:
+    input: resources/networks/5/cy1985_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/5/cy1985_ty2025.nc, results/revenues/5/cy1985_ty2025.nc
+    jobid: 192
+    reason: Missing output files: results/revenues/5/cy1985_ty2025.nc; Input files updated by another job: resources/networks/5/cy1985_ty2025.nc
+    wildcards: iter=5, cy=1985, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 192 with external jobid 'Submitted batch job 730'.
+
+[Mon Apr 29 18:44:30 2024]
+rule solve_model:
+    input: resources/networks/5/cy1985_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/5/cy1985_ty2026.nc, results/revenues/5/cy1985_ty2026.nc
+    jobid: 194
+    reason: Missing output files: results/revenues/5/cy1985_ty2026.nc; Input files updated by another job: resources/networks/5/cy1985_ty2026.nc
+    wildcards: iter=5, cy=1985, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 194 with external jobid 'Submitted batch job 731'.
+
+[Mon Apr 29 18:44:30 2024]
+rule solve_model:
+    input: resources/networks/5/cy1985_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/5/cy1985_ty2027.nc, results/revenues/5/cy1985_ty2027.nc
+    jobid: 196
+    reason: Missing output files: results/revenues/5/cy1985_ty2027.nc; Input files updated by another job: resources/networks/5/cy1985_ty2027.nc
+    wildcards: iter=5, cy=1985, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 196 with external jobid 'Submitted batch job 732'.
+[Mon Apr 29 18:44:31 2024]
+Finished job 201.
+73 of 218 steps (33%) done
+Select jobs to execute...
+
+[Mon Apr 29 18:44:31 2024]
+rule solve_model:
+    input: resources/networks/5/cy1986_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/5/cy1986_ty2026.nc, results/revenues/5/cy1986_ty2026.nc
+    jobid: 200
+    reason: Missing output files: results/revenues/5/cy1986_ty2026.nc; Input files updated by another job: resources/networks/5/cy1986_ty2026.nc
+    wildcards: iter=5, cy=1986, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 200 with external jobid 'Submitted batch job 733'.
+[Mon Apr 29 18:44:31 2024]
+Finished job 203.
+74 of 218 steps (34%) done
+[Mon Apr 29 18:44:31 2024]
+Finished job 177.
+75 of 218 steps (34%) done
+[Mon Apr 29 18:44:31 2024]
+Finished job 179.
+76 of 218 steps (35%) done
+[Mon Apr 29 18:44:31 2024]
+Finished job 181.
+77 of 218 steps (35%) done
+Select jobs to execute...
+
+[Mon Apr 29 18:44:31 2024]
+rule solve_model:
+    input: resources/networks/5/cy1986_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/5/cy1986_ty2027.nc, results/revenues/5/cy1986_ty2027.nc
+    jobid: 202
+    reason: Missing output files: results/revenues/5/cy1986_ty2027.nc; Input files updated by another job: resources/networks/5/cy1986_ty2027.nc
+    wildcards: iter=5, cy=1986, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 202 with external jobid 'Submitted batch job 734'.
+
+[Mon Apr 29 18:44:31 2024]
+rule solve_model:
+    input: resources/networks/5/cy1982_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/5/cy1982_ty2026.nc, results/revenues/5/cy1982_ty2026.nc
+    jobid: 176
+    reason: Missing output files: results/revenues/5/cy1982_ty2026.nc; Input files updated by another job: resources/networks/5/cy1982_ty2026.nc
+    wildcards: iter=5, cy=1982, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 176 with external jobid 'Submitted batch job 735'.
+
+[Mon Apr 29 18:44:31 2024]
+rule solve_model:
+    input: resources/networks/5/cy1982_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/5/cy1982_ty2027.nc, results/revenues/5/cy1982_ty2027.nc
+    jobid: 178
+    reason: Missing output files: results/revenues/5/cy1982_ty2027.nc; Input files updated by another job: resources/networks/5/cy1982_ty2027.nc
+    wildcards: iter=5, cy=1982, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 178 with external jobid 'Submitted batch job 736'.
+
+[Mon Apr 29 18:44:31 2024]
+rule solve_model:
+    input: resources/networks/5/cy1983_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/5/cy1983_ty2025.nc, results/revenues/5/cy1983_ty2025.nc
+    jobid: 180
+    reason: Missing output files: results/revenues/5/cy1983_ty2025.nc; Input files updated by another job: resources/networks/5/cy1983_ty2025.nc
+    wildcards: iter=5, cy=1983, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 180 with external jobid 'Submitted batch job 737'.
+[Mon Apr 29 20:48:56 2024]
+Finished job 188.
+78 of 218 steps (36%) done
+[Mon Apr 29 20:50:46 2024]
+Finished job 182.
+79 of 218 steps (36%) done
+[Mon Apr 29 20:50:47 2024]
+Finished job 202.
+80 of 218 steps (37%) done
+[Mon Apr 29 20:50:57 2024]
+Finished job 184.
+81 of 218 steps (37%) done
+[Mon Apr 29 20:50:57 2024]
+Finished job 196.
+82 of 218 steps (38%) done
+[Mon Apr 29 20:51:08 2024]
+Finished job 194.
+83 of 218 steps (38%) done
+[Mon Apr 29 20:51:18 2024]
+Finished job 175.
+84 of 218 steps (39%) done
+[Mon Apr 29 20:51:38 2024]
+Finished job 200.
+85 of 218 steps (39%) done
+[Mon Apr 29 20:51:58 2024]
+Finished job 176.
+86 of 218 steps (39%) done
+[Mon Apr 29 20:51:58 2024]
+Finished job 178.
+87 of 218 steps (40%) done
+[Mon Apr 29 20:52:18 2024]
+Finished job 180.
+88 of 218 steps (40%) done
+[Mon Apr 29 20:52:28 2024]
+Finished job 190.
+89 of 218 steps (41%) done
+[Mon Apr 29 20:52:38 2024]
+Finished job 192.
+90 of 218 steps (41%) done
+[Mon Apr 29 20:53:08 2024]
+Finished job 198.
+91 of 218 steps (42%) done
+[Mon Apr 29 20:53:28 2024]
+Finished job 186.
+92 of 218 steps (42%) done
+Select jobs to execute...
+
+[Mon Apr 29 20:53:28 2024]
+rule capacity_adjustment:
+    input: resources/demand.h5, results/revenues/5/cy1982_ty2025.nc, results/revenues/5/cy1982_ty2026.nc, results/revenues/5/cy1982_ty2027.nc, results/revenues/5/cy1983_ty2025.nc, results/revenues/5/cy1983_ty2026.nc, results/revenues/5/cy1983_ty2027.nc, results/revenues/5/cy1984_ty2025.nc, results/revenues/5/cy1984_ty2026.nc, results/revenues/5/cy1984_ty2027.nc, results/revenues/5/cy1985_ty2025.nc, results/revenues/5/cy1985_ty2026.nc, results/revenues/5/cy1985_ty2027.nc, results/revenues/5/cy1986_ty2025.nc, results/revenues/5/cy1986_ty2026.nc, results/revenues/5/cy1986_ty2027.nc, resources/capacity_tables/5.csv, /trinity/home/thomgeo/technology-data/outputs/costs_2025.csv
+    output: resources/capacity_tables/6.csv
+    jobid: 174
+    reason: Missing output files: resources/capacity_tables/6.csv; Input files updated by another job: results/revenues/5/cy1986_ty2027.nc, results/revenues/5/cy1984_ty2025.nc, results/revenues/5/cy1984_ty2026.nc, results/revenues/5/cy1982_ty2026.nc, results/revenues/5/cy1986_ty2025.nc, results/revenues/5/cy1985_ty2026.nc, results/revenues/5/cy1982_ty2027.nc, results/revenues/5/cy1985_ty2025.nc, results/revenues/5/cy1985_ty2027.nc, results/revenues/5/cy1986_ty2026.nc, resources/capacity_tables/5.csv, results/revenues/5/cy1984_ty2027.nc, results/revenues/5/cy1983_ty2026.nc, results/revenues/5/cy1982_ty2025.nc, results/revenues/5/cy1983_ty2025.nc, results/revenues/5/cy1983_ty2027.nc
+    wildcards: iter=6
+    resources: mem_mb=1585, mem_mib=1512, disk_mb=1585, disk_mib=1512, tmpdir=<TBD>
+
+Submitted job 174 with external jobid 'Submitted batch job 738'.
+[Mon Apr 29 20:53:48 2024]
+Finished job 174.
+93 of 218 steps (43%) done
+Select jobs to execute...
+
+[Mon Apr 29 20:53:48 2024]
+rule update_capacities:
+    input: resources/networks/5/cy1983_ty2025.nc, resources/capacity_tables/6.csv
+    output: resources/networks/6/cy1983_ty2025.nc
+    jobid: 211
+    reason: Missing output files: resources/networks/6/cy1983_ty2025.nc; Input files updated by another job: resources/capacity_tables/6.csv, resources/networks/5/cy1983_ty2025.nc
+    wildcards: iter=6, cy=1983, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 211 with external jobid 'Submitted batch job 739'.
+
+[Mon Apr 29 20:53:48 2024]
+rule update_capacities:
+    input: resources/networks/5/cy1983_ty2026.nc, resources/capacity_tables/6.csv
+    output: resources/networks/6/cy1983_ty2026.nc
+    jobid: 213
+    reason: Missing output files: resources/networks/6/cy1983_ty2026.nc; Input files updated by another job: resources/capacity_tables/6.csv, resources/networks/5/cy1983_ty2026.nc
+    wildcards: iter=6, cy=1983, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 213 with external jobid 'Submitted batch job 740'.
+
+[Mon Apr 29 20:53:48 2024]
+rule update_capacities:
+    input: resources/networks/5/cy1983_ty2027.nc, resources/capacity_tables/6.csv
+    output: resources/networks/6/cy1983_ty2027.nc
+    jobid: 215
+    reason: Missing output files: resources/networks/6/cy1983_ty2027.nc; Input files updated by another job: resources/capacity_tables/6.csv, resources/networks/5/cy1983_ty2027.nc
+    wildcards: iter=6, cy=1983, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 215 with external jobid 'Submitted batch job 741'.
+
+[Mon Apr 29 20:53:48 2024]
+rule update_capacities:
+    input: resources/networks/5/cy1984_ty2025.nc, resources/capacity_tables/6.csv
+    output: resources/networks/6/cy1984_ty2025.nc
+    jobid: 217
+    reason: Missing output files: resources/networks/6/cy1984_ty2025.nc; Input files updated by another job: resources/capacity_tables/6.csv, resources/networks/5/cy1984_ty2025.nc
+    wildcards: iter=6, cy=1984, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 217 with external jobid 'Submitted batch job 742'.
+
+[Mon Apr 29 20:53:48 2024]
+rule update_capacities:
+    input: resources/networks/5/cy1984_ty2026.nc, resources/capacity_tables/6.csv
+    output: resources/networks/6/cy1984_ty2026.nc
+    jobid: 219
+    reason: Missing output files: resources/networks/6/cy1984_ty2026.nc; Input files updated by another job: resources/capacity_tables/6.csv, resources/networks/5/cy1984_ty2026.nc
+    wildcards: iter=6, cy=1984, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 219 with external jobid 'Submitted batch job 743'.
+
+[Mon Apr 29 20:53:48 2024]
+rule update_capacities:
+    input: resources/networks/5/cy1984_ty2027.nc, resources/capacity_tables/6.csv
+    output: resources/networks/6/cy1984_ty2027.nc
+    jobid: 221
+    reason: Missing output files: resources/networks/6/cy1984_ty2027.nc; Input files updated by another job: resources/capacity_tables/6.csv, resources/networks/5/cy1984_ty2027.nc
+    wildcards: iter=6, cy=1984, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 221 with external jobid 'Submitted batch job 744'.
+
+[Mon Apr 29 20:53:48 2024]
+rule update_capacities:
+    input: resources/networks/5/cy1982_ty2025.nc, resources/capacity_tables/6.csv
+    output: resources/networks/6/cy1982_ty2025.nc
+    jobid: 8
+    reason: Missing output files: resources/networks/6/cy1982_ty2025.nc; Input files updated by another job: resources/capacity_tables/6.csv, resources/networks/5/cy1982_ty2025.nc
+    wildcards: iter=6, cy=1982, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 8 with external jobid 'Submitted batch job 745'.
+
+[Mon Apr 29 20:53:48 2024]
+rule update_capacities:
+    input: resources/networks/5/cy1985_ty2025.nc, resources/capacity_tables/6.csv
+    output: resources/networks/6/cy1985_ty2025.nc
+    jobid: 223
+    reason: Missing output files: resources/networks/6/cy1985_ty2025.nc; Input files updated by another job: resources/capacity_tables/6.csv, resources/networks/5/cy1985_ty2025.nc
+    wildcards: iter=6, cy=1985, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 223 with external jobid 'Submitted batch job 746'.
+
+[Mon Apr 29 20:53:48 2024]
+rule update_capacities:
+    input: resources/networks/5/cy1985_ty2026.nc, resources/capacity_tables/6.csv
+    output: resources/networks/6/cy1985_ty2026.nc
+    jobid: 225
+    reason: Missing output files: resources/networks/6/cy1985_ty2026.nc; Input files updated by another job: resources/capacity_tables/6.csv, resources/networks/5/cy1985_ty2026.nc
+    wildcards: iter=6, cy=1985, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 225 with external jobid 'Submitted batch job 747'.
+
+[Mon Apr 29 20:53:48 2024]
+rule update_capacities:
+    input: resources/networks/5/cy1985_ty2027.nc, resources/capacity_tables/6.csv
+    output: resources/networks/6/cy1985_ty2027.nc
+    jobid: 227
+    reason: Missing output files: resources/networks/6/cy1985_ty2027.nc; Input files updated by another job: resources/capacity_tables/6.csv, resources/networks/5/cy1985_ty2027.nc
+    wildcards: iter=6, cy=1985, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 227 with external jobid 'Submitted batch job 748'.
+
+[Mon Apr 29 20:53:48 2024]
+rule update_capacities:
+    input: resources/networks/5/cy1986_ty2025.nc, resources/capacity_tables/6.csv
+    output: resources/networks/6/cy1986_ty2025.nc
+    jobid: 229
+    reason: Missing output files: resources/networks/6/cy1986_ty2025.nc; Input files updated by another job: resources/capacity_tables/6.csv, resources/networks/5/cy1986_ty2025.nc
+    wildcards: iter=6, cy=1986, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 229 with external jobid 'Submitted batch job 749'.
+
+[Mon Apr 29 20:53:48 2024]
+rule update_capacities:
+    input: resources/networks/5/cy1986_ty2026.nc, resources/capacity_tables/6.csv
+    output: resources/networks/6/cy1986_ty2026.nc
+    jobid: 231
+    reason: Missing output files: resources/networks/6/cy1986_ty2026.nc; Input files updated by another job: resources/capacity_tables/6.csv, resources/networks/5/cy1986_ty2026.nc
+    wildcards: iter=6, cy=1986, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 231 with external jobid 'Submitted batch job 750'.
+
+[Mon Apr 29 20:53:48 2024]
+rule update_capacities:
+    input: resources/networks/5/cy1986_ty2027.nc, resources/capacity_tables/6.csv
+    output: resources/networks/6/cy1986_ty2027.nc
+    jobid: 233
+    reason: Missing output files: resources/networks/6/cy1986_ty2027.nc; Input files updated by another job: resources/capacity_tables/6.csv, resources/networks/5/cy1986_ty2027.nc
+    wildcards: iter=6, cy=1986, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 233 with external jobid 'Submitted batch job 751'.
+
+[Mon Apr 29 20:53:48 2024]
+rule update_capacities:
+    input: resources/networks/5/cy1982_ty2026.nc, resources/capacity_tables/6.csv
+    output: resources/networks/6/cy1982_ty2026.nc
+    jobid: 207
+    reason: Missing output files: resources/networks/6/cy1982_ty2026.nc; Input files updated by another job: resources/capacity_tables/6.csv, resources/networks/5/cy1982_ty2026.nc
+    wildcards: iter=6, cy=1982, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 207 with external jobid 'Submitted batch job 752'.
+
+[Mon Apr 29 20:53:48 2024]
+rule update_capacities:
+    input: resources/networks/5/cy1982_ty2027.nc, resources/capacity_tables/6.csv
+    output: resources/networks/6/cy1982_ty2027.nc
+    jobid: 209
+    reason: Missing output files: resources/networks/6/cy1982_ty2027.nc; Input files updated by another job: resources/capacity_tables/6.csv, resources/networks/5/cy1982_ty2027.nc
+    wildcards: iter=6, cy=1982, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 209 with external jobid 'Submitted batch job 753'.
+[Mon Apr 29 20:53:58 2024]
+Finished job 211.
+94 of 218 steps (43%) done
+Select jobs to execute...
+
+[Mon Apr 29 20:53:58 2024]
+rule solve_model:
+    input: resources/networks/6/cy1983_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/6/cy1983_ty2025.nc, results/revenues/6/cy1983_ty2025.nc
+    jobid: 210
+    reason: Missing output files: results/revenues/6/cy1983_ty2025.nc; Input files updated by another job: resources/networks/6/cy1983_ty2025.nc
+    wildcards: iter=6, cy=1983, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 210 with external jobid 'Submitted batch job 754'.
+[Mon Apr 29 20:53:58 2024]
+Finished job 213.
+95 of 218 steps (44%) done
+[Mon Apr 29 20:53:58 2024]
+Finished job 215.
+96 of 218 steps (44%) done
+[Mon Apr 29 20:53:58 2024]
+Finished job 217.
+97 of 218 steps (44%) done
+[Mon Apr 29 20:53:58 2024]
+Finished job 219.
+98 of 218 steps (45%) done
+[Mon Apr 29 20:53:58 2024]
+Finished job 221.
+99 of 218 steps (45%) done
+[Mon Apr 29 20:53:58 2024]
+Finished job 8.
+100 of 218 steps (46%) done
+[Mon Apr 29 20:53:58 2024]
+Finished job 223.
+101 of 218 steps (46%) done
+[Mon Apr 29 20:53:58 2024]
+Finished job 225.
+102 of 218 steps (47%) done
+[Mon Apr 29 20:53:58 2024]
+Finished job 227.
+103 of 218 steps (47%) done
+Select jobs to execute...
+
+[Mon Apr 29 20:53:58 2024]
+rule solve_model:
+    input: resources/networks/6/cy1985_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/6/cy1985_ty2027.nc, results/revenues/6/cy1985_ty2027.nc
+    jobid: 226
+    reason: Missing output files: results/revenues/6/cy1985_ty2027.nc; Input files updated by another job: resources/networks/6/cy1985_ty2027.nc
+    wildcards: iter=6, cy=1985, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 226 with external jobid 'Submitted batch job 755'.
+
+[Mon Apr 29 20:53:58 2024]
+rule solve_model:
+    input: resources/networks/6/cy1983_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/6/cy1983_ty2026.nc, results/revenues/6/cy1983_ty2026.nc
+    jobid: 212
+    reason: Missing output files: results/revenues/6/cy1983_ty2026.nc; Input files updated by another job: resources/networks/6/cy1983_ty2026.nc
+    wildcards: iter=6, cy=1983, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 212 with external jobid 'Submitted batch job 756'.
+
+[Mon Apr 29 20:53:58 2024]
+rule solve_model:
+    input: resources/networks/6/cy1983_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/6/cy1983_ty2027.nc, results/revenues/6/cy1983_ty2027.nc
+    jobid: 214
+    reason: Missing output files: results/revenues/6/cy1983_ty2027.nc; Input files updated by another job: resources/networks/6/cy1983_ty2027.nc
+    wildcards: iter=6, cy=1983, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 214 with external jobid 'Submitted batch job 757'.
+
+[Mon Apr 29 20:53:58 2024]
+rule solve_model:
+    input: resources/networks/6/cy1984_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/6/cy1984_ty2025.nc, results/revenues/6/cy1984_ty2025.nc
+    jobid: 216
+    reason: Missing output files: results/revenues/6/cy1984_ty2025.nc; Input files updated by another job: resources/networks/6/cy1984_ty2025.nc
+    wildcards: iter=6, cy=1984, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 216 with external jobid 'Submitted batch job 758'.
+
+[Mon Apr 29 20:53:58 2024]
+rule solve_model:
+    input: resources/networks/6/cy1984_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/6/cy1984_ty2026.nc, results/revenues/6/cy1984_ty2026.nc
+    jobid: 218
+    reason: Missing output files: results/revenues/6/cy1984_ty2026.nc; Input files updated by another job: resources/networks/6/cy1984_ty2026.nc
+    wildcards: iter=6, cy=1984, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 218 with external jobid 'Submitted batch job 759'.
+
+[Mon Apr 29 20:53:58 2024]
+rule solve_model:
+    input: resources/networks/6/cy1984_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/6/cy1984_ty2027.nc, results/revenues/6/cy1984_ty2027.nc
+    jobid: 220
+    reason: Missing output files: results/revenues/6/cy1984_ty2027.nc; Input files updated by another job: resources/networks/6/cy1984_ty2027.nc
+    wildcards: iter=6, cy=1984, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 220 with external jobid 'Submitted batch job 760'.
+
+[Mon Apr 29 20:53:58 2024]
+rule solve_model:
+    input: resources/networks/6/cy1982_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/6/cy1982_ty2025.nc, results/revenues/6/cy1982_ty2025.nc
+    jobid: 205
+    reason: Missing output files: results/revenues/6/cy1982_ty2025.nc; Input files updated by another job: resources/networks/6/cy1982_ty2025.nc
+    wildcards: iter=6, cy=1982, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 205 with external jobid 'Submitted batch job 761'.
+
+[Mon Apr 29 20:53:58 2024]
+rule solve_model:
+    input: resources/networks/6/cy1985_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/6/cy1985_ty2025.nc, results/revenues/6/cy1985_ty2025.nc
+    jobid: 222
+    reason: Missing output files: results/revenues/6/cy1985_ty2025.nc; Input files updated by another job: resources/networks/6/cy1985_ty2025.nc
+    wildcards: iter=6, cy=1985, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 222 with external jobid 'Submitted batch job 762'.
+
+[Mon Apr 29 20:53:58 2024]
+rule solve_model:
+    input: resources/networks/6/cy1985_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/6/cy1985_ty2026.nc, results/revenues/6/cy1985_ty2026.nc
+    jobid: 224
+    reason: Missing output files: results/revenues/6/cy1985_ty2026.nc; Input files updated by another job: resources/networks/6/cy1985_ty2026.nc
+    wildcards: iter=6, cy=1985, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 224 with external jobid 'Submitted batch job 763'.
+[Mon Apr 29 20:53:59 2024]
+Finished job 229.
+104 of 218 steps (48%) done
+Select jobs to execute...
+
+[Mon Apr 29 20:53:59 2024]
+rule solve_model:
+    input: resources/networks/6/cy1986_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/6/cy1986_ty2025.nc, results/revenues/6/cy1986_ty2025.nc
+    jobid: 228
+    reason: Missing output files: results/revenues/6/cy1986_ty2025.nc; Input files updated by another job: resources/networks/6/cy1986_ty2025.nc
+    wildcards: iter=6, cy=1986, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 228 with external jobid 'Submitted batch job 764'.
+[Mon Apr 29 20:53:59 2024]
+Finished job 231.
+105 of 218 steps (48%) done
+[Mon Apr 29 20:53:59 2024]
+Finished job 233.
+106 of 218 steps (49%) done
+[Mon Apr 29 20:53:59 2024]
+Finished job 207.
+107 of 218 steps (49%) done
+[Mon Apr 29 20:53:59 2024]
+Finished job 209.
+108 of 218 steps (50%) done
+Select jobs to execute...
+
+[Mon Apr 29 20:53:59 2024]
+rule solve_model:
+    input: resources/networks/6/cy1986_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/6/cy1986_ty2027.nc, results/revenues/6/cy1986_ty2027.nc
+    jobid: 232
+    reason: Missing output files: results/revenues/6/cy1986_ty2027.nc; Input files updated by another job: resources/networks/6/cy1986_ty2027.nc
+    wildcards: iter=6, cy=1986, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 232 with external jobid 'Submitted batch job 765'.
+
+[Mon Apr 29 20:53:59 2024]
+rule solve_model:
+    input: resources/networks/6/cy1986_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/6/cy1986_ty2026.nc, results/revenues/6/cy1986_ty2026.nc
+    jobid: 230
+    reason: Missing output files: results/revenues/6/cy1986_ty2026.nc; Input files updated by another job: resources/networks/6/cy1986_ty2026.nc
+    wildcards: iter=6, cy=1986, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 230 with external jobid 'Submitted batch job 766'.
+
+[Mon Apr 29 20:53:59 2024]
+rule solve_model:
+    input: resources/networks/6/cy1982_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/6/cy1982_ty2026.nc, results/revenues/6/cy1982_ty2026.nc
+    jobid: 206
+    reason: Missing output files: results/revenues/6/cy1982_ty2026.nc; Input files updated by another job: resources/networks/6/cy1982_ty2026.nc
+    wildcards: iter=6, cy=1982, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 206 with external jobid 'Submitted batch job 767'.
+
+[Mon Apr 29 20:53:59 2024]
+rule solve_model:
+    input: resources/networks/6/cy1982_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/6/cy1982_ty2027.nc, results/revenues/6/cy1982_ty2027.nc
+    jobid: 208
+    reason: Missing output files: results/revenues/6/cy1982_ty2027.nc; Input files updated by another job: resources/networks/6/cy1982_ty2027.nc
+    wildcards: iter=6, cy=1982, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 208 with external jobid 'Submitted batch job 768'.
+[Mon Apr 29 22:57:51 2024]
+Finished job 218.
+109 of 218 steps (50%) done
+[Mon Apr 29 22:58:02 2024]
+Finished job 214.
+110 of 218 steps (50%) done
+[Mon Apr 29 23:00:25 2024]
+Finished job 205.
+111 of 218 steps (51%) done
+[Mon Apr 29 23:00:25 2024]
+Finished job 222.
+112 of 218 steps (51%) done
+[Mon Apr 29 23:00:58 2024]
+Finished job 226.
+113 of 218 steps (52%) done
+[Mon Apr 29 23:01:19 2024]
+Finished job 206.
+114 of 218 steps (52%) done
+[Mon Apr 29 23:01:29 2024]
+Finished job 228.
+115 of 218 steps (53%) done
+[Mon Apr 29 23:01:39 2024]
+Finished job 232.
+116 of 218 steps (53%) done
+[Mon Apr 29 23:01:49 2024]
+Finished job 216.
+117 of 218 steps (54%) done
+[Mon Apr 29 23:01:49 2024]
+Finished job 224.
+118 of 218 steps (54%) done
+[Mon Apr 29 23:01:49 2024]
+Finished job 230.
+119 of 218 steps (55%) done
+[Mon Apr 29 23:01:59 2024]
+Finished job 208.
+120 of 218 steps (55%) done
+[Mon Apr 29 23:02:09 2024]
+Finished job 212.
+121 of 218 steps (56%) done
+[Mon Apr 29 23:02:19 2024]
+Finished job 220.
+122 of 218 steps (56%) done
+[Mon Apr 29 23:02:59 2024]
+Finished job 210.
+123 of 218 steps (56%) done
+Select jobs to execute...
+
+[Mon Apr 29 23:02:59 2024]
+rule capacity_adjustment:
+    input: resources/demand.h5, results/revenues/6/cy1982_ty2025.nc, results/revenues/6/cy1982_ty2026.nc, results/revenues/6/cy1982_ty2027.nc, results/revenues/6/cy1983_ty2025.nc, results/revenues/6/cy1983_ty2026.nc, results/revenues/6/cy1983_ty2027.nc, results/revenues/6/cy1984_ty2025.nc, results/revenues/6/cy1984_ty2026.nc, results/revenues/6/cy1984_ty2027.nc, results/revenues/6/cy1985_ty2025.nc, results/revenues/6/cy1985_ty2026.nc, results/revenues/6/cy1985_ty2027.nc, results/revenues/6/cy1986_ty2025.nc, results/revenues/6/cy1986_ty2026.nc, results/revenues/6/cy1986_ty2027.nc, resources/capacity_tables/6.csv, /trinity/home/thomgeo/technology-data/outputs/costs_2025.csv
+    output: resources/capacity_tables/7.csv
+    jobid: 204
+    reason: Missing output files: resources/capacity_tables/7.csv; Input files updated by another job: results/revenues/6/cy1986_ty2027.nc, results/revenues/6/cy1983_ty2027.nc, results/revenues/6/cy1983_ty2026.nc, results/revenues/6/cy1984_ty2026.nc, results/revenues/6/cy1984_ty2027.nc, results/revenues/6/cy1986_ty2025.nc, results/revenues/6/cy1982_ty2026.nc, results/revenues/6/cy1982_ty2025.nc, results/revenues/6/cy1985_ty2027.nc, results/revenues/6/cy1982_ty2027.nc, resources/capacity_tables/6.csv, results/revenues/6/cy1986_ty2026.nc, results/revenues/6/cy1985_ty2026.nc, results/revenues/6/cy1983_ty2025.nc, results/revenues/6/cy1985_ty2025.nc, results/revenues/6/cy1984_ty2025.nc
+    wildcards: iter=7
+    resources: mem_mb=1585, mem_mib=1512, disk_mb=1585, disk_mib=1512, tmpdir=<TBD>
+
+Submitted job 204 with external jobid 'Submitted batch job 769'.
+[Mon Apr 29 23:03:19 2024]
+Finished job 204.
+124 of 218 steps (57%) done
+Select jobs to execute...
+
+[Mon Apr 29 23:03:19 2024]
+rule update_capacities:
+    input: resources/networks/6/cy1983_ty2026.nc, resources/capacity_tables/7.csv
+    output: resources/networks/7/cy1983_ty2026.nc
+    jobid: 243
+    reason: Missing output files: resources/networks/7/cy1983_ty2026.nc; Input files updated by another job: resources/capacity_tables/7.csv, resources/networks/6/cy1983_ty2026.nc
+    wildcards: iter=7, cy=1983, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 243 with external jobid 'Submitted batch job 770'.
+
+[Mon Apr 29 23:03:19 2024]
+rule update_capacities:
+    input: resources/networks/6/cy1983_ty2027.nc, resources/capacity_tables/7.csv
+    output: resources/networks/7/cy1983_ty2027.nc
+    jobid: 245
+    reason: Missing output files: resources/networks/7/cy1983_ty2027.nc; Input files updated by another job: resources/networks/6/cy1983_ty2027.nc, resources/capacity_tables/7.csv
+    wildcards: iter=7, cy=1983, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 245 with external jobid 'Submitted batch job 771'.
+
+[Mon Apr 29 23:03:19 2024]
+rule update_capacities:
+    input: resources/networks/6/cy1984_ty2025.nc, resources/capacity_tables/7.csv
+    output: resources/networks/7/cy1984_ty2025.nc
+    jobid: 247
+    reason: Missing output files: resources/networks/7/cy1984_ty2025.nc; Input files updated by another job: resources/networks/6/cy1984_ty2025.nc, resources/capacity_tables/7.csv
+    wildcards: iter=7, cy=1984, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 247 with external jobid 'Submitted batch job 772'.
+
+[Mon Apr 29 23:03:19 2024]
+rule update_capacities:
+    input: resources/networks/6/cy1984_ty2026.nc, resources/capacity_tables/7.csv
+    output: resources/networks/7/cy1984_ty2026.nc
+    jobid: 249
+    reason: Missing output files: resources/networks/7/cy1984_ty2026.nc; Input files updated by another job: resources/networks/6/cy1984_ty2026.nc, resources/capacity_tables/7.csv
+    wildcards: iter=7, cy=1984, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 249 with external jobid 'Submitted batch job 773'.
+
+[Mon Apr 29 23:03:19 2024]
+rule update_capacities:
+    input: resources/networks/6/cy1984_ty2027.nc, resources/capacity_tables/7.csv
+    output: resources/networks/7/cy1984_ty2027.nc
+    jobid: 251
+    reason: Missing output files: resources/networks/7/cy1984_ty2027.nc; Input files updated by another job: resources/networks/6/cy1984_ty2027.nc, resources/capacity_tables/7.csv
+    wildcards: iter=7, cy=1984, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 251 with external jobid 'Submitted batch job 774'.
+
+[Mon Apr 29 23:03:19 2024]
+rule update_capacities:
+    input: resources/networks/6/cy1985_ty2025.nc, resources/capacity_tables/7.csv
+    output: resources/networks/7/cy1985_ty2025.nc
+    jobid: 253
+    reason: Missing output files: resources/networks/7/cy1985_ty2025.nc; Input files updated by another job: resources/networks/6/cy1985_ty2025.nc, resources/capacity_tables/7.csv
+    wildcards: iter=7, cy=1985, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 253 with external jobid 'Submitted batch job 775'.
+
+[Mon Apr 29 23:03:19 2024]
+rule update_capacities:
+    input: resources/networks/6/cy1985_ty2026.nc, resources/capacity_tables/7.csv
+    output: resources/networks/7/cy1985_ty2026.nc
+    jobid: 255
+    reason: Missing output files: resources/networks/7/cy1985_ty2026.nc; Input files updated by another job: resources/networks/6/cy1985_ty2026.nc, resources/capacity_tables/7.csv
+    wildcards: iter=7, cy=1985, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 255 with external jobid 'Submitted batch job 776'.
+
+[Mon Apr 29 23:03:19 2024]
+rule update_capacities:
+    input: resources/networks/6/cy1985_ty2027.nc, resources/capacity_tables/7.csv
+    output: resources/networks/7/cy1985_ty2027.nc
+    jobid: 257
+    reason: Missing output files: resources/networks/7/cy1985_ty2027.nc; Input files updated by another job: resources/networks/6/cy1985_ty2027.nc, resources/capacity_tables/7.csv
+    wildcards: iter=7, cy=1985, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 257 with external jobid 'Submitted batch job 777'.
+
+[Mon Apr 29 23:03:19 2024]
+rule update_capacities:
+    input: resources/networks/6/cy1986_ty2025.nc, resources/capacity_tables/7.csv
+    output: resources/networks/7/cy1986_ty2025.nc
+    jobid: 259
+    reason: Missing output files: resources/networks/7/cy1986_ty2025.nc; Input files updated by another job: resources/networks/6/cy1986_ty2025.nc, resources/capacity_tables/7.csv
+    wildcards: iter=7, cy=1986, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 259 with external jobid 'Submitted batch job 778'.
+
+[Mon Apr 29 23:03:19 2024]
+rule update_capacities:
+    input: resources/networks/6/cy1986_ty2026.nc, resources/capacity_tables/7.csv
+    output: resources/networks/7/cy1986_ty2026.nc
+    jobid: 261
+    reason: Missing output files: resources/networks/7/cy1986_ty2026.nc; Input files updated by another job: resources/networks/6/cy1986_ty2026.nc, resources/capacity_tables/7.csv
+    wildcards: iter=7, cy=1986, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 261 with external jobid 'Submitted batch job 779'.
+
+[Mon Apr 29 23:03:19 2024]
+rule update_capacities:
+    input: resources/networks/6/cy1986_ty2027.nc, resources/capacity_tables/7.csv
+    output: resources/networks/7/cy1986_ty2027.nc
+    jobid: 263
+    reason: Missing output files: resources/networks/7/cy1986_ty2027.nc; Input files updated by another job: resources/networks/6/cy1986_ty2027.nc, resources/capacity_tables/7.csv
+    wildcards: iter=7, cy=1986, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 263 with external jobid 'Submitted batch job 780'.
+
+[Mon Apr 29 23:03:19 2024]
+rule update_capacities:
+    input: resources/networks/6/cy1982_ty2025.nc, resources/capacity_tables/7.csv
+    output: resources/networks/7/cy1982_ty2025.nc
+    jobid: 7
+    reason: Missing output files: resources/networks/7/cy1982_ty2025.nc; Input files updated by another job: resources/capacity_tables/7.csv, resources/networks/6/cy1982_ty2025.nc
+    wildcards: iter=7, cy=1982, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 7 with external jobid 'Submitted batch job 781'.
+
+[Mon Apr 29 23:03:19 2024]
+rule update_capacities:
+    input: resources/networks/6/cy1982_ty2026.nc, resources/capacity_tables/7.csv
+    output: resources/networks/7/cy1982_ty2026.nc
+    jobid: 237
+    reason: Missing output files: resources/networks/7/cy1982_ty2026.nc; Input files updated by another job: resources/networks/6/cy1982_ty2026.nc, resources/capacity_tables/7.csv
+    wildcards: iter=7, cy=1982, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 237 with external jobid 'Submitted batch job 782'.
+
+[Mon Apr 29 23:03:19 2024]
+rule update_capacities:
+    input: resources/networks/6/cy1982_ty2027.nc, resources/capacity_tables/7.csv
+    output: resources/networks/7/cy1982_ty2027.nc
+    jobid: 239
+    reason: Missing output files: resources/networks/7/cy1982_ty2027.nc; Input files updated by another job: resources/capacity_tables/7.csv, resources/networks/6/cy1982_ty2027.nc
+    wildcards: iter=7, cy=1982, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 239 with external jobid 'Submitted batch job 783'.
+
+[Mon Apr 29 23:03:19 2024]
+rule update_capacities:
+    input: resources/networks/6/cy1983_ty2025.nc, resources/capacity_tables/7.csv
+    output: resources/networks/7/cy1983_ty2025.nc
+    jobid: 241
+    reason: Missing output files: resources/networks/7/cy1983_ty2025.nc; Input files updated by another job: resources/networks/6/cy1983_ty2025.nc, resources/capacity_tables/7.csv
+    wildcards: iter=7, cy=1983, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 241 with external jobid 'Submitted batch job 784'.
+[Mon Apr 29 23:03:29 2024]
+Finished job 243.
+125 of 218 steps (57%) done
+Select jobs to execute...
+
+[Mon Apr 29 23:03:29 2024]
+rule solve_model:
+    input: resources/networks/7/cy1983_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/7/cy1983_ty2026.nc, results/revenues/7/cy1983_ty2026.nc
+    jobid: 242
+    reason: Missing output files: results/revenues/7/cy1983_ty2026.nc; Input files updated by another job: resources/networks/7/cy1983_ty2026.nc
+    wildcards: iter=7, cy=1983, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 242 with external jobid 'Submitted batch job 785'.
+[Mon Apr 29 23:03:29 2024]
+Finished job 245.
+126 of 218 steps (58%) done
+[Mon Apr 29 23:03:29 2024]
+Finished job 247.
+127 of 218 steps (58%) done
+[Mon Apr 29 23:03:29 2024]
+Finished job 249.
+128 of 218 steps (59%) done
+[Mon Apr 29 23:03:29 2024]
+Finished job 251.
+129 of 218 steps (59%) done
+[Mon Apr 29 23:03:29 2024]
+Finished job 253.
+130 of 218 steps (60%) done
+[Mon Apr 29 23:03:29 2024]
+Finished job 255.
+131 of 218 steps (60%) done
+[Mon Apr 29 23:03:29 2024]
+Finished job 257.
+132 of 218 steps (61%) done
+[Mon Apr 29 23:03:29 2024]
+Finished job 259.
+133 of 218 steps (61%) done
+[Mon Apr 29 23:03:29 2024]
+Finished job 261.
+134 of 218 steps (61%) done
+Select jobs to execute...
+
+[Mon Apr 29 23:03:29 2024]
+rule solve_model:
+    input: resources/networks/7/cy1986_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/7/cy1986_ty2025.nc, results/revenues/7/cy1986_ty2025.nc
+    jobid: 258
+    reason: Missing output files: results/revenues/7/cy1986_ty2025.nc; Input files updated by another job: resources/networks/7/cy1986_ty2025.nc
+    wildcards: iter=7, cy=1986, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 258 with external jobid 'Submitted batch job 786'.
+
+[Mon Apr 29 23:03:29 2024]
+rule solve_model:
+    input: resources/networks/7/cy1986_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/7/cy1986_ty2026.nc, results/revenues/7/cy1986_ty2026.nc
+    jobid: 260
+    reason: Missing output files: results/revenues/7/cy1986_ty2026.nc; Input files updated by another job: resources/networks/7/cy1986_ty2026.nc
+    wildcards: iter=7, cy=1986, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 260 with external jobid 'Submitted batch job 787'.
+
+[Mon Apr 29 23:03:29 2024]
+rule solve_model:
+    input: resources/networks/7/cy1983_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/7/cy1983_ty2027.nc, results/revenues/7/cy1983_ty2027.nc
+    jobid: 244
+    reason: Missing output files: results/revenues/7/cy1983_ty2027.nc; Input files updated by another job: resources/networks/7/cy1983_ty2027.nc
+    wildcards: iter=7, cy=1983, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 244 with external jobid 'Submitted batch job 788'.
+
+[Mon Apr 29 23:03:29 2024]
+rule solve_model:
+    input: resources/networks/7/cy1984_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/7/cy1984_ty2025.nc, results/revenues/7/cy1984_ty2025.nc
+    jobid: 246
+    reason: Missing output files: results/revenues/7/cy1984_ty2025.nc; Input files updated by another job: resources/networks/7/cy1984_ty2025.nc
+    wildcards: iter=7, cy=1984, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 246 with external jobid 'Submitted batch job 789'.
+
+[Mon Apr 29 23:03:29 2024]
+rule solve_model:
+    input: resources/networks/7/cy1984_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/7/cy1984_ty2026.nc, results/revenues/7/cy1984_ty2026.nc
+    jobid: 248
+    reason: Missing output files: results/revenues/7/cy1984_ty2026.nc; Input files updated by another job: resources/networks/7/cy1984_ty2026.nc
+    wildcards: iter=7, cy=1984, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 248 with external jobid 'Submitted batch job 790'.
+
+[Mon Apr 29 23:03:29 2024]
+rule solve_model:
+    input: resources/networks/7/cy1984_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/7/cy1984_ty2027.nc, results/revenues/7/cy1984_ty2027.nc
+    jobid: 250
+    reason: Missing output files: results/revenues/7/cy1984_ty2027.nc; Input files updated by another job: resources/networks/7/cy1984_ty2027.nc
+    wildcards: iter=7, cy=1984, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 250 with external jobid 'Submitted batch job 791'.
+
+[Mon Apr 29 23:03:29 2024]
+rule solve_model:
+    input: resources/networks/7/cy1985_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/7/cy1985_ty2025.nc, results/revenues/7/cy1985_ty2025.nc
+    jobid: 252
+    reason: Missing output files: results/revenues/7/cy1985_ty2025.nc; Input files updated by another job: resources/networks/7/cy1985_ty2025.nc
+    wildcards: iter=7, cy=1985, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 252 with external jobid 'Submitted batch job 792'.
+
+[Mon Apr 29 23:03:29 2024]
+rule solve_model:
+    input: resources/networks/7/cy1985_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/7/cy1985_ty2026.nc, results/revenues/7/cy1985_ty2026.nc
+    jobid: 254
+    reason: Missing output files: results/revenues/7/cy1985_ty2026.nc; Input files updated by another job: resources/networks/7/cy1985_ty2026.nc
+    wildcards: iter=7, cy=1985, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 254 with external jobid 'Submitted batch job 793'.
+
+[Mon Apr 29 23:03:29 2024]
+rule solve_model:
+    input: resources/networks/7/cy1985_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/7/cy1985_ty2027.nc, results/revenues/7/cy1985_ty2027.nc
+    jobid: 256
+    reason: Missing output files: results/revenues/7/cy1985_ty2027.nc; Input files updated by another job: resources/networks/7/cy1985_ty2027.nc
+    wildcards: iter=7, cy=1985, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 256 with external jobid 'Submitted batch job 794'.
+[Mon Apr 29 23:03:30 2024]
+Finished job 263.
+135 of 218 steps (62%) done
+[Mon Apr 29 23:03:30 2024]
+Finished job 7.
+136 of 218 steps (62%) done
+Select jobs to execute...
+
+[Mon Apr 29 23:03:30 2024]
+rule solve_model:
+    input: resources/networks/7/cy1986_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/7/cy1986_ty2027.nc, results/revenues/7/cy1986_ty2027.nc
+    jobid: 262
+    reason: Missing output files: results/revenues/7/cy1986_ty2027.nc; Input files updated by another job: resources/networks/7/cy1986_ty2027.nc
+    wildcards: iter=7, cy=1986, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 262 with external jobid 'Submitted batch job 795'.
+
+[Mon Apr 29 23:03:30 2024]
+rule solve_model:
+    input: resources/networks/7/cy1982_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/7/cy1982_ty2025.nc, results/revenues/7/cy1982_ty2025.nc
+    jobid: 235
+    reason: Missing output files: results/revenues/7/cy1982_ty2025.nc; Input files updated by another job: resources/networks/7/cy1982_ty2025.nc
+    wildcards: iter=7, cy=1982, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 235 with external jobid 'Submitted batch job 796'.
+[Mon Apr 29 23:03:30 2024]
+Finished job 237.
+137 of 218 steps (63%) done
+[Mon Apr 29 23:03:30 2024]
+Finished job 239.
+138 of 218 steps (63%) done
+[Mon Apr 29 23:03:30 2024]
+Finished job 241.
+139 of 218 steps (64%) done
+Select jobs to execute...
+
+[Mon Apr 29 23:03:30 2024]
+rule solve_model:
+    input: resources/networks/7/cy1982_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/7/cy1982_ty2026.nc, results/revenues/7/cy1982_ty2026.nc
+    jobid: 236
+    reason: Missing output files: results/revenues/7/cy1982_ty2026.nc; Input files updated by another job: resources/networks/7/cy1982_ty2026.nc
+    wildcards: iter=7, cy=1982, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 236 with external jobid 'Submitted batch job 797'.
+
+[Mon Apr 29 23:03:30 2024]
+rule solve_model:
+    input: resources/networks/7/cy1982_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/7/cy1982_ty2027.nc, results/revenues/7/cy1982_ty2027.nc
+    jobid: 238
+    reason: Missing output files: results/revenues/7/cy1982_ty2027.nc; Input files updated by another job: resources/networks/7/cy1982_ty2027.nc
+    wildcards: iter=7, cy=1982, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 238 with external jobid 'Submitted batch job 798'.
+
+[Mon Apr 29 23:03:30 2024]
+rule solve_model:
+    input: resources/networks/7/cy1983_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/7/cy1983_ty2025.nc, results/revenues/7/cy1983_ty2025.nc
+    jobid: 240
+    reason: Missing output files: results/revenues/7/cy1983_ty2025.nc; Input files updated by another job: resources/networks/7/cy1983_ty2025.nc
+    wildcards: iter=7, cy=1983, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 240 with external jobid 'Submitted batch job 799'.
+[Tue Apr 30 01:05:43 2024]
+Finished job 242.
+140 of 218 steps (64%) done
+[Tue Apr 30 01:08:50 2024]
+Finished job 262.
+141 of 218 steps (65%) done
+[Tue Apr 30 01:09:24 2024]
+Finished job 236.
+142 of 218 steps (65%) done
+[Tue Apr 30 01:09:45 2024]
+Finished job 244.
+143 of 218 steps (66%) done
+[Tue Apr 30 01:09:45 2024]
+Finished job 248.
+144 of 218 steps (66%) done
+[Tue Apr 30 01:09:46 2024]
+Finished job 240.
+145 of 218 steps (67%) done
+[Tue Apr 30 01:10:26 2024]
+Finished job 250.
+146 of 218 steps (67%) done
+[Tue Apr 30 01:10:26 2024]
+Finished job 238.
+147 of 218 steps (67%) done
+[Tue Apr 30 01:10:46 2024]
+Finished job 246.
+148 of 218 steps (68%) done
+[Tue Apr 30 01:10:46 2024]
+Finished job 235.
+149 of 218 steps (68%) done
+[Tue Apr 30 01:11:16 2024]
+Finished job 258.
+150 of 218 steps (69%) done
+[Tue Apr 30 01:11:26 2024]
+Finished job 254.
+151 of 218 steps (69%) done
+[Tue Apr 30 01:11:56 2024]
+Finished job 252.
+152 of 218 steps (70%) done
+[Tue Apr 30 01:12:16 2024]
+Finished job 260.
+153 of 218 steps (70%) done
+[Tue Apr 30 01:13:06 2024]
+Finished job 256.
+154 of 218 steps (71%) done
+Select jobs to execute...
+
+[Tue Apr 30 01:13:06 2024]
+rule capacity_adjustment:
+    input: resources/demand.h5, results/revenues/7/cy1982_ty2025.nc, results/revenues/7/cy1982_ty2026.nc, results/revenues/7/cy1982_ty2027.nc, results/revenues/7/cy1983_ty2025.nc, results/revenues/7/cy1983_ty2026.nc, results/revenues/7/cy1983_ty2027.nc, results/revenues/7/cy1984_ty2025.nc, results/revenues/7/cy1984_ty2026.nc, results/revenues/7/cy1984_ty2027.nc, results/revenues/7/cy1985_ty2025.nc, results/revenues/7/cy1985_ty2026.nc, results/revenues/7/cy1985_ty2027.nc, results/revenues/7/cy1986_ty2025.nc, results/revenues/7/cy1986_ty2026.nc, results/revenues/7/cy1986_ty2027.nc, resources/capacity_tables/7.csv, /trinity/home/thomgeo/technology-data/outputs/costs_2025.csv
+    output: resources/capacity_tables/8.csv
+    jobid: 234
+    reason: Missing output files: resources/capacity_tables/8.csv; Input files updated by another job: results/revenues/7/cy1984_ty2025.nc, results/revenues/7/cy1985_ty2027.nc, results/revenues/7/cy1986_ty2026.nc, results/revenues/7/cy1983_ty2027.nc, results/revenues/7/cy1982_ty2026.nc, results/revenues/7/cy1982_ty2025.nc, results/revenues/7/cy1984_ty2027.nc, results/revenues/7/cy1986_ty2027.nc, resources/capacity_tables/7.csv, results/revenues/7/cy1983_ty2025.nc, results/revenues/7/cy1983_ty2026.nc, results/revenues/7/cy1985_ty2026.nc, results/revenues/7/cy1986_ty2025.nc, results/revenues/7/cy1985_ty2025.nc, results/revenues/7/cy1982_ty2027.nc, results/revenues/7/cy1984_ty2026.nc
+    wildcards: iter=8
+    resources: mem_mb=1585, mem_mib=1512, disk_mb=1585, disk_mib=1512, tmpdir=<TBD>
+
+Submitted job 234 with external jobid 'Submitted batch job 800'.
+[Tue Apr 30 01:13:26 2024]
+Finished job 234.
+155 of 218 steps (71%) done
+Select jobs to execute...
+
+[Tue Apr 30 01:13:26 2024]
+rule update_capacities:
+    input: resources/networks/7/cy1983_ty2025.nc, resources/capacity_tables/8.csv
+    output: resources/networks/8/cy1983_ty2025.nc
+    jobid: 271
+    reason: Missing output files: resources/networks/8/cy1983_ty2025.nc; Input files updated by another job: resources/capacity_tables/8.csv, resources/networks/7/cy1983_ty2025.nc
+    wildcards: iter=8, cy=1983, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 271 with external jobid 'Submitted batch job 801'.
+
+[Tue Apr 30 01:13:26 2024]
+rule update_capacities:
+    input: resources/networks/7/cy1983_ty2026.nc, resources/capacity_tables/8.csv
+    output: resources/networks/8/cy1983_ty2026.nc
+    jobid: 273
+    reason: Missing output files: resources/networks/8/cy1983_ty2026.nc; Input files updated by another job: resources/networks/7/cy1983_ty2026.nc, resources/capacity_tables/8.csv
+    wildcards: iter=8, cy=1983, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 273 with external jobid 'Submitted batch job 802'.
+
+[Tue Apr 30 01:13:26 2024]
+rule update_capacities:
+    input: resources/networks/7/cy1983_ty2027.nc, resources/capacity_tables/8.csv
+    output: resources/networks/8/cy1983_ty2027.nc
+    jobid: 275
+    reason: Missing output files: resources/networks/8/cy1983_ty2027.nc; Input files updated by another job: resources/capacity_tables/8.csv, resources/networks/7/cy1983_ty2027.nc
+    wildcards: iter=8, cy=1983, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 275 with external jobid 'Submitted batch job 803'.
+
+[Tue Apr 30 01:13:26 2024]
+rule update_capacities:
+    input: resources/networks/7/cy1984_ty2025.nc, resources/capacity_tables/8.csv
+    output: resources/networks/8/cy1984_ty2025.nc
+    jobid: 277
+    reason: Missing output files: resources/networks/8/cy1984_ty2025.nc; Input files updated by another job: resources/networks/7/cy1984_ty2025.nc, resources/capacity_tables/8.csv
+    wildcards: iter=8, cy=1984, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 277 with external jobid 'Submitted batch job 804'.
+
+[Tue Apr 30 01:13:26 2024]
+rule update_capacities:
+    input: resources/networks/7/cy1984_ty2026.nc, resources/capacity_tables/8.csv
+    output: resources/networks/8/cy1984_ty2026.nc
+    jobid: 279
+    reason: Missing output files: resources/networks/8/cy1984_ty2026.nc; Input files updated by another job: resources/networks/7/cy1984_ty2026.nc, resources/capacity_tables/8.csv
+    wildcards: iter=8, cy=1984, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 279 with external jobid 'Submitted batch job 805'.
+
+[Tue Apr 30 01:13:26 2024]
+rule update_capacities:
+    input: resources/networks/7/cy1982_ty2025.nc, resources/capacity_tables/8.csv
+    output: resources/networks/8/cy1982_ty2025.nc
+    jobid: 6
+    reason: Missing output files: resources/networks/8/cy1982_ty2025.nc; Input files updated by another job: resources/networks/7/cy1982_ty2025.nc, resources/capacity_tables/8.csv
+    wildcards: iter=8, cy=1982, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 6 with external jobid 'Submitted batch job 806'.
+
+[Tue Apr 30 01:13:26 2024]
+rule update_capacities:
+    input: resources/networks/7/cy1984_ty2027.nc, resources/capacity_tables/8.csv
+    output: resources/networks/8/cy1984_ty2027.nc
+    jobid: 281
+    reason: Missing output files: resources/networks/8/cy1984_ty2027.nc; Input files updated by another job: resources/networks/7/cy1984_ty2027.nc, resources/capacity_tables/8.csv
+    wildcards: iter=8, cy=1984, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 281 with external jobid 'Submitted batch job 807'.
+
+[Tue Apr 30 01:13:26 2024]
+rule update_capacities:
+    input: resources/networks/7/cy1985_ty2025.nc, resources/capacity_tables/8.csv
+    output: resources/networks/8/cy1985_ty2025.nc
+    jobid: 283
+    reason: Missing output files: resources/networks/8/cy1985_ty2025.nc; Input files updated by another job: resources/networks/7/cy1985_ty2025.nc, resources/capacity_tables/8.csv
+    wildcards: iter=8, cy=1985, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 283 with external jobid 'Submitted batch job 808'.
+
+[Tue Apr 30 01:13:26 2024]
+rule update_capacities:
+    input: resources/networks/7/cy1985_ty2026.nc, resources/capacity_tables/8.csv
+    output: resources/networks/8/cy1985_ty2026.nc
+    jobid: 285
+    reason: Missing output files: resources/networks/8/cy1985_ty2026.nc; Input files updated by another job: resources/networks/7/cy1985_ty2026.nc, resources/capacity_tables/8.csv
+    wildcards: iter=8, cy=1985, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 285 with external jobid 'Submitted batch job 809'.
+
+[Tue Apr 30 01:13:26 2024]
+rule update_capacities:
+    input: resources/networks/7/cy1985_ty2027.nc, resources/capacity_tables/8.csv
+    output: resources/networks/8/cy1985_ty2027.nc
+    jobid: 287
+    reason: Missing output files: resources/networks/8/cy1985_ty2027.nc; Input files updated by another job: resources/networks/7/cy1985_ty2027.nc, resources/capacity_tables/8.csv
+    wildcards: iter=8, cy=1985, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 287 with external jobid 'Submitted batch job 810'.
+
+[Tue Apr 30 01:13:26 2024]
+rule update_capacities:
+    input: resources/networks/7/cy1986_ty2025.nc, resources/capacity_tables/8.csv
+    output: resources/networks/8/cy1986_ty2025.nc
+    jobid: 289
+    reason: Missing output files: resources/networks/8/cy1986_ty2025.nc; Input files updated by another job: resources/networks/7/cy1986_ty2025.nc, resources/capacity_tables/8.csv
+    wildcards: iter=8, cy=1986, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 289 with external jobid 'Submitted batch job 811'.
+
+[Tue Apr 30 01:13:26 2024]
+rule update_capacities:
+    input: resources/networks/7/cy1986_ty2026.nc, resources/capacity_tables/8.csv
+    output: resources/networks/8/cy1986_ty2026.nc
+    jobid: 291
+    reason: Missing output files: resources/networks/8/cy1986_ty2026.nc; Input files updated by another job: resources/networks/7/cy1986_ty2026.nc, resources/capacity_tables/8.csv
+    wildcards: iter=8, cy=1986, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 291 with external jobid 'Submitted batch job 812'.
+
+[Tue Apr 30 01:13:26 2024]
+rule update_capacities:
+    input: resources/networks/7/cy1986_ty2027.nc, resources/capacity_tables/8.csv
+    output: resources/networks/8/cy1986_ty2027.nc
+    jobid: 293
+    reason: Missing output files: resources/networks/8/cy1986_ty2027.nc; Input files updated by another job: resources/networks/7/cy1986_ty2027.nc, resources/capacity_tables/8.csv
+    wildcards: iter=8, cy=1986, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 293 with external jobid 'Submitted batch job 813'.
+
+[Tue Apr 30 01:13:26 2024]
+rule update_capacities:
+    input: resources/networks/7/cy1982_ty2026.nc, resources/capacity_tables/8.csv
+    output: resources/networks/8/cy1982_ty2026.nc
+    jobid: 267
+    reason: Missing output files: resources/networks/8/cy1982_ty2026.nc; Input files updated by another job: resources/capacity_tables/8.csv, resources/networks/7/cy1982_ty2026.nc
+    wildcards: iter=8, cy=1982, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 267 with external jobid 'Submitted batch job 814'.
+
+[Tue Apr 30 01:13:26 2024]
+rule update_capacities:
+    input: resources/networks/7/cy1982_ty2027.nc, resources/capacity_tables/8.csv
+    output: resources/networks/8/cy1982_ty2027.nc
+    jobid: 269
+    reason: Missing output files: resources/networks/8/cy1982_ty2027.nc; Input files updated by another job: resources/networks/7/cy1982_ty2027.nc, resources/capacity_tables/8.csv
+    wildcards: iter=8, cy=1982, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 269 with external jobid 'Submitted batch job 815'.
+[Tue Apr 30 01:13:36 2024]
+Finished job 271.
+156 of 218 steps (72%) done
+Select jobs to execute...
+
+[Tue Apr 30 01:13:36 2024]
+rule solve_model:
+    input: resources/networks/8/cy1983_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/8/cy1983_ty2025.nc, results/revenues/8/cy1983_ty2025.nc
+    jobid: 270
+    reason: Missing output files: results/revenues/8/cy1983_ty2025.nc; Input files updated by another job: resources/networks/8/cy1983_ty2025.nc
+    wildcards: iter=8, cy=1983, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 270 with external jobid 'Submitted batch job 816'.
+[Tue Apr 30 01:13:36 2024]
+Finished job 273.
+157 of 218 steps (72%) done
+[Tue Apr 30 01:13:36 2024]
+Finished job 275.
+158 of 218 steps (72%) done
+[Tue Apr 30 01:13:36 2024]
+Finished job 277.
+159 of 218 steps (73%) done
+[Tue Apr 30 01:13:36 2024]
+Finished job 279.
+160 of 218 steps (73%) done
+[Tue Apr 30 01:13:36 2024]
+Finished job 6.
+161 of 218 steps (74%) done
+[Tue Apr 30 01:13:36 2024]
+Finished job 281.
+162 of 218 steps (74%) done
+[Tue Apr 30 01:13:36 2024]
+Finished job 283.
+163 of 218 steps (75%) done
+[Tue Apr 30 01:13:36 2024]
+Finished job 285.
+164 of 218 steps (75%) done
+[Tue Apr 30 01:13:36 2024]
+Finished job 287.
+165 of 218 steps (76%) done
+Select jobs to execute...
+
+[Tue Apr 30 01:13:36 2024]
+rule solve_model:
+    input: resources/networks/8/cy1985_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/8/cy1985_ty2027.nc, results/revenues/8/cy1985_ty2027.nc
+    jobid: 286
+    reason: Missing output files: results/revenues/8/cy1985_ty2027.nc; Input files updated by another job: resources/networks/8/cy1985_ty2027.nc
+    wildcards: iter=8, cy=1985, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 286 with external jobid 'Submitted batch job 817'.
+
+[Tue Apr 30 01:13:36 2024]
+rule solve_model:
+    input: resources/networks/8/cy1983_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/8/cy1983_ty2026.nc, results/revenues/8/cy1983_ty2026.nc
+    jobid: 272
+    reason: Missing output files: results/revenues/8/cy1983_ty2026.nc; Input files updated by another job: resources/networks/8/cy1983_ty2026.nc
+    wildcards: iter=8, cy=1983, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 272 with external jobid 'Submitted batch job 818'.
+
+[Tue Apr 30 01:13:36 2024]
+rule solve_model:
+    input: resources/networks/8/cy1983_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/8/cy1983_ty2027.nc, results/revenues/8/cy1983_ty2027.nc
+    jobid: 274
+    reason: Missing output files: results/revenues/8/cy1983_ty2027.nc; Input files updated by another job: resources/networks/8/cy1983_ty2027.nc
+    wildcards: iter=8, cy=1983, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 274 with external jobid 'Submitted batch job 819'.
+
+[Tue Apr 30 01:13:36 2024]
+rule solve_model:
+    input: resources/networks/8/cy1984_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/8/cy1984_ty2025.nc, results/revenues/8/cy1984_ty2025.nc
+    jobid: 276
+    reason: Missing output files: results/revenues/8/cy1984_ty2025.nc; Input files updated by another job: resources/networks/8/cy1984_ty2025.nc
+    wildcards: iter=8, cy=1984, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 276 with external jobid 'Submitted batch job 820'.
+
+[Tue Apr 30 01:13:36 2024]
+rule solve_model:
+    input: resources/networks/8/cy1984_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/8/cy1984_ty2026.nc, results/revenues/8/cy1984_ty2026.nc
+    jobid: 278
+    reason: Missing output files: results/revenues/8/cy1984_ty2026.nc; Input files updated by another job: resources/networks/8/cy1984_ty2026.nc
+    wildcards: iter=8, cy=1984, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 278 with external jobid 'Submitted batch job 821'.
+
+[Tue Apr 30 01:13:36 2024]
+rule solve_model:
+    input: resources/networks/8/cy1984_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/8/cy1984_ty2027.nc, results/revenues/8/cy1984_ty2027.nc
+    jobid: 280
+    reason: Missing output files: results/revenues/8/cy1984_ty2027.nc; Input files updated by another job: resources/networks/8/cy1984_ty2027.nc
+    wildcards: iter=8, cy=1984, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 280 with external jobid 'Submitted batch job 822'.
+
+[Tue Apr 30 01:13:36 2024]
+rule solve_model:
+    input: resources/networks/8/cy1982_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/8/cy1982_ty2025.nc, results/revenues/8/cy1982_ty2025.nc
+    jobid: 265
+    reason: Missing output files: results/revenues/8/cy1982_ty2025.nc; Input files updated by another job: resources/networks/8/cy1982_ty2025.nc
+    wildcards: iter=8, cy=1982, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 265 with external jobid 'Submitted batch job 823'.
+
+[Tue Apr 30 01:13:36 2024]
+rule solve_model:
+    input: resources/networks/8/cy1985_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/8/cy1985_ty2025.nc, results/revenues/8/cy1985_ty2025.nc
+    jobid: 282
+    reason: Missing output files: results/revenues/8/cy1985_ty2025.nc; Input files updated by another job: resources/networks/8/cy1985_ty2025.nc
+    wildcards: iter=8, cy=1985, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 282 with external jobid 'Submitted batch job 824'.
+
+[Tue Apr 30 01:13:36 2024]
+rule solve_model:
+    input: resources/networks/8/cy1985_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/8/cy1985_ty2026.nc, results/revenues/8/cy1985_ty2026.nc
+    jobid: 284
+    reason: Missing output files: results/revenues/8/cy1985_ty2026.nc; Input files updated by another job: resources/networks/8/cy1985_ty2026.nc
+    wildcards: iter=8, cy=1985, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 284 with external jobid 'Submitted batch job 825'.
+[Tue Apr 30 01:13:37 2024]
+Finished job 289.
+166 of 218 steps (76%) done
+Select jobs to execute...
+
+[Tue Apr 30 01:13:37 2024]
+rule solve_model:
+    input: resources/networks/8/cy1986_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/8/cy1986_ty2025.nc, results/revenues/8/cy1986_ty2025.nc
+    jobid: 288
+    reason: Missing output files: results/revenues/8/cy1986_ty2025.nc; Input files updated by another job: resources/networks/8/cy1986_ty2025.nc
+    wildcards: iter=8, cy=1986, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 288 with external jobid 'Submitted batch job 826'.
+[Tue Apr 30 01:13:37 2024]
+Finished job 291.
+167 of 218 steps (77%) done
+[Tue Apr 30 01:13:37 2024]
+Finished job 293.
+168 of 218 steps (77%) done
+[Tue Apr 30 01:13:37 2024]
+Finished job 267.
+169 of 218 steps (78%) done
+[Tue Apr 30 01:13:37 2024]
+Finished job 269.
+170 of 218 steps (78%) done
+Select jobs to execute...
+
+[Tue Apr 30 01:13:37 2024]
+rule solve_model:
+    input: resources/networks/8/cy1986_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/8/cy1986_ty2027.nc, results/revenues/8/cy1986_ty2027.nc
+    jobid: 292
+    reason: Missing output files: results/revenues/8/cy1986_ty2027.nc; Input files updated by another job: resources/networks/8/cy1986_ty2027.nc
+    wildcards: iter=8, cy=1986, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 292 with external jobid 'Submitted batch job 827'.
+
+[Tue Apr 30 01:13:37 2024]
+rule solve_model:
+    input: resources/networks/8/cy1986_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/8/cy1986_ty2026.nc, results/revenues/8/cy1986_ty2026.nc
+    jobid: 290
+    reason: Missing output files: results/revenues/8/cy1986_ty2026.nc; Input files updated by another job: resources/networks/8/cy1986_ty2026.nc
+    wildcards: iter=8, cy=1986, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 290 with external jobid 'Submitted batch job 828'.
+
+[Tue Apr 30 01:13:37 2024]
+rule solve_model:
+    input: resources/networks/8/cy1982_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/8/cy1982_ty2026.nc, results/revenues/8/cy1982_ty2026.nc
+    jobid: 266
+    reason: Missing output files: results/revenues/8/cy1982_ty2026.nc; Input files updated by another job: resources/networks/8/cy1982_ty2026.nc
+    wildcards: iter=8, cy=1982, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 266 with external jobid 'Submitted batch job 829'.
+
+[Tue Apr 30 01:13:37 2024]
+rule solve_model:
+    input: resources/networks/8/cy1982_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/8/cy1982_ty2027.nc, results/revenues/8/cy1982_ty2027.nc
+    jobid: 268
+    reason: Missing output files: results/revenues/8/cy1982_ty2027.nc; Input files updated by another job: resources/networks/8/cy1982_ty2027.nc
+    wildcards: iter=8, cy=1982, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 268 with external jobid 'Submitted batch job 830'.
+[Tue Apr 30 03:18:02 2024]
+Finished job 265.
+171 of 218 steps (78%) done
+[Tue Apr 30 03:18:35 2024]
+Finished job 278.
+172 of 218 steps (79%) done
+[Tue Apr 30 03:18:35 2024]
+Finished job 288.
+173 of 218 steps (79%) done
+[Tue Apr 30 03:19:19 2024]
+Finished job 286.
+174 of 218 steps (80%) done
+[Tue Apr 30 03:19:19 2024]
+Finished job 272.
+175 of 218 steps (80%) done
+[Tue Apr 30 03:19:19 2024]
+Finished job 284.
+176 of 218 steps (81%) done
+[Tue Apr 30 03:19:30 2024]
+Finished job 280.
+177 of 218 steps (81%) done
+[Tue Apr 30 03:20:00 2024]
+Finished job 282.
+178 of 218 steps (82%) done
+[Tue Apr 30 03:20:40 2024]
+Finished job 274.
+179 of 218 steps (82%) done
+[Tue Apr 30 03:20:40 2024]
+Finished job 276.
+180 of 218 steps (83%) done
+[Tue Apr 30 03:21:21 2024]
+Finished job 290.
+181 of 218 steps (83%) done
+[Tue Apr 30 03:21:41 2024]
+Finished job 270.
+182 of 218 steps (83%) done
+[Tue Apr 30 03:21:51 2024]
+Finished job 266.
+183 of 218 steps (84%) done
+[Tue Apr 30 03:22:11 2024]
+Finished job 268.
+184 of 218 steps (84%) done
+[Tue Apr 30 03:22:41 2024]
+Finished job 292.
+185 of 218 steps (85%) done
+Select jobs to execute...
+
+[Tue Apr 30 03:22:41 2024]
+rule capacity_adjustment:
+    input: resources/demand.h5, results/revenues/8/cy1982_ty2025.nc, results/revenues/8/cy1982_ty2026.nc, results/revenues/8/cy1982_ty2027.nc, results/revenues/8/cy1983_ty2025.nc, results/revenues/8/cy1983_ty2026.nc, results/revenues/8/cy1983_ty2027.nc, results/revenues/8/cy1984_ty2025.nc, results/revenues/8/cy1984_ty2026.nc, results/revenues/8/cy1984_ty2027.nc, results/revenues/8/cy1985_ty2025.nc, results/revenues/8/cy1985_ty2026.nc, results/revenues/8/cy1985_ty2027.nc, results/revenues/8/cy1986_ty2025.nc, results/revenues/8/cy1986_ty2026.nc, results/revenues/8/cy1986_ty2027.nc, resources/capacity_tables/8.csv, /trinity/home/thomgeo/technology-data/outputs/costs_2025.csv
+    output: resources/capacity_tables/9.csv
+    jobid: 264
+    reason: Missing output files: resources/capacity_tables/9.csv; Input files updated by another job: results/revenues/8/cy1983_ty2027.nc, results/revenues/8/cy1983_ty2026.nc, results/revenues/8/cy1985_ty2025.nc, results/revenues/8/cy1985_ty2027.nc, results/revenues/8/cy1982_ty2027.nc, results/revenues/8/cy1984_ty2026.nc, results/revenues/8/cy1985_ty2026.nc, results/revenues/8/cy1986_ty2026.nc, results/revenues/8/cy1982_ty2025.nc, results/revenues/8/cy1984_ty2025.nc, results/revenues/8/cy1986_ty2027.nc, results/revenues/8/cy1983_ty2025.nc, results/revenues/8/cy1982_ty2026.nc, resources/capacity_tables/8.csv, results/revenues/8/cy1984_ty2027.nc, results/revenues/8/cy1986_ty2025.nc
+    wildcards: iter=9
+    resources: mem_mb=1585, mem_mib=1512, disk_mb=1585, disk_mib=1512, tmpdir=<TBD>
+
+Submitted job 264 with external jobid 'Submitted batch job 831'.
+[Tue Apr 30 03:23:01 2024]
+Finished job 264.
+186 of 218 steps (85%) done
+Select jobs to execute...
+
+[Tue Apr 30 03:23:01 2024]
+rule update_capacities:
+    input: resources/networks/8/cy1983_ty2027.nc, resources/capacity_tables/9.csv
+    output: resources/networks/9/cy1983_ty2027.nc
+    jobid: 303
+    reason: Missing output files: resources/networks/9/cy1983_ty2027.nc; Input files updated by another job: resources/capacity_tables/9.csv, resources/networks/8/cy1983_ty2027.nc
+    wildcards: iter=9, cy=1983, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 303 with external jobid 'Submitted batch job 832'.
+
+[Tue Apr 30 03:23:01 2024]
+rule update_capacities:
+    input: resources/networks/8/cy1984_ty2025.nc, resources/capacity_tables/9.csv
+    output: resources/networks/9/cy1984_ty2025.nc
+    jobid: 305
+    reason: Missing output files: resources/networks/9/cy1984_ty2025.nc; Input files updated by another job: resources/capacity_tables/9.csv, resources/networks/8/cy1984_ty2025.nc
+    wildcards: iter=9, cy=1984, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 305 with external jobid 'Submitted batch job 833'.
+
+[Tue Apr 30 03:23:01 2024]
+rule update_capacities:
+    input: resources/networks/8/cy1984_ty2026.nc, resources/capacity_tables/9.csv
+    output: resources/networks/9/cy1984_ty2026.nc
+    jobid: 307
+    reason: Missing output files: resources/networks/9/cy1984_ty2026.nc; Input files updated by another job: resources/capacity_tables/9.csv, resources/networks/8/cy1984_ty2026.nc
+    wildcards: iter=9, cy=1984, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 307 with external jobid 'Submitted batch job 834'.
+
+[Tue Apr 30 03:23:01 2024]
+rule update_capacities:
+    input: resources/networks/8/cy1984_ty2027.nc, resources/capacity_tables/9.csv
+    output: resources/networks/9/cy1984_ty2027.nc
+    jobid: 309
+    reason: Missing output files: resources/networks/9/cy1984_ty2027.nc; Input files updated by another job: resources/capacity_tables/9.csv, resources/networks/8/cy1984_ty2027.nc
+    wildcards: iter=9, cy=1984, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 309 with external jobid 'Submitted batch job 835'.
+
+[Tue Apr 30 03:23:01 2024]
+rule update_capacities:
+    input: resources/networks/8/cy1985_ty2025.nc, resources/capacity_tables/9.csv
+    output: resources/networks/9/cy1985_ty2025.nc
+    jobid: 311
+    reason: Missing output files: resources/networks/9/cy1985_ty2025.nc; Input files updated by another job: resources/capacity_tables/9.csv, resources/networks/8/cy1985_ty2025.nc
+    wildcards: iter=9, cy=1985, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 311 with external jobid 'Submitted batch job 836'.
+
+[Tue Apr 30 03:23:01 2024]
+rule update_capacities:
+    input: resources/networks/8/cy1985_ty2026.nc, resources/capacity_tables/9.csv
+    output: resources/networks/9/cy1985_ty2026.nc
+    jobid: 313
+    reason: Missing output files: resources/networks/9/cy1985_ty2026.nc; Input files updated by another job: resources/capacity_tables/9.csv, resources/networks/8/cy1985_ty2026.nc
+    wildcards: iter=9, cy=1985, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 313 with external jobid 'Submitted batch job 837'.
+
+[Tue Apr 30 03:23:01 2024]
+rule update_capacities:
+    input: resources/networks/8/cy1985_ty2027.nc, resources/capacity_tables/9.csv
+    output: resources/networks/9/cy1985_ty2027.nc
+    jobid: 315
+    reason: Missing output files: resources/networks/9/cy1985_ty2027.nc; Input files updated by another job: resources/capacity_tables/9.csv, resources/networks/8/cy1985_ty2027.nc
+    wildcards: iter=9, cy=1985, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 315 with external jobid 'Submitted batch job 838'.
+
+[Tue Apr 30 03:23:01 2024]
+rule update_capacities:
+    input: resources/networks/8/cy1986_ty2025.nc, resources/capacity_tables/9.csv
+    output: resources/networks/9/cy1986_ty2025.nc
+    jobid: 317
+    reason: Missing output files: resources/networks/9/cy1986_ty2025.nc; Input files updated by another job: resources/capacity_tables/9.csv, resources/networks/8/cy1986_ty2025.nc
+    wildcards: iter=9, cy=1986, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 317 with external jobid 'Submitted batch job 839'.
+
+[Tue Apr 30 03:23:01 2024]
+rule update_capacities:
+    input: resources/networks/8/cy1982_ty2025.nc, resources/capacity_tables/9.csv
+    output: resources/networks/9/cy1982_ty2025.nc
+    jobid: 5
+    reason: Missing output files: resources/networks/9/cy1982_ty2025.nc; Input files updated by another job: resources/capacity_tables/9.csv, resources/networks/8/cy1982_ty2025.nc
+    wildcards: iter=9, cy=1982, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 5 with external jobid 'Submitted batch job 840'.
+
+[Tue Apr 30 03:23:01 2024]
+rule update_capacities:
+    input: resources/networks/8/cy1986_ty2026.nc, resources/capacity_tables/9.csv
+    output: resources/networks/9/cy1986_ty2026.nc
+    jobid: 319
+    reason: Missing output files: resources/networks/9/cy1986_ty2026.nc; Input files updated by another job: resources/capacity_tables/9.csv, resources/networks/8/cy1986_ty2026.nc
+    wildcards: iter=9, cy=1986, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 319 with external jobid 'Submitted batch job 841'.
+
+[Tue Apr 30 03:23:01 2024]
+rule update_capacities:
+    input: resources/networks/8/cy1986_ty2027.nc, resources/capacity_tables/9.csv
+    output: resources/networks/9/cy1986_ty2027.nc
+    jobid: 321
+    reason: Missing output files: resources/networks/9/cy1986_ty2027.nc; Input files updated by another job: resources/capacity_tables/9.csv, resources/networks/8/cy1986_ty2027.nc
+    wildcards: iter=9, cy=1986, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 321 with external jobid 'Submitted batch job 842'.
+
+[Tue Apr 30 03:23:01 2024]
+rule update_capacities:
+    input: resources/networks/8/cy1982_ty2026.nc, resources/capacity_tables/9.csv
+    output: resources/networks/9/cy1982_ty2026.nc
+    jobid: 295
+    reason: Missing output files: resources/networks/9/cy1982_ty2026.nc; Input files updated by another job: resources/capacity_tables/9.csv, resources/networks/8/cy1982_ty2026.nc
+    wildcards: iter=9, cy=1982, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 295 with external jobid 'Submitted batch job 843'.
+
+[Tue Apr 30 03:23:01 2024]
+rule update_capacities:
+    input: resources/networks/8/cy1982_ty2027.nc, resources/capacity_tables/9.csv
+    output: resources/networks/9/cy1982_ty2027.nc
+    jobid: 297
+    reason: Missing output files: resources/networks/9/cy1982_ty2027.nc; Input files updated by another job: resources/capacity_tables/9.csv, resources/networks/8/cy1982_ty2027.nc
+    wildcards: iter=9, cy=1982, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 297 with external jobid 'Submitted batch job 844'.
+
+[Tue Apr 30 03:23:01 2024]
+rule update_capacities:
+    input: resources/networks/8/cy1983_ty2025.nc, resources/capacity_tables/9.csv
+    output: resources/networks/9/cy1983_ty2025.nc
+    jobid: 299
+    reason: Missing output files: resources/networks/9/cy1983_ty2025.nc; Input files updated by another job: resources/capacity_tables/9.csv, resources/networks/8/cy1983_ty2025.nc
+    wildcards: iter=9, cy=1983, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 299 with external jobid 'Submitted batch job 845'.
+
+[Tue Apr 30 03:23:01 2024]
+rule update_capacities:
+    input: resources/networks/8/cy1983_ty2026.nc, resources/capacity_tables/9.csv
+    output: resources/networks/9/cy1983_ty2026.nc
+    jobid: 301
+    reason: Missing output files: resources/networks/9/cy1983_ty2026.nc; Input files updated by another job: resources/capacity_tables/9.csv, resources/networks/8/cy1983_ty2026.nc
+    wildcards: iter=9, cy=1983, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 301 with external jobid 'Submitted batch job 846'.
+[Tue Apr 30 03:23:11 2024]
+Finished job 303.
+187 of 218 steps (86%) done
+Select jobs to execute...
+
+[Tue Apr 30 03:23:11 2024]
+rule solve_model:
+    input: resources/networks/9/cy1983_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/9/cy1983_ty2027.nc, results/revenues/9/cy1983_ty2027.nc
+    jobid: 302
+    reason: Missing output files: results/revenues/9/cy1983_ty2027.nc; Input files updated by another job: resources/networks/9/cy1983_ty2027.nc
+    wildcards: iter=9, cy=1983, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 302 with external jobid 'Submitted batch job 847'.
+[Tue Apr 30 03:23:11 2024]
+Finished job 305.
+188 of 218 steps (86%) done
+[Tue Apr 30 03:23:11 2024]
+Finished job 307.
+189 of 218 steps (87%) done
+[Tue Apr 30 03:23:11 2024]
+Finished job 309.
+190 of 218 steps (87%) done
+[Tue Apr 30 03:23:11 2024]
+Finished job 311.
+191 of 218 steps (88%) done
+[Tue Apr 30 03:23:11 2024]
+Finished job 313.
+192 of 218 steps (88%) done
+[Tue Apr 30 03:23:11 2024]
+Finished job 315.
+193 of 218 steps (89%) done
+[Tue Apr 30 03:23:11 2024]
+Finished job 317.
+194 of 218 steps (89%) done
+[Tue Apr 30 03:23:11 2024]
+Finished job 5.
+195 of 218 steps (89%) done
+[Tue Apr 30 03:23:11 2024]
+Finished job 319.
+196 of 218 steps (90%) done
+Select jobs to execute...
+
+[Tue Apr 30 03:23:11 2024]
+rule solve_model:
+    input: resources/networks/9/cy1986_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/9/cy1986_ty2026.nc, results/revenues/9/cy1986_ty2026.nc
+    jobid: 318
+    reason: Missing output files: results/revenues/9/cy1986_ty2026.nc; Input files updated by another job: resources/networks/9/cy1986_ty2026.nc
+    wildcards: iter=9, cy=1986, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 318 with external jobid 'Submitted batch job 848'.
+
+[Tue Apr 30 03:23:11 2024]
+rule solve_model:
+    input: resources/networks/9/cy1984_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/9/cy1984_ty2025.nc, results/revenues/9/cy1984_ty2025.nc
+    jobid: 304
+    reason: Missing output files: results/revenues/9/cy1984_ty2025.nc; Input files updated by another job: resources/networks/9/cy1984_ty2025.nc
+    wildcards: iter=9, cy=1984, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 304 with external jobid 'Submitted batch job 849'.
+
+[Tue Apr 30 03:23:11 2024]
+rule solve_model:
+    input: resources/networks/9/cy1984_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/9/cy1984_ty2026.nc, results/revenues/9/cy1984_ty2026.nc
+    jobid: 306
+    reason: Missing output files: results/revenues/9/cy1984_ty2026.nc; Input files updated by another job: resources/networks/9/cy1984_ty2026.nc
+    wildcards: iter=9, cy=1984, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 306 with external jobid 'Submitted batch job 850'.
+
+[Tue Apr 30 03:23:11 2024]
+rule solve_model:
+    input: resources/networks/9/cy1984_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/9/cy1984_ty2027.nc, results/revenues/9/cy1984_ty2027.nc
+    jobid: 308
+    reason: Missing output files: results/revenues/9/cy1984_ty2027.nc; Input files updated by another job: resources/networks/9/cy1984_ty2027.nc
+    wildcards: iter=9, cy=1984, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 308 with external jobid 'Submitted batch job 851'.
+
+[Tue Apr 30 03:23:11 2024]
+rule solve_model:
+    input: resources/networks/9/cy1982_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/9/cy1982_ty2025.nc, results/revenues/9/cy1982_ty2025.nc
+    jobid: 4
+    reason: Missing output files: results/revenues/9/cy1982_ty2025.nc; Input files updated by another job: resources/networks/9/cy1982_ty2025.nc
+    wildcards: iter=9, cy=1982, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 4 with external jobid 'Submitted batch job 852'.
+
+[Tue Apr 30 03:23:11 2024]
+rule solve_model:
+    input: resources/networks/9/cy1985_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/9/cy1985_ty2025.nc, results/revenues/9/cy1985_ty2025.nc
+    jobid: 310
+    reason: Missing output files: results/revenues/9/cy1985_ty2025.nc; Input files updated by another job: resources/networks/9/cy1985_ty2025.nc
+    wildcards: iter=9, cy=1985, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 310 with external jobid 'Submitted batch job 853'.
+
+[Tue Apr 30 03:23:11 2024]
+rule solve_model:
+    input: resources/networks/9/cy1985_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/9/cy1985_ty2026.nc, results/revenues/9/cy1985_ty2026.nc
+    jobid: 312
+    reason: Missing output files: results/revenues/9/cy1985_ty2026.nc; Input files updated by another job: resources/networks/9/cy1985_ty2026.nc
+    wildcards: iter=9, cy=1985, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 312 with external jobid 'Submitted batch job 854'.
+
+[Tue Apr 30 03:23:11 2024]
+rule solve_model:
+    input: resources/networks/9/cy1985_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/9/cy1985_ty2027.nc, results/revenues/9/cy1985_ty2027.nc
+    jobid: 314
+    reason: Missing output files: results/revenues/9/cy1985_ty2027.nc; Input files updated by another job: resources/networks/9/cy1985_ty2027.nc
+    wildcards: iter=9, cy=1985, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 314 with external jobid 'Submitted batch job 855'.
+
+[Tue Apr 30 03:23:11 2024]
+rule solve_model:
+    input: resources/networks/9/cy1986_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/9/cy1986_ty2025.nc, results/revenues/9/cy1986_ty2025.nc
+    jobid: 316
+    reason: Missing output files: results/revenues/9/cy1986_ty2025.nc; Input files updated by another job: resources/networks/9/cy1986_ty2025.nc
+    wildcards: iter=9, cy=1986, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 316 with external jobid 'Submitted batch job 856'.
+[Tue Apr 30 03:23:12 2024]
+Finished job 321.
+197 of 218 steps (90%) done
+Select jobs to execute...
+
+[Tue Apr 30 03:23:12 2024]
+rule solve_model:
+    input: resources/networks/9/cy1986_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/9/cy1986_ty2027.nc, results/revenues/9/cy1986_ty2027.nc
+    jobid: 320
+    reason: Missing output files: results/revenues/9/cy1986_ty2027.nc; Input files updated by another job: resources/networks/9/cy1986_ty2027.nc
+    wildcards: iter=9, cy=1986, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 320 with external jobid 'Submitted batch job 857'.
+[Tue Apr 30 03:23:12 2024]
+Finished job 295.
+198 of 218 steps (91%) done
+[Tue Apr 30 03:23:12 2024]
+Finished job 297.
+199 of 218 steps (91%) done
+[Tue Apr 30 03:23:12 2024]
+Finished job 299.
+200 of 218 steps (92%) done
+[Tue Apr 30 03:23:12 2024]
+Finished job 301.
+201 of 218 steps (92%) done
+Select jobs to execute...
+
+[Tue Apr 30 03:23:12 2024]
+rule solve_model:
+    input: resources/networks/9/cy1982_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/9/cy1982_ty2026.nc, results/revenues/9/cy1982_ty2026.nc
+    jobid: 294
+    reason: Missing output files: results/revenues/9/cy1982_ty2026.nc; Input files updated by another job: resources/networks/9/cy1982_ty2026.nc
+    wildcards: iter=9, cy=1982, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 294 with external jobid 'Submitted batch job 858'.
+
+[Tue Apr 30 03:23:12 2024]
+rule solve_model:
+    input: resources/networks/9/cy1982_ty2027.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/9/cy1982_ty2027.nc, results/revenues/9/cy1982_ty2027.nc
+    jobid: 296
+    reason: Missing output files: results/revenues/9/cy1982_ty2027.nc; Input files updated by another job: resources/networks/9/cy1982_ty2027.nc
+    wildcards: iter=9, cy=1982, ty=2027
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 296 with external jobid 'Submitted batch job 859'.
+
+[Tue Apr 30 03:23:12 2024]
+rule solve_model:
+    input: resources/networks/9/cy1983_ty2025.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/9/cy1983_ty2025.nc, results/revenues/9/cy1983_ty2025.nc
+    jobid: 298
+    reason: Missing output files: results/revenues/9/cy1983_ty2025.nc; Input files updated by another job: resources/networks/9/cy1983_ty2025.nc
+    wildcards: iter=9, cy=1983, ty=2025
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 298 with external jobid 'Submitted batch job 860'.
+
+[Tue Apr 30 03:23:12 2024]
+rule solve_model:
+    input: resources/networks/9/cy1983_ty2026.nc, data/pemmdb.xlsx, data/ordc_parameters.h5, data/fb_domains.xlsx
+    output: results/networks/9/cy1983_ty2026.nc, results/revenues/9/cy1983_ty2026.nc
+    jobid: 300
+    reason: Missing output files: results/revenues/9/cy1983_ty2026.nc; Input files updated by another job: resources/networks/9/cy1983_ty2026.nc
+    wildcards: iter=9, cy=1983, ty=2026
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=<TBD>
+
+Submitted job 300 with external jobid 'Submitted batch job 861'.
+[Tue Apr 30 05:28:43 2024]
+Finished job 302.
+202 of 218 steps (93%) done
+[Tue Apr 30 05:29:16 2024]
+Finished job 312.
+203 of 218 steps (93%) done
+[Tue Apr 30 05:29:27 2024]
+Finished job 314.
+204 of 218 steps (94%) done
+[Tue Apr 30 05:29:49 2024]
+Finished job 310.
+205 of 218 steps (94%) done
+[Tue Apr 30 05:30:22 2024]
+Finished job 304.
+206 of 218 steps (94%) done
+[Tue Apr 30 05:30:43 2024]
+Finished job 300.
+207 of 218 steps (95%) done
+[Tue Apr 30 05:30:53 2024]
+Finished job 316.
+208 of 218 steps (95%) done
+[Tue Apr 30 05:30:53 2024]
+Finished job 296.
+209 of 218 steps (96%) done
+[Tue Apr 30 05:31:03 2024]
+Finished job 4.
+210 of 218 steps (96%) done
+[Tue Apr 30 05:31:03 2024]
+Finished job 294.
+211 of 218 steps (97%) done
+[Tue Apr 30 05:31:03 2024]
+Finished job 298.
+212 of 218 steps (97%) done
+[Tue Apr 30 05:31:33 2024]
+Finished job 308.
+213 of 218 steps (98%) done
+[Tue Apr 30 05:31:43 2024]
+Finished job 318.
+214 of 218 steps (98%) done
+[Tue Apr 30 05:31:53 2024]
+Finished job 306.
+215 of 218 steps (99%) done
+[Tue Apr 30 05:32:23 2024]
+Finished job 320.
+216 of 218 steps (99%) done
+Select jobs to execute...
+
+[Tue Apr 30 05:32:23 2024]
+rule capacity_adjustment:
+    input: resources/demand.h5, results/revenues/9/cy1982_ty2025.nc, results/revenues/9/cy1982_ty2026.nc, results/revenues/9/cy1982_ty2027.nc, results/revenues/9/cy1983_ty2025.nc, results/revenues/9/cy1983_ty2026.nc, results/revenues/9/cy1983_ty2027.nc, results/revenues/9/cy1984_ty2025.nc, results/revenues/9/cy1984_ty2026.nc, results/revenues/9/cy1984_ty2027.nc, results/revenues/9/cy1985_ty2025.nc, results/revenues/9/cy1985_ty2026.nc, results/revenues/9/cy1985_ty2027.nc, results/revenues/9/cy1986_ty2025.nc, results/revenues/9/cy1986_ty2026.nc, results/revenues/9/cy1986_ty2027.nc, resources/capacity_tables/9.csv, /trinity/home/thomgeo/technology-data/outputs/costs_2025.csv
+    output: resources/capacity_tables/10.csv
+    jobid: 1
+    reason: Missing output files: resources/capacity_tables/10.csv; Input files updated by another job: results/revenues/9/cy1985_ty2025.nc, results/revenues/9/cy1982_ty2027.nc, results/revenues/9/cy1984_ty2026.nc, results/revenues/9/cy1986_ty2025.nc, results/revenues/9/cy1985_ty2027.nc, results/revenues/9/cy1982_ty2026.nc, resources/capacity_tables/9.csv, results/revenues/9/cy1983_ty2026.nc, results/revenues/9/cy1986_ty2027.nc, results/revenues/9/cy1984_ty2025.nc, results/revenues/9/cy1986_ty2026.nc, results/revenues/9/cy1984_ty2027.nc, results/revenues/9/cy1985_ty2026.nc, results/revenues/9/cy1983_ty2025.nc, results/revenues/9/cy1982_ty2025.nc, results/revenues/9/cy1983_ty2027.nc
+    wildcards: iter=10
+    resources: mem_mb=1585, mem_mib=1512, disk_mb=1585, disk_mib=1512, tmpdir=<TBD>
+
+Submitted job 1 with external jobid 'Submitted batch job 862'.
+[Tue Apr 30 05:32:43 2024]
+Finished job 1.
+217 of 218 steps (99.5%) done
+Select jobs to execute...
+
+[Tue Apr 30 05:32:43 2024]
+localrule all:
+    input: resources/capacity_tables/10.csv
+    jobid: 0
+    reason: Input files updated by another job: resources/capacity_tables/10.csv
+    resources: mem_mb=1000, mem_mib=954, disk_mb=1000, disk_mib=954, tmpdir=/tmp
+
+[Tue Apr 30 05:32:43 2024]
+Finished job 0.
+218 of 218 steps (100%) done
+Complete log: ../technology-data/.snakemake/log/2024-04-29T142525.665992.snakemake.log

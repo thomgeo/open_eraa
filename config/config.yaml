@@ -1,0 +1,110 @@
+time_horizon:
+  start:  2025
+  end: 2028
+
+biomass_price:  7 # EUR/MWh
+
+storage_preopt_aggregation: "24h"
+
+VOLL:  10e3
+
+delivery_time_reserves: 10 #in minutes
+
+entso-e:
+  api_key:  "99516228-fb84-4a73-9b38-d0703b72cce0"
+  
+
+FBMC:  true  
+
+
+EVA:
+  adjustment_factor: 0.005
+  offset: 0.1
+  eva_technologies: ['CCGT', 'OCGT', 'oil', 'biomass', 'lignite', 'coal']
+
+balancing:
+  start_extraction:  "2020-01-01"  
+  end_extraction:  "2022-01-01"
+  participation:  ['ccgt', 'ocgt', 'oil', 'biomass', 'other', 'lignite', 'nuclear', 'coal']  
+  ORDC:  
+    active:  true
+    n_ints:  20
+  price_cap:  15e3
+
+investment:
+  technologies_new_investment: ["OCGT", "CCGT"]
+
+solving:
+  options:
+    formulation: kirchhoff
+    load_shedding: 10.e3
+    noisy_costs: true
+    min_iterations: 4
+    max_iterations: 6
+    clip_p_max_pu: 0.01
+    skip_iterations: false
+    track_iterations: false
+    #nhours: 10
+  solver:
+    name: cplex
+    options: cplex-default
+  solver_options:
+    highs-default:
+      # refer to https://ergo-code.github.io/HiGHS/options/definitions.html#solver
+      threads: 4
+      solver: "ipm"
+      run_crossover: "off"
+      small_matrix_value: 1e-6
+      large_matrix_value: 1e9
+      primal_feasibility_tolerance: 1e-5
+      dual_feasibility_tolerance: 1e-5
+      ipm_optimality_tolerance: 1e-4
+      parallel: "on"
+      random_seed: 123
+    gurobi-default:
+      threads: 4
+      method: 2 # barrier
+      crossover: 0
+      BarConvTol: 1.e-6
+      Seed: 123
+      AggFill: 0
+      PreDual: 0
+      GURO_PAR_BARDENSETHRESH: 200
+      seed: 10              # Consistent seed for all plattforms
+    gurobi-numeric-focus:
+      name: gurobi
+      NumericFocus: 3       # Favour numeric stability over speed
+      method: 2             # barrier
+      crossover: 0          # do not use crossover
+      BarHomogeneous: 1     # Use homogeneous barrier if standard does not converge
+      BarConvTol: 1.e-5
+      FeasibilityTol: 1.e-4
+      OptimalityTol: 1.e-4
+      ObjScale: -0.5
+      threads: 8
+      Seed: 123
+    gurobi-fallback:        # Use gurobi defaults
+      name: gurobi
+      crossover: 0
+      method: 2             # barrier
+      BarHomogeneous: 1     # Use homogeneous barrier if standard does not converge
+      BarConvTol: 1.e-5
+      FeasibilityTol: 1.e-5
+      OptimalityTol: 1.e-5
+      Seed: 123
+      threads: 8
+    cplex-default:
+      threads: 4
+      lpmethod: 4 # barrier
+      solutiontype: 0 # non basic solution, ie no crossover
+      barrier.convergetol: 1.e-7
+      feasopt.tolerance: 1.e-6
+      #barrier.limits.objrange: 1.e+75
+      barrier.crossover: 1
+      barrier.display: 2
+      barrier.algorithm: 3
+      barrier.startalg:  2
+      preprocessing.dual: -1
+      #barrier.colnonzeros: 50,
+    cbc-default: {} # Used in CI
+    glpk-default: {} # Used in CI  

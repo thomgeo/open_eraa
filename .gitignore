@@ -1,0 +1,7 @@
+logs/
+scripts/
+.snakemake/
+.ipynb_checkpoints/
+resources/
+results/
+data/
