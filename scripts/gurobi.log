@@ -1,0 +1,6 @@
+
+Gurobi 11.0.0 (linux64, gurobi_cl) logging started Thu Feb 27 12:17:21 2025
+
+Set parameter LogFile to value "gurobi.log"
+Using license file /trinity/home/thomgeo/.conda/envs/pypsa-training/bin/../lib/gurobi.lic
+Restricted license - for non-production use only - expires 2025-11-24

@@ -64,48 +64,6 @@ def build_capacity_table():
 
     return capacity_years.fillna(method="ffill", axis=1)[year].unstack(1)
 
-
-def build_thermal_properties(properties):
-    
-    for col in properties.columns:
-        try: 
-            properties[col] = properties[col].astype(float)
-        except:
-            None
-
-    properties.set_index(properties.index.remove_unused_levels(), inplace=True)
-
-    properties_matching = pd.Series(
-        ["OCGT", "coal", "oil", "oil", "lignite", "nuclear", "oil"],
-        properties.index.levels[0]
-    )
-
-    properties_matching = properties_matching.reindex([i[0] for i in properties.index])
-
-    properties_matching.index = properties.index
-
-    properties_matching.loc[[i for i in properties_matching.index if "CCGT" in i[1]]] = "CCGT"
-
-    properties_transformed = properties.iloc[:, 1:].groupby(
-        properties_matching.reindex(properties.index).values
-    ).mean()
-
-    missing_properties = properties.reindex([("Gas", "conventional old 2"), ("Gas", "conventional old 2")]).copy()
-    missing_properties.index = ["biomass", "other"]
-    missing_properties.loc["biomass","CO2 emission factor"] = 0
-
-    properties_transformed = pd.concat([properties_transformed, missing_properties[properties_transformed.columns]])
-
-    properties_transformed.set_index(pd.Series("existing", properties_transformed.index),append=True, inplace=True)
-
-    properties_new = properties.loc["Gas", ["CCGT new", "OCGT new"], :].set_index(pd.MultiIndex.from_product([["CCGT", "OCGT"], ["new"]]))
-
-    properties_transformed = pd.concat([properties_transformed, properties_new[properties_transformed.columns]])
-    properties_transformed.index.names=["carrier", "invest_status"]
-
-    return properties_transformed
-
-
 def build_inflows(inflows):
     base_year_hydro = pd.Series(
         inflows.index.levels[4].astype(int), 
@@ -164,6 +122,12 @@ def add_existing_storage():
         storage.p_nom.values
     ).values
 
+    map_storage = pd.Series( ["battery inverter", "PHS", "hydro"], ["battery", "PHS", "reservoir"])
+
+    storage["efficiency_store"] = technology_data.loc[:, "efficiency", :].reindex(storage.carrier.map(map_storage)).value.values
+    
+    print(storage.efficiency_store)
+
     n.madd(
         "StorageUnit",
         storage.index,
@@ -192,50 +156,6 @@ def prepare_commodity_prices(commodity_prices):
     commodity_prices = pd.concat([commodity_prices, to_add])
     
     return commodity_prices
-
-
-def add_existing_dispatchables():
-    
-    dispatchable_existing = capacity.loc[dispatchable].unstack().reset_index()
-    dispatchable_existing.columns = ["bus", "carrier", "p_nom"]
-    dispatchable_existing.index = dispatchable_existing.bus + " " + dispatchable_existing.carrier
-    dispatchable_existing = dispatchable_existing.loc[dispatchable_existing.p_nom >0]
-
-    dispatchable_existing["efficiency"] = properties.loc[:, "existing", :].reindex(dispatchable_existing.carrier)["Standard efficiency in NCV terms"].values
-
-    dispatchable_existing["start_up_cost"] = properties["Start-up fix cost (e.g. wear) warm start"].loc[:, "existing"].reindex(dispatchable_existing.carrier, level=1).fillna(0).values
-    dispatchable_existing["ramp_limit_up"] = properties["Ramp up rate % of max output power / min"].loc[:, "existing"].reindex(dispatchable_existing.carrier).values*60
-    dispatchable_existing["ramp_limit_down"] = properties["Ramp down rate % of max output power / min"].loc[:, "existing"].reindex(dispatchable_existing.carrier).values*60
-    dispatchable_existing["p_min_pu"] = properties["Minimum stable generation (% of max power)"].loc[:, "existing"].reindex(dispatchable_existing.carrier).values
-    dispatchable_existing["min_up_time"] = properties["Min Time on"].loc[:, "existing"].reindex(dispatchable_existing.carrier).values
-    dispatchable_existing["min_down_time"] = properties["Min Time off"].loc[:, "existing"].reindex(dispatchable_existing.carrier).values
-    
-    
-    
-    dispatchable_existing["marginal_cost"] = commodity_prices.reindex(dispatchable_existing.carrier)[base_year].div(
-        dispatchable_existing.efficiency.values,
-    ).add(
-        (
-            commodity_prices.reindex(
-                dispatchable_existing.carrier)["CO2"]
-            .multiply(
-                commodity_prices.loc["co2", base_year]
-            )
-        )
-    ).add(
-        properties.loc[:, "existing",:].reindex(dispatchable_existing.carrier)["Variable O&M cost"]
-    ).values
-
-    n.madd(
-        "Generator",
-        dispatchable_existing.index,
-        **dispatchable_existing,
-        invest_status = "existing"
-    )
-
-
-# In[9]:
-
 
 def add_renewables():
     
@@ -274,6 +194,31 @@ def add_renewables():
         p_max_pu = p_max_pu[res.index],
         invest_status="policy"
     )
+    
+def add_dispatchables():
+    
+    plants = dispatchable_plants.query("(entry <= @year) & exit > @year")
+
+    plants["marginal_cost"] = (
+        commodity_prices
+        .reindex(plants.carrier)[base_year].div(
+            plants.efficiency.values,
+        ).add(
+            (
+                commodity_prices.reindex(
+                    plants.carrier)["CO2"]
+                .multiply(
+                    commodity_prices.loc["co2", base_year]
+                )
+            )
+        ).add(plants.var_om.values).values
+    )
+
+    n.madd(
+        "Generator",
+        plants.index,
+        **plants,
+    )
 
 def group_luxembourg(demand, links):
     
@@ -309,59 +254,9 @@ def add_dsr():
         invest_status = "existing"
     )
     
-    
-def add_dispatchable_investment_options():
-
-    zones_for_investment = capacity.sum()[capacity.loc[dispatchable].sum() >0 ].index # no investment in offshores zones etc.
-
-    new_dispatchables = pd.DataFrame(
-        0.01, 
-        index= pd.MultiIndex.from_product(
-            [zones_for_investment,technologies_for_investment], 
-            names=["bus", "carrier"]), 
-        columns=["p_nom"]
-    )
-
-    new_dispatchables.reset_index(inplace=True)
-
-    new_dispatchables.index = new_dispatchables.bus + " " + new_dispatchables.carrier + " new"
-
-    new_dispatchables["efficiency"] = properties.loc[:, "new", :]["Standard efficiency in NCV terms"].reindex(new_dispatchables.carrier).values
-
-    new_dispatchables["start_up_cost"] = properties["Start-up fix cost (e.g. wear) warm start"].loc[:, "new"].reindex(new_dispatchables.carrier, level=1).fillna(0).values
-
-    new_dispatchables["ramp_limit_up"] = properties["Ramp up rate % of max output power / min"].loc[:, "new"].reindex(new_dispatchables.carrier).values*60
-    new_dispatchables["ramp_limit_down"] = properties["Ramp down rate % of max output power / min"].loc[:, "new"].reindex(new_dispatchables.carrier).values*60
-    new_dispatchables["p_min_pu"] = properties["Minimum stable generation (% of max power)"].loc[:, "new"].reindex(new_dispatchables.carrier).values
-    new_dispatchables["min_up_time"] = properties["Min Time on"].loc[:, "new"].reindex(new_dispatchables.carrier).values
-    new_dispatchables["min_down_time"] = properties["Min Time off"].loc[:, "new"].reindex(new_dispatchables.carrier).values
-
-    new_dispatchables["marginal_cost"] = commodity_prices.reindex(new_dispatchables.carrier)[base_year].div(
-            new_dispatchables.efficiency.values,
-        ).add(
-            (
-                commodity_prices.reindex(
-                    new_dispatchables.carrier)["CO2"]
-                .multiply(
-                    commodity_prices.loc["co2", base_year]
-                )
-            )
-        ).add(
-            properties.loc[:, "existing",:].reindex(new_dispatchables.carrier)["Variable O&M cost"]
-        ).values
-
-    n.madd(
-        "Generator",
-        new_dispatchables.index,
-        **new_dispatchables,
-        invest_status = "new"
-    )
 
 def set_investment_bounds():
     
-    n.generators.loc[n.generators.invest_status == "existing", "p_nom_max"] = n.generators.loc[n.generators.invest_status == "existing", "p_nom"].clip(0.01)
-    n.generators.loc[n.generators.invest_status == "existing", "p_nom"] = n.generators.loc[n.generators.invest_status == "existing", "p_nom"].clip(0.01) 
-    n.generators.p_nom_min = 0.01
     n.generators.loc[n.generators.invest_status == "policy", "p_nom_max"] = n.generators.loc[n.generators.invest_status == "policy", "p_nom"]
     n.generators.loc[n.generators.invest_status == "policy", "p_nom_min"] = n.generators.loc[n.generators.invest_status == "policy", "p_nom"]
     
@@ -393,6 +288,7 @@ sheet = plant_sheets[plant_sheets <= year].subtract(year).idxmax()
 
 base_year = int(sheet[2:])
 
+technology_data = pd.read_csv(snakemake.input.technology_data, index_col=[0,1])
 
 demand = pd.read_hdf(snakemake.input.demand)
 demand = demand.loc[:, climate_year, :, str(base_year), :].unstack(1)
@@ -411,13 +307,8 @@ links["carrier"] = [i[-2:] for i in links.index]
 demand, links = group_luxembourg(demand, links)
 
 commodity_prices = prepare_commodity_prices(commodity_prices_raw)
+dispatchable_plants = pd.read_hdf(snakemake.input.dispatchable_plants)
 
-properties_raw = pd.read_excel(excel_file, "Thermal Properties", index_col=[2,3], header=3).dropna(how="all").iloc[1:, 2:].dropna(how="all", axis=1).iloc[:24, :12]
-properties_raw2 = pd.read_excel(excel_file, "Thermal Properties", index_col=[2,3], skiprows=35, header=[0,3]).iloc[:, 2:].dropna(how="all", axis=1).dropna(how="all")
-properties_raw2.columns = [" ".join(i) for i in properties_raw2.columns]
-properties_raw = pd.concat([properties_raw, properties_raw2],axis=1)
-
-properties = build_thermal_properties(properties_raw)
 
 n = pypsa.Network()
 n.set_snapshots(snapshots)
@@ -450,14 +341,10 @@ n.madd(
 
 inflows = build_inflows(inflows_raw)
 add_existing_storage()
-
-add_existing_dispatchables()
-
+add_dispatchables()
+print(n.generators)
 add_renewables()
-
 add_dsr()
-
-add_dispatchable_investment_options()
 
 set_investment_bounds()
 
@@ -471,7 +358,9 @@ n.madd(
     carrier = links.carrier,
 )
 
-n.generators.loc["CY00 CCGT", "p_min_pu"] = 0 # remove minimum load of CCGT in Cyprus as this can exceed actual load.
+n.generators.loc[(n.generators.bus == "CY00") & (n.generators.carrier == "CCGT"), "p_min_pu"] = 0 # remove minimum load of CCGT in Cyprus as this can exceed actual load.
+
+print(n.generators)
 
 dirname = os.path.dirname(save_path)  
 

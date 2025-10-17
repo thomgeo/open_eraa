@@ -128,7 +128,7 @@ def replace_su(network, su_to_replace):
         bus=bus_name,
         carrier= su["carrier"],
         p_nom=su["p_nom"] * su["max_hours"],
-        marginal_cost = 200,
+        marginal_cost = 100000,
         type="inflow",
         )
 

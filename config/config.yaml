@@ -1,10 +1,10 @@
 time_horizon:
   start:  2025
-  end: 2028
+  end: 2026
 
 biomass_price:  7 # EUR/MWh
 
-storage_preopt_aggregation: "24h"
+storage_preopt_aggregation: "48h"
 
 VOLL:  10e3
 
@@ -18,16 +18,19 @@ FBMC:  true
 
 
 EVA:
-  adjustment_factor: 0.005
-  offset: 0.1
+  adjustment_factor_initial:  0.8
+  adjustment_factor_saturation:  0.05
+  initial_phase:  2
+  offset:  0.0
+  
   eva_technologies: ['CCGT', 'OCGT', 'oil', 'biomass', 'lignite', 'coal']
 
 balancing:
   start_extraction:  "2020-01-01"  
   end_extraction:  "2022-01-01"
-  participation:  ['ccgt', 'ocgt', 'oil', 'biomass', 'other', 'lignite', 'nuclear', 'coal']  
+  participation:  ['CCGT', 'OCGT', 'oil', 'biomass', 'other', 'lignite', 'nuclear', 'coal']  
   ORDC:  
-    active:  true
+    active:  false
     n_ints:  20
   price_cap:  15e3
 
@@ -96,15 +99,15 @@ solving:
     cplex-default:
       threads: 4
       lpmethod: 4 # barrier
-      solutiontype: 0 # non basic solution, ie no crossover
-      barrier.convergetol: 1.e-7
+      solutiontype: 2 # non basic solution, ie no crossover
+      barrier.convergetol: 1.e-5
       feasopt.tolerance: 1.e-6
       #barrier.limits.objrange: 1.e+75
-      barrier.crossover: 1
-      barrier.display: 2
-      barrier.algorithm: 3
-      barrier.startalg:  2
-      preprocessing.dual: -1
+      #barrier.crossover: 1
+      #barrier.display: 2
+      #barrier.algorithm: 3
+      #barrier.startalg:  2
+      #preprocessing.dual: -1
       #barrier.colnonzeros: 50,
     cbc-default: {} # Used in CI
     glpk-default: {} # Used in CI  

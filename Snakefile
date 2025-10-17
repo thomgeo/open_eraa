@@ -6,9 +6,10 @@ HTTP = HTTPRemoteProvider()
 configfile: "config/config.yaml"
 
 target_years = range(config["time_horizon"]["start"], config["time_horizon"]["end"])
-climate_years = range(1982, 1987)
+climate_years = range(1982, 1983)
 
 ruleorder: base_model > update_capacities
+ruleorder: build_initial_capacity_table > capacity_adjustment
 
 #rule retrieve_all_data:
 #	input:	"data/pecd22.zip",
@@ -27,7 +28,7 @@ subworkflow technology_data:
 
 
 rule all:
-	input:	"resources/capacity_tables/10.csv"
+	input:	"resources/capacity_tables/50.csv"
 #		expand("results/networks/0/cy{cy}_ty{ty}.nc", cy = climate_years, ty=target_years),
 
 
@@ -150,6 +151,11 @@ rule build_ntc:
 	output:	save_hdf= "resources/ntcs.h5"
 	script:	"scripts/build_ntc.py"
 
+rule build_dispatchable_capacities:
+	input:	pemmdb = "data/pemmdb.xlsx",
+	output:	dispatchable_capacities = "resources/dispatchable_capacities.h5",
+	script:	"scripts/build_dispatchable_capacities.py"
+
 rule base_model:
 	input:	
 		commodity_prices = "data/Fuel and CO2 prices_ERAA2023.xlsx",
@@ -158,6 +164,8 @@ rule base_model:
 		demand = "resources/demand.h5",
 		ntc = "resources/ntcs.h5",
 		res_profile = "resources/res_profile.h5",
+		technology_data = technology_data("outputs/costs_2025.csv"),
+		dispatchable_plants = "resources/dispatchable_capacities.h5",
 	params:
 		ty = "{ty}",
 		cy = "{cy}",
@@ -165,6 +173,12 @@ rule base_model:
 	output:	
 		network= "resources/networks/0/cy{cy}_ty{ty}.nc"
 	script:	"scripts/base_model.py"	
+
+
+rule build_initial_capacity_table:
+    input:  networks = expand("resources/networks/0/cy{cy}_ty{ty}.nc", cy=climate_years[0], ty=target_years)
+    output: initial_capacity_table = "resources/capacity_tables/0.csv"
+    script: "scripts/build_initial_capacity_table.py"
 
 rule solve_model:
 	input:	network = "resources/networks/{iter}/cy{cy}_ty{ty}.nc",
@@ -177,7 +191,8 @@ rule solve_model:
 		years = target_years,
 	output:
 		solved_network= "results/networks/{iter}/cy{cy}_ty{ty}.nc",
-		revenues = "results/revenues/{iter}/cy{cy}_ty{ty}.nc",
+		revenues = "results/revenues/{iter}/cy{cy}_ty{ty}.h5",
+		lole = "results/lole/{iter}/cy{cy}_ty{ty}.csv",
 	script:	"scripts/solve_model.py"	
 
 
@@ -188,10 +203,14 @@ rule build_ordc_parameters:
 
 rule capacity_adjustment:
 	input:	demand = "resources/demand.h5",
-		revenue_files = lambda w: expand("results/revenues/{iter}/cy{cy}_ty{ty}.nc", cy = climate_years, ty = target_years, iter = int(w.iter)-1),
+		revenue_files = lambda w: expand("results/revenues/{iter}/cy{cy}_ty{ty}.h5", cy = climate_years, ty = target_years, iter = int(w.iter)-1),
 		previous_capacity_table = lambda w: ("resources/capacity_tables/{iter}.csv").format(iter = int(w.iter)-1),
 		costs = technology_data("outputs/costs_2025.csv"),
-	output:	next_capacity_table = "resources/capacity_tables/{iter}.csv"
+		capacity_adjustment_size = "data/capacity_adjustement_size.csv"
+	params:	iteration = "{iter}"
+	output:	next_capacity_table = "resources/capacity_tables/{iter}.csv",
+		revenue_ratios_existing = "results/revenue_ratios/{iter}_existing.csv",
+		revenue_rarios_new = "results/revenue_ratios/{iter}_new.csv",
 	script:	"scripts/capacity_adjustment.py"
 		
 rule update_capacities:

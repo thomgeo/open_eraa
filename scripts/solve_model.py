@@ -417,6 +417,81 @@ def market_revenue(n):
     return (spot_payments + reserve_payments)
 
 
+def apply_lm_and_cs(n):
+
+    o = n.copy()
+
+    o_snapshots = n.snapshots[n.generators_t.p.filter(like="load-shedding").sum(axis=1)>0]
+    o.set_snapshots(o_snapshots)
+
+    gen_techs = ['CCGT', 'OCGT', 'biomass', 'coal', 'lignite', 'nuclear', 'oil', 'other', 'onwind', 'solar', 'ROR', 'offwind', 'CSP', 'DSR'] 
+    generators = o.generators.query("carrier in @gen_techs")
+
+    o.generators_t.p_max_pu.loc[:, generators.index] = (
+        o.generators_t.p
+        .div(o.generators.p_nom.add(1e-6))
+        [generators.index]
+        .clip(lower=0)
+    )
+
+    discharger = n.links[n.links.type == "discharging"]
+    charger = n.links[n.links.type == "charging"]
+
+    discharge_gens = pd.DataFrame()
+    discharge_gens["p_nom"] = n.links_t.p1[discharger.index].abs().max()
+    discharge_gens["bus"] = o.links.loc[discharge_gens.index,"bus1"]
+
+    discharge_p_max_pu = o.links_t.p1[discharger.index].abs().div(
+        o.links_t.p1[discharger.index].abs().max().add(1e-6)
+    ).clip(lower=0)
+
+    o.madd(
+        "Generator",
+        discharge_gens.index,
+        **discharge_gens,
+        p_max_pu = discharge_p_max_pu
+    )
+
+
+    charging_load_t = o.links_t.p0[charger.index].groupby(o.links.bus0, axis=1).sum()
+    charging_load_t.columns = charging_load_t.columns + " charging"
+    charging_load = pd.DataFrame(index = charging_load_t.columns)
+    charging_load["bus"] = charging_load.index.str[:4]
+    charging_load = charging_load[charging_load_t.sum()>0]
+    charging_load_t = charging_load_t[charging_load.index]
+
+    o.madd("Load", charging_load.index, **charging_load, p_set = charging_load_t)
+    o = o[o.buses.query("carrier == 'electricity'").index]
+
+    o.generators_t.p.filter(like="load-shed").sum(axis=1)
+    o.generators.p_min_pu = 0
+    o.generators.committable = False
+
+    gen_bus = o.generators.p_nom.multiply(o.generators_t.p_max_pu)[generators.index].groupby(generators.bus, axis=1).sum()
+    discharge_bus = o.generators.p_nom.multiply(o.generators_t.p_max_pu)[discharge_gens.index].groupby(discharge_gens.bus, axis=1).sum()
+
+    ls_active = gen_bus.add(discharge_bus, fill_value=0).subtract(
+        o.loads_t.p_set.groupby(o.loads.bus, axis=1).sum()
+    )<0
+
+
+    load_shedding = o.generators.filter(like="load-shedding", axis=0)
+    ls_active.columns = ls_active.columns.map(pd.Series(load_shedding.index, load_shedding.bus))
+
+    o.generators_t.p_max_pu.loc[:,ls_active.columns] = ls_active.astype(float)
+
+    o.optimize.optimize_with_rolling_horizon(solver_name=solver_name, extra_functionality=flow_based_market_coupling, **solver_options)
+
+    n.generators_t.p.loc[o.snapshots, load_shedding.index] = o.generators_t.p[load_shedding.index]
+
+    load_shedding_bus = o.generators_t.p[load_shedding.index].groupby(load_shedding.bus, axis=1).sum()
+    correct_prices = n.buses_t.marginal_price.loc[o.snapshots][load_shedding_bus>0].stack()
+    correct_prices.loc[correct_prices.index] = VOLL
+    correct_prices = correct_prices.unstack(1)
+
+    n.buses_t.marginal_price.loc[correct_prices.index, correct_prices.columns] = correct_prices
+
+
 target_year = int(snakemake.params.ty)
 
 solver_name = snakemake.config["solving"]["solver"]["name"]
@@ -426,6 +501,7 @@ solver_options = snakemake.config["solving"]["solver_options"][options]
 climate_year=int(snakemake.params.cy)
 
 revenues = snakemake.output.revenues
+lole = snakemake.output.lole
 solved_network = snakemake.output.solved_network
 n = pypsa.Network(snakemake.input.network)
 years = snakemake.params.years
@@ -449,6 +525,8 @@ ORDC = snakemake.config["balancing"]["ORDC"]["active"]
 
 for su in n.storage_units.index:
     replace_su(n, su);
+    
+print(n.links.query("type=='charging'").efficiency)
 
 storage_preopt_aggregation = snakemake.config["storage_preopt_aggregation"]
 
@@ -503,6 +581,8 @@ if FBMC == True:
 
 solve_rolling_horizon(m, n, "h", storage_preopt_aggregation)
 
+apply_lm_and_cs(n)
+
 dirname = os.path.dirname(solved_network)
 
 if not os.path.isdir(dirname):
@@ -510,4 +590,13 @@ if not os.path.isdir(dirname):
 
 n.export_to_netcdf(solved_network)
 
+if not os.path.isdir(os.path.dirname(revenues)):
+    os.makedirs(os.path.dirname(revenues))
+
 market_revenue(n).to_hdf(revenues, "revenues")
+
+if not os.path.isdir(os.path.dirname(lole)):
+    os.makedirs(os.path.dirname(lole))
+
+load_shed = n.generators.filter(like = "load-shedding", axis=0)
+(n.generators_t.p[load_shed.index]>0).sum().to_frame().to_csv(lole)
