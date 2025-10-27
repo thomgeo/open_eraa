@@ -53,7 +53,7 @@ with zipfile.ZipFile(ntc) as zip_f:
 p_nom = pd.DataFrame()
 p_max_pu = pd.DataFrame()
 
-for file in sorted([i for i in glob.glob("data/Net Transfer Capacities/*") if "PEMMDB" in i]):
+for file in sorted([i for i in glob.glob("data/NTCs/*") if "NTCs" in i]):
 
     excel_file = pd.ExcelFile(file)
 
@@ -62,11 +62,11 @@ for file in sorted([i for i in glob.glob("data/Net Transfer Capacities/*") if "P
     p_nom_year, p_max_pu_year = get_ntc_tables(excel_file)
     
     p_nom_year = p_nom_year.stack()
-    p_nom_year.name = int(os.path.splitext(file.split("_")[-1])[0])
+    p_nom_year.name = int(os.path.splitext(file.split("TY")[-1])[0])
     p_nom = pd.concat([p_nom, p_nom_year], axis=1)
     
     p_max_pu_year = p_max_pu_year.stack()
-    p_max_pu_year.name= int(os.path.splitext(file.split("_")[-1])[0])
+    p_max_pu_year.name= int(os.path.splitext(file.split("TY")[-1])[0])
     p_max_pu = pd.concat([p_max_pu, p_max_pu_year],axis=1)
     
 for col in p_max_pu.columns:
