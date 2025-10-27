@@ -6,20 +6,23 @@ HTTP = HTTPRemoteProvider()
 configfile: "config/config.yaml"
 
 target_years = range(config["time_horizon"]["start"], config["time_horizon"]["end"])
-climate_years = range(1982, 1983)
+climate_years = range(1, 2)
 
-ruleorder: base_model > update_capacities
-ruleorder: build_initial_capacity_table > capacity_adjustment
+#ruleorder: base_model > update_capacities
+#ruleorder: build_initial_capacity_table > capacity_adjustment
 
-#rule retrieve_all_data:
-#	input:	"data/pecd22.zip",
-#		"data/fb_domains.xlsx",
-#		"data/pemmdb.xlsx",
-#		"resources/res_profile.h5",
-#		"resources/demand.h5",
-#		"resources/inflow.h5",	
-#		"data/ntc.zip",
-#		"resources/ntcs.h5"	
+rule retrieve_all_data:
+	input:	"data/pecd.zip",
+		#"data/fb_domains.zip",
+		"data/pemmdb.zip",
+		"data/thermal.zip",
+		"resources/res_profile.h5",
+		"resources/demand.h5",
+		"resources/inflow.h5",	
+		"data/ntc.zip",
+		"resources/ntcs.h5",
+		#"resources/FB.h5",
+		"resources/dispatchable_capacities.h5"	
 
 subworkflow technology_data:
 	workdir: "../technology-data"
@@ -32,10 +35,12 @@ rule all:
 #		expand("results/networks/0/cy{cy}_ty{ty}.nc", cy = climate_years, ty=target_years),
 
 
+#2024 all links changed. PECD-RES
+
 rule retrieve_pecd:
         input:
             HTTP.remote(
-		"https://eepublicdownloads.blob.core.windows.net/public-cdn-container/clean-documents/sdc-documents/ERAA/2023/PECD.zip",
+		"https://eepublicdownloads.blob.core.windows.net/public-cdn-container/clean-documents/sdc-documents/ERAA/ERAA_2025/Preliminary_input_data/PECD-RES.zip",
                 keep_local=True,
                 static=True,
             ),
@@ -51,12 +56,12 @@ rule retrieve_pecd:
 rule retrieve_fb_domains:
         input:
             HTTP.remote(
-		"https://eepublicdownloads.blob.core.windows.net/public-cdn-container/clean-documents/sdc-documents/ERAA/2023/FB-Domain-CORE_Merged.xlsx",
+		"https://eepublicdownloads.blob.core.windows.net/public-cdn-container/clean-documents/sdc-documents/ERAA/ERAA_2025/Preliminary_input_data/FB_domains.zip",
                 keep_local=True,
                 static=True,
             ),
         output:
-            protected("data/fb_domains.xlsx"),
+            protected("data/fb_domains.zip"),
         resources:
             mem_mb=5000,
         retries: 2
@@ -66,23 +71,37 @@ rule retrieve_fb_domains:
 rule retrieve_pemmdb:
         input:
             HTTP.remote(
-		"https://eepublicdownloads.blob.core.windows.net/public-cdn-container/clean-documents/sdc-documents/ERAA/2023/ERAA2023%20PEMMDB%20Generation.xlsx",
+		"https://eepublicdownloads.blob.core.windows.net/public-cdn-container/clean-documents/sdc-documents/ERAA/ERAA_2025/Preliminary_input_data/Dashboard_raw_data.zip",
                 keep_local=True,
                 static=True,
             ),
         output:
-            protected("data/pemmdb.xlsx"),
+            protected("data/pemmdb.zip"),
         resources:
             mem_mb=5000,
         retries: 2
         run:
             move(input[0], output[0])
 
+rule retrieve_thermaldata:
+        input:
+            HTTP.remote(
+		"https://eepublicdownloads.blob.core.windows.net/public-cdn-container/clean-documents/sdc-documents/ERAA/ERAA_2025/Preliminary_input_data/Common_data.zip",
+                keep_local=True,
+                static=True,
+            ),
+        output:
+            protected("data/thermal.zip"),
+        resources:
+            mem_mb=5000,
+        retries: 2
+        run:
+            move(input[0], output[0])
 
 rule retrieve_demand:
         input:
             HTTP.remote(
-		"https://eepublicdownloads.blob.core.windows.net/public-cdn-container/clean-documents/sdc-documents/ERAA/2023/Demand%20Dataset.zip",
+		"hhttps://eepublicdownloads.blob.core.windows.net/public-cdn-container/clean-documents/sdc-documents/ERAA/ERAA_2025/Preliminary_input_data/Demand_data.zip",
                 keep_local=True,
                 static=True,
             ),
@@ -95,26 +114,26 @@ rule retrieve_demand:
         run:
             move(input[0], output[0])
 
-rule retrieve_pecd22:
-        input:
-            HTTP.remote(
-		"https://eepublicdownloads.azureedge.net/clean-documents/sdc-documents/ERAA/2022/data-for-publication/Climate%20Data.zip",
-                keep_local=True,
-                static=True,
-            ),
-        output:
-            protected("data/pecd22.zip"),
-        resources:
-            mem_mb=5000,
-        retries: 2
-	log:	"logs/retrieve_pecd22.log"
-        run:
-            move(input[0], output[0])
+#rule retrieve_pecd22:
+#        input:
+#            HTTP.remote(
+#		"https://eepublicdownloads.azureedge.net/clean-documents/sdc-documents/ERAA/2022/data-for-publication/Climate%20Data.zip",
+#                keep_local=True,
+#                static=True,
+#            ),
+#        output:
+#            protected("data/pecd22.zip"),
+#        resources:
+#            mem_mb=5000,
+#        retries: 2
+#	log:	"logs/retrieve_pecd22.log"
+#        run:
+#            move(input[0], output[0])
 
 rule retrieve_ntc:
         input:
             HTTP.remote(
-		"https://eepublicdownloads.blob.core.windows.net/public-cdn-container/clean-documents/sdc-documents/ERAA/2023/Net%20Transfer%20Capacities.zip",
+		"https://eepublicdownloads.blob.core.windows.net/public-cdn-container/clean-documents/sdc-documents/ERAA/ERAA_2025/Preliminary_input_data/NTCs.zip",
                 keep_local=True,
                 static=True,
             ),
@@ -130,7 +149,9 @@ rule retrieve_ntc:
 rule build_availability_factors:
 	input:	pecd = "data/pecd.zip",
 	params:	data_folder="data/",
-	output:	res_profile = "resources/res_profile.h5",
+	output:	
+		res_profile = "resources/res_profile.h5",
+		inflow = "resources/inflow.h5",
 	script:	"scripts/build_availability_factors.py"
 
 rule build_demand:
@@ -139,11 +160,19 @@ rule build_demand:
 	output:	demand = "resources/demand.h5",
 	script:	"scripts/build_demand.py"
 
-rule build_hydro_inflows:
-	input:	pecd22 = "data/pecd22.zip",
-	params:	unzip_folder = "data/hydro/"
-	output: inflow = "resources/inflow.h5"
-	script:	"scripts/build_hydro_inflows.py"
+rule buildFB:
+	input:	FB_files = "data/fb_domains.zip",
+	params:	data_folder = "data/",
+		climate_year=climate_years,
+		target_year=target_years
+	output:	FB = "resources/FB.h5",
+	script:	"scripts/buildFB.py"
+
+#rule build_hydro_inflows:
+#	input:	pecd22 = "data/pecd22.zip",
+#	params:	unzip_folder = "data/hydro/"
+#	output: inflow = "resources/inflow.h5"
+#	script:	"scripts/build_hydro_inflows.py"
 
 rule build_ntc:
 	input:	ntc="data/ntc.zip",
@@ -152,13 +181,16 @@ rule build_ntc:
 	script:	"scripts/build_ntc.py"
 
 rule build_dispatchable_capacities:
-	input:	pemmdb = "data/pemmdb.xlsx",
+	input:	
+		pemmdb = "data/pemmdb.zip",
+		thermal = "data/thermal.zip"
+	params:	data_folder = "data/"
 	output:	dispatchable_capacities = "resources/dispatchable_capacities.h5",
 	script:	"scripts/build_dispatchable_capacities.py"
 
 rule base_model:
 	input:	
-		commodity_prices = "data/Fuel and CO2 prices_ERAA2023.xlsx",
+		commodity_prices = "data/Dashboard_raw_data\Commodity Prices.csv",
 		inflow = "resources/inflow.h5",
 		pemmdb = "data/pemmdb.xlsx",
 		demand = "resources/demand.h5",
@@ -184,7 +216,7 @@ rule solve_model:
 	input:	network = "resources/networks/{iter}/cy{cy}_ty{ty}.nc",
 		pemmdb = "data/pemmdb.xlsx",
 		ordc_parameters = "data/ordc_parameters.h5",
-		fb_domains = "data/fb_domains.xlsx"
+		fb_domains = "data/fb_domains.zip"
 	params:
 		ty = "{ty}",
 		cy = "{cy}",
@@ -197,7 +229,7 @@ rule solve_model:
 
 
 rule build_ordc_parameters:
-	input:	pemmdb = "data/pemmdb.xlsx",
+	input:	pemmdb = "data/Dashboard_raw_data/Reserve requirements.csv",
 	output:	ordc_hdf="data/ordc_parameters.h5",
 	script:	"scripts/build_ordc_parameters.py"
 
