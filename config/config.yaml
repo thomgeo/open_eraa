@@ -1,9 +1,10 @@
 time_horizon:
-  start:  2025
-  end: 2026
-
+  start:  2028
+#  end: 2025
+  end: 2029
+  
 biomass_price:  7 # EUR/MWh
-
+  
 storage_preopt_aggregation: "48h"
 
 VOLL:  10e3
@@ -27,6 +28,7 @@ EVA:
 
 balancing:
   start_extraction:  "2020-01-01"  
+#  end_extraction:  "2020-01-01"
   end_extraction:  "2022-01-01"
   participation:  ['CCGT', 'OCGT', 'oil', 'biomass', 'other', 'lignite', 'nuclear', 'coal']  
   ORDC:  
