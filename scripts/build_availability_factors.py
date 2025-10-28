@@ -15,15 +15,22 @@ with zipfile.ZipFile(snakemake.input.pecd) as zip_f:
     
 save_hdf = snakemake.output.res_profile
 
-all_files = glob.glob(snakemake.params.data_folder + "PECD/*")
+#line changed to 2024
+all_files = glob.glob(snakemake.params.data_folder + "PECD - RES/Capacity Factors_250716/*")
 
 onshore = [i for i in all_files if "Onshore" in i]
 offshore = [i for i in all_files if "Offshore" in i]
-solar = [i for i in all_files if "SolarPV_" in i]
+PVtrack = [i for i in all_files if "tracking" in i]
+PVfixed = [i for i in all_files if "fixed" in i]
+PVRroof = [i for i in all_files if "residential" in i]
+PVIroof = [i for i in all_files if "industrial" in i]
 csp = [i for i in all_files if "CSP_no" in i]
+cspS = [i for i in all_files if "7h_dis" in i]
 
-missing_csp = ["GR03", "PT00"]
-csp = csp + [i for i in all_files if "CSP_withStorage_7h_preDispatch" in i and any(zone in i for zone in missing_csp)]
+#missing_csp = ["GR03","PT00"]
+#csp = csp + [i for i in all_files if "CSP_withStorage_7h_preDispatch" in i and any(zone in i for zone in missing_csp)]
+# previous instruction changed
+#csp = csp + [i for i in all_files if "CSP_withStorage_7h_dispatched" in i and any(zone in i for zone in missing_csp)]
 
 def get_availabilities(files):
     
@@ -45,11 +52,10 @@ def get_availabilities(files):
 
     return availability_factors
 
-
 onshore_availabilities = get_availabilities(onshore)
-solar_availabilities = get_availabilities(solar)
+solar_availabilities = pd.concat([get_availabilities(PVtrack), get_availabilities(PVfixed), get_availabilities(PVRroof), get_availabilities(PVIroof)])
 offshore_availabilities = get_availabilities(offshore)
-csp_availabilities = get_availabilities(csp)
+csp_availabilities = pd.concat([get_availabilities(csp),get_availabilities(cspS)])
 
 dirname = os.path.dirname(save_hdf)
 
@@ -60,3 +66,5 @@ onshore_availabilities.to_hdf(save_hdf, "onwind")
 offshore_availabilities.to_hdf(save_hdf, "offwind")
 solar_availabilities.to_hdf(save_hdf, "solar")
 csp_availabilities.to_hdf(save_hdf, "CSP")
+
+

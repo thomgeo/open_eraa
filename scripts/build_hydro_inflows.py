@@ -7,65 +7,73 @@ import zipfile
 import glob
 import os 
 
-unzip_folder = snakemake.params.unzip_folder
-save_hdf = snakemake.output.inflow
+save_hdf2 = snakemake.output.inflow
 
+all_files2 = glob.glob(snakemake.params.data_folder + "PECD - RES/Hydro Inflows_250704/*")
 
+HRI = [i for i in all_files2 if "HRI" in i]
+HRR = [i for i in all_files2 if "HRR" in i]
+HOL = [i for i in all_files2 if "HOL" in i]
+HPI = [i for i in all_files2 if "HPI" in i]
 
-with zipfile.ZipFile(snakemake.input.pecd22) as zip_f:
-    zip_f.extract("Climate Data/Hydro Inflows.zip", unzip_folder)
+def get_inflows(files):
 
-with zipfile.ZipFile(unzip_folder + "Climate Data/Hydro Inflows.zip") as zip_f:
-    zip_f.extractall(unzip_folder)
+   inflow_zone = pd.DataFrame()
 
+   for file in files:
 
-files = glob.glob(unzip_folder + "/Hydro Inflows/*")
-
-inflow = pd.DataFrame()
-for file in files:
-
-    print(file)
     
-    excel_file = pd.ExcelFile(file)
-    inflow_zone = pd.DataFrame()
+  
+      inflow_zone_tech = pd.read_csv(file, header=0).iloc[:,1:]
+      
+        
+      
+      inflow_zone_tech.columns = range(1, 37)
+      inflow_zone_tech.columns = inflow_zone_tech.columns.astype(str)
+      #print(inflow_zone_tech.index)
+      inflow_zone_tech.index = inflow_zone_tech.index*24*7
+      
+      scaler = pd.Series(inflow_zone_tech.index.to_list() + [8760]).diff().shift(-1).dropna()
+      scaler.index *=(24*7)
+   
+      inflow_zone_hourly = inflow_zone_tech.reindex(range(8760)).fillna(method="ffill")
+      #print(inflow_zone_hourly.index)
+      inflow_zone_hourly = inflow_zone_hourly.div(scaler.reindex(inflow_zone_hourly.index).fillna(method="ffill"), axis=0)    
 
-    for sheet in ['Run of River', 'Pondage', 'Reservoir', 'Pump storage - Open Loop', 'Pump Storage - Closed Loop']:
-
-        inflow_zone_tech = pd.read_excel(file, sheet, header=12).iloc[:,17:17+35]
-        inflow_zone_tech.columns = range(1982, 2017)
-        inflow_zone_tech.columns = inflow_zone_tech.columns.astype(str)
-        inflow_zone_tech.index = inflow_zone_tech.index*24*7
-
-        scaler = pd.Series(inflow_zone_tech.index.to_list() + [8760]).diff().shift(-1).dropna()
-        scaler.index *=(24*7)
-
-        inflow_zone_hourly = inflow_zone_tech.reindex(range(8760)).fillna(method="ffill")
-        inflow_zone_hourly = inflow_zone_hourly.div(scaler.reindex(inflow_zone_hourly.index).fillna(method="ffill"), axis=0)    
-        inflow_zone[sheet] = inflow_zone_hourly.stack()
-
-    inflow_zone = inflow_zone.stack()
-    inflow_zone.index.names = ["hour", "climate year", "technology"]
-    inflow_zone.name = (file.split("_")[1], file.split("_")[-1][:4])
-
-    inflow = pd.concat([inflow, inflow_zone], axis=1)
+      inflow_zone_hourly=inflow_zone_hourly.stack();
+      inflow_zone_hourly.name = (file.split("/")[-1].split("_")[0], os.path.splitext(file.split("_")[-1])[0]) 
+   
+      inflow_zone = pd.concat([inflow_zone, inflow_zone_hourly], axis=1)
+      
+   
+   inflow_zone = inflow_zone.T.set_index((i for i in inflow_zone.columns)).T.stack([0,1])
+   inflow_zone.index.names = ["hour", "climate year", "target year", "zone"]
+   #print(inflow_zone.index.nlevels)   
+      
+   return inflow_zone
+   
+inflow = pd.DataFrame()
 
 
-# In[19]:
-
+HRI_inflow = get_inflows(HRI)
+#inflow = pd.concat([inflow, HRI_inflow], axis=1)
+HRR_inflow = get_inflows(HRR)
+#inflow = pd.concat([inflow, HRR_inflow], axis=1)
+HOL_inflow = get_inflows(HOL)
+#inflow = pd.concat([inflow, HOL_inflow], axis=1)
+HPI_inflow = get_inflows(HPI)
+#inflow = pd.concat([inflow, HPI_inflow], axis=1)
 
 inflow = inflow.T.set_index((i for i in inflow.columns)).T.stack(0)
 
-dirname = os.path.dirname(save_hdf)
+dirname = os.path.dirname(save_hdf2)
 
 if not os.path.exists(dirname):
     os.mkdir(dirname)
-    
-    
-inflow.stack().to_hdf(save_hdf, "inflow")
-
-
-# In[ ]:
-
-
+      
+HRI_inflow.to_hdf(save_hdf2, "hydro")
+HRR_inflow.to_hdf(save_hdf2, "ROR")
+HOL_inflow.to_hdf(save_hdf2, "PHS open")
+HPI_inflow.to_hdf(save_hdf2, "pondage")
 
 
