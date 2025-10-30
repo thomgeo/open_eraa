@@ -101,7 +101,7 @@ rule retrieve_thermaldata:
 rule retrieve_demand:
         input:
             HTTP.remote(
-		"hhttps://eepublicdownloads.blob.core.windows.net/public-cdn-container/clean-documents/sdc-documents/ERAA/ERAA_2025/Preliminary_input_data/Demand_data.zip",
+		"https://eepublicdownloads.blob.core.windows.net/public-cdn-container/clean-documents/sdc-documents/ERAA/ERAA_2025/Preliminary_input_data/Demand_data.zip",
                 keep_local=True,
                 static=True,
             ),
