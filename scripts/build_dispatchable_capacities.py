@@ -140,7 +140,7 @@ def build_thermal_properties(properties):
 
     properties.set_index(properties.index.remove_unused_levels(), inplace=True)
 
-    properties.to_csv('properties.csv', index=False)
+    #properties.to_csv('properties.csv', index=False)
 
     properties_matching = pd.Series(
         ["OCGT", "coal", "oil", "hydrogen", "oil", "lignite", "nuclear", "oil"],
@@ -186,7 +186,7 @@ def build_thermal_properties(properties):
     
 def prepare_capacity_table(capacity):
     
-    capacity.to_csv('capacityprio25.csv', index=False)
+    #capacity.to_csv('capacityprio25.csv', index=False)
     
     capacity_matching = pd.Series(
         ["biomass", "coal", "oil", "hydrogen", "oil", "gas", "nuclear", "biomass"],
@@ -195,7 +195,7 @@ def prepare_capacity_table(capacity):
 
     capacity = capacity.groupby(capacity_matching, ).sum()
     
-    capacity.to_csv('capacity25.csv', index=False)
+    #capacity.to_csv('capacity25.csv', index=False)
     
     pm_plants = pm.powerplants()
     gas_share = pd.DataFrame()
@@ -253,11 +253,11 @@ mask = properties_raw.index.get_level_values(0).str.contains("fuel cell", case=F
 properties_raw = properties_raw[~mask]
 properties_raw = properties_raw.fillna(0)
 
-properties_raw.to_csv('propertiesprev.csv', index=False)
+#properties_raw.to_csv('propertiesprev.csv', index=False)
 
 properties = build_thermal_properties(properties_raw)
 
-properties.to_csv('propertiesfinal.csv', index=False)
+#properties.to_csv('propertiesfinal.csv', index=False)
 
 index = ["Biofuel", "Hard coal", 'Heavy oil', 'Hydrogen', 'Light oil', 'Natural gas','Nuclear','Small biomass']
 filtered_rows = filtered_rows[filtered_rows['Technology'].isin(index)]
@@ -284,4 +284,4 @@ dispatchable_plants = pd.concat([existing, new])
 
 dispatchable_plants.to_hdf(snakemake.output.dispatchable_capacities, "dispatchable")
 
-dispatchable_plants.to_csv('output_pandas.csv', index=False)
+#dispatchable_plants.to_csv('output_pandas.csv', index=False)
