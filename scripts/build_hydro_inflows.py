@@ -7,14 +7,14 @@ import zipfile
 import glob
 import os 
 
-save_hdf2 = snakemake.output.inflow
+save_hdf = snakemake.output.inflow
 
-all_files2 = glob.glob(snakemake.params.data_folder + "PECD - RES/Hydro Inflows_250704/*")
+all_files = glob.glob(snakemake.params.data_folder + "PECD - RES/Hydro Inflows_250704/*")
 
-HRI = [i for i in all_files2 if "HRI" in i]
-HRR = [i for i in all_files2 if "HRR" in i]
-HOL = [i for i in all_files2 if "HOL" in i]
-HPI = [i for i in all_files2 if "HPI" in i]
+HRI = [i for i in all_files if "HRI" in i]
+HRR = [i for i in all_files if "HRR" in i]
+HOL = [i for i in all_files if "HOL" in i]
+HPI = [i for i in all_files if "HPI" in i]
 
 def get_inflows(files):
 
@@ -66,14 +66,14 @@ HPI_inflow = get_inflows(HPI)
 
 inflow = inflow.T.set_index((i for i in inflow.columns)).T.stack(0)
 
-dirname = os.path.dirname(save_hdf2)
+dirname = os.path.dirname(save_hdf)
 
 if not os.path.exists(dirname):
     os.mkdir(dirname)
       
-HRI_inflow.to_hdf(save_hdf2, "hydro")
-HRR_inflow.to_hdf(save_hdf2, "ROR")
-HOL_inflow.to_hdf(save_hdf2, "PHS open")
-HPI_inflow.to_hdf(save_hdf2, "pondage")
+HRI_inflow.to_hdf(save_hdf, "hydro")
+HRR_inflow.to_hdf(save_hdf, "ROR")
+HOL_inflow.to_hdf(save_hdf, "PHS open")
+HPI_inflow.to_hdf(save_hdf, "pondage")
 
 

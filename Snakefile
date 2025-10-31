@@ -18,11 +18,12 @@ rule retrieve_all_data:
 		"data/thermal.zip",
 		"resources/res_profile.h5",
 		"resources/demand.h5",
-		"resources/inflow.h5",	
+		#"resources/inflow.h5",	
 		"data/ntc.zip",
 		"resources/ntcs.h5",
 		#"resources/FB.h5",
-		"resources/dispatchable_capacities.h5"	
+		"resources/dispatchable_capacities.h5",
+		"resources/bidding_zones.geojson"
 
 subworkflow technology_data:
 	workdir: "../technology-data"
@@ -114,6 +115,50 @@ rule retrieve_demand:
         run:
             move(input[0], output[0])
 
+rule retrieve_nuts24_shapes:
+		input:
+			HTTP.remote(
+		"https://gisco-services.ec.europa.eu/distribution/v2/nuts/download/ref-nuts-2024-01m.geojson.zip",
+			keep_local=True,
+			static=True,
+			)
+		output:
+			protected("data/nuts24_regions.zip")
+		retries: 2
+		run:
+			move(input[0], output[0])
+			
+rule retrieve_nuts13_shapes:
+		input:
+			HTTP.remote(
+		"https://gisco-services.ec.europa.eu/distribution/v2/nuts/download/ref-nuts-2013-01m.geojson.zip",
+			keep_local=True,
+			static=True,
+			)
+		output:
+			protected("data/nuts13_regions.zip")
+		retries: 2
+		run:
+			move(input[0], output[0])
+
+
+
+
+rule retrieve_moldova_shapes:
+		input:
+			HTTP.remote(
+		"https://data.humdata.org/dataset/3cd53554-3ad7-4aae-b862-9bbbc6fa3bfc/resource/e93ce536-41e6-41ed-a3b4-71268c1d677e/download/mda_admbnda_unhcr_20220510_shp.zip",
+			keep_local=True,
+			static=True,
+			)
+		output:
+			protected("data/moldova_regions.zip")
+		retries: 2
+		run:
+			move(input[0], output[0])
+
+
+
 #rule retrieve_pecd22:
 #        input:
 #            HTTP.remote(
@@ -151,7 +196,7 @@ rule build_availability_factors:
 	params:	data_folder="data/",
 	output:	
 		res_profile = "resources/res_profile.h5",
-		inflow = "resources/inflow.h5",
+		#inflow = "resources/inflow.h5",
 	script:	"scripts/build_availability_factors.py"
 
 rule build_demand:
@@ -187,6 +232,17 @@ rule build_dispatchable_capacities:
 	params:	data_folder = "data/"
 	output:	dispatchable_capacities = "resources/dispatchable_capacities.h5",
 	script:	"scripts/build_dispatchable_capacities.py"
+
+rule build_bidding_zones:
+	input:
+		nuts24 = "data/nuts24_regions.zip",
+		nuts13 = "data/nuts13_regions.zip",
+		moldova = "data/moldova_regions.zip",
+	params:
+		extract_to = "data/nuts_regions/",
+	output:
+		bidding_zones = "resources/bidding_zones.geojson"
+	script:	"scripts/build_bidding_zones.py"
 
 rule base_model:
 	input:	

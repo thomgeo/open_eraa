@@ -68,3 +68,5 @@ solar_availabilities.to_hdf(save_hdf, "solar")
 csp_availabilities.to_hdf(save_hdf, "CSP")
 
 
+print("Made it here!")
+

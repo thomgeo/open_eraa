@@ -10,8 +10,8 @@ cluster:
     --error logs/{rule}_{wildcards}.e
     --job-name ERAA-{rule}-{wildcards}
 #restart-times: 3
-resources:
-    - gurobi=1
-rerun-incomplete: True
-latency-wait: 35
+#resources:
+#    - gurobi=1
+#rerun-incomplete: True
+#latency-wait: 35
 keep-going: True
