@@ -74,18 +74,15 @@ def extract_shape_files():
         zip_f.extract("mda_admbnda_unhcr_20220510_SHP/mda_admbnda_adm0_unhcr_20220510.shx",snakemake.params.extract_to)
 
 
-# In[5]:
-
-
 def add_missing_zones():
     
-    moldova = gpd.read_file("{}mda_admbnda_unhcr_20220510_SHP/mda_admbnda_adm0_unhcr_20220510.shp".format(snakemake.params.extract_to))
+    moldova = gpd.read_file("data/nuts_regions/mda_admbnda_unhcr_20220510_SHP/mda_admbnda_adm0_unhcr_20220510.shp")
     
-    nuts0 = gpd.read_file("{}NUTS_RG_01M_2024_3035_LEVL_0.geojson".format(snakemake.params.extract_to))
+    nuts0 = gpd.read_file("data/nuts_regions/NUTS_RG_01M_2024_3035_LEVL_0.geojson")
     nuts0 = nuts0.to_crs("EPSG:4326")
     nuts0.set_index("NUTS_ID", inplace=True)
     
-    nuts1 = gpd.read_file("{}NUTS_RG_01M_2013_3035_LEVL_1.geojson".format(snakemake.params.extract_to))
+    nuts1 = gpd.read_file("data/nuts_regions/NUTS_RG_01M_2013_3035_LEVL_1.geojson")
     nuts1 = nuts1.to_crs("EPSG:4326")
     nuts1.set_index("NUTS_ID", inplace=True)
     
@@ -95,6 +92,14 @@ def add_missing_zones():
     bidding_zones.loc["DE00", "geometry"] = nuts0.loc["DE", "geometry"]
     bidding_zones.loc["LUG1", "geometry"] = nuts0.loc["LU", "geometry"]
     bidding_zones.loc["IE00", "geometry"] = nuts0.loc["IE", "geometry"]
+    bidding_zones.loc["CY00", "geometry"] = nuts0.loc["CY", "geometry"]
+    bidding_zones.loc["MT00", "geometry"] = nuts0.loc["MT", "geometry"]
+    bidding_zones.loc["BA00", "geometry"] = nuts0.loc["BA", "geometry"]
+    bidding_zones.loc["RS00", "geometry"] = nuts0.loc["RS", "geometry"]
+    bidding_zones.loc["MK00", "geometry"] = nuts0.loc["MK", "geometry"]
+    bidding_zones.loc["ME00", "geometry"] = nuts0.loc["ME", "geometry"]
+    bidding_zones.loc["AL00", "geometry"] = nuts0.loc["AL", "geometry"]
+    bidding_zones.loc["XK00", "geometry"] = nuts0.loc["XK", "geometry"]
     #bidding_zones.loc["TR00", "geometry"] = nuts0.loc["TR", "geometry"]
     bidding_zones.loc["UA00", "geometry"] = nuts0.loc["UA", "geometry"]
     bidding_zones.loc["UK00", "geometry"] = nuts1.query("CNTR_CODE == 'UK'").drop("UKN").unary_union
