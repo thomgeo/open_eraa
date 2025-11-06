@@ -190,7 +190,7 @@ rule build_dispatchable_capacities:
 
 rule base_model:
 	input:	
-		commodity_prices = "data/Dashboard_raw_data\Commodity Prices.csv",
+		commodity_prices = "data/Dashboard_raw_data/Commodity Prices.csv",
 		inflow = "resources/inflow.h5",
 		pemmdb = "data/pemmdb.xlsx",
 		demand = "resources/demand.h5",
