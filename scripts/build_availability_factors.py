@@ -15,7 +15,7 @@ with zipfile.ZipFile(snakemake.input.pecd) as zip_f:
     
 save_hdf = snakemake.output.res_profile
 
-#line changed to 2024
+#line changed to 2025
 all_files = glob.glob(snakemake.params.data_folder + "PECD - RES/Capacity Factors_250716/*")
 
 onshore = [i for i in all_files if "Onshore" in i]
@@ -53,9 +53,13 @@ def get_availabilities(files):
     return availability_factors
 
 onshore_availabilities = get_availabilities(onshore)
-solar_availabilities = pd.concat([get_availabilities(PVtrack), get_availabilities(PVfixed), get_availabilities(PVRroof), get_availabilities(PVIroof)])
+PVtrack_availabilities = get_availabilities(PVtrack)
+PVfixed_availabilities = get_availabilities(PVfixed)
+PVRroof_availabilities = get_availabilities(PVRroof)
+PVIroof_availabilities = get_availabilities(PVIroof)
 offshore_availabilities = get_availabilities(offshore)
-csp_availabilities = pd.concat([get_availabilities(csp),get_availabilities(cspS)])
+csp_availabilities = get_availabilities(csp)
+csps_availabilities=get_availabilities(cspS)
 
 dirname = os.path.dirname(save_hdf)
 
@@ -64,7 +68,11 @@ if not os.path.exists(dirname):
 
 onshore_availabilities.to_hdf(save_hdf, "onwind")
 offshore_availabilities.to_hdf(save_hdf, "offwind")
-solar_availabilities.to_hdf(save_hdf, "solar")
+PVtrack_availabilities.to_hdf(save_hdf, "PVtrack")
+PVfixed_availabilities.to_hdf(save_hdf, "PVfixed")
+PVRroof_availabilities.to_hdf(save_hdf, "PVRroof")
+PVIroof_availabilities.to_hdf(save_hdf, "PVIroof")
 csp_availabilities.to_hdf(save_hdf, "CSP")
+csps_availabilities.to_hdf(save_hdf, "CSPS")
 
 

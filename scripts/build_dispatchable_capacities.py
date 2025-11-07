@@ -18,19 +18,22 @@ import numpy as np
 def build_capacity_table(yf):
 
     capacity_years = pd.DataFrame()
+    capacity_disp = pd.DataFrame()
+ 
 
     for year, df in yf.items():
+   
+        capacity_years[year], capacity_disp[year] = [
+        df.stack().astype(float) for df in prepare_capacity_table(yf[year])
+]
 
-#        capacity_raw = pd.read_excel(excel_file, sheet, header=1, index_col=1).dropna(how="all", axis=1).iloc[:20]
-        capacity_years[year] = prepare_capacity_table(yf[year]).stack().astype(float)
-    
-    
+    capacity_disp.columns = capacity_disp.columns.astype(int)
+    capacity_disp = capacity_disp.reindex(years,axis=1)
     capacity_years.columns = capacity_years.columns.astype(int)
     capacity_years = capacity_years.reindex(years,axis=1)
     #capacity_years.loc[distributed_resources, :] = capacity_years.loc[distributed_resources, :].interpolate(axis=1)
-    
 
-    return capacity_years.fillna(method="ffill", axis=1)
+    return [capacity_disp.fillna(method="ffill", axis=1), capacity_years.fillna(method="ffill", axis=1)]
 
 
 # In[43]:
@@ -188,6 +191,9 @@ def prepare_capacity_table(capacity):
         fill_value=0
     )
 
+
+    index = ["biomass", "coal", 'hydrogen', 'lignite', 'nuclear','oil','CCGT','OCGT']
+
     gas_share.index = [pycountry.countries.lookup(i).alpha_2 for i in gas_share.index]
 
     gas_share["OCGT"] = 1- gas_share["CCGT"]
@@ -200,7 +206,9 @@ def prepare_capacity_table(capacity):
         gas_share.multiply(capacity.loc["gas"],axis=0).T
     ])
     
-    return capacity
+    capacity_disp = capacity.reindex(index=index).dropna(how='all').fillna(0)
+    
+    return [capacity,capacity_disp]
 
 years = range(2028, 2036)
 
@@ -245,14 +253,13 @@ allDSR = pd.concat(allDSR, names=["TARGET_YEAR"]).fillna(0)
 
 allDSR.to_hdf(snakemake.output.dsr, "dsr")
 
-#excel_file = pd.csvFile(file1)
 excel_file2 = pd.ExcelFile(file2)
 
 properties_raw = pd.read_csv(snakemake.params.data_folder + "Dashboard_raw_data/GenerationCapacities.csv", header=0)
 
 filtered_rows = properties_raw[
     properties_raw.apply(
-        lambda row: row.astype(str).str.contains("ERAA 2025 post-CfE").any(), axis=1
+        lambda row: row.astype(str).str.contains("ERAA 2025 pre-CfE").any(), axis=1
     )
 ]
 
@@ -270,7 +277,10 @@ tech_mapping = pd.Series(
 
 filtered_rows["Technology"] = filtered_rows["Technology"].map(tech_mapping)
 
-
+filtered_rows .loc[
+    (filtered_rows["Technology"] == "ROR") & (filtered_rows["Market_Node"] == "UKNI"),
+    "Value"
+] = 0
 
 allCap = {
     year: (
@@ -284,30 +294,16 @@ allCap = {
 allCap_df = pd.concat(allCap, names=["Target year"]).fillna(0)
 
 allCap_df.to_hdf(snakemake.output.all_capacities, "capacities")
-
-
+allCap_df.to_csv('allCapdf.csv', index=False)
 
 allCap = {
     year: (
         group.groupby(["Technology", "Market_Node"])["Value"]
              .sum()
-             .unstack(fill_value=0)
+             .unstack(fill_value=0)  
     )
     for year, group in filtered_rows.groupby("Target year")
 }
-
-# Combine all years into a single DataFrame
-allCap_long = pd.concat(
-    {year: df for year, df in allCap.items()},
-    names=["Target year"]
-).reset_index()  # brings Target_year and Technology to columns
-
-# Fill missing values with 0
-allCap_long = allCap_long.fillna(0)
-
-# Save to HDF5
-
-allCap_long.to_csv('allCap.csv', index=False)
 
 #distributed_resources = ["onwind", "offwind", "CSP","solar", "battery"]
 dispatchable = ["CCGT", "OCGT", 'biomass', 'coal','lignite', 'nuclear','oil','hydrogen']
@@ -330,22 +326,12 @@ properties = build_thermal_properties(properties_raw)
 
 #properties.to_csv('propertiesfinal.csv', index=False)
 
-index = ["biomass", "coal", 'gas', 'hydrogen', 'lignite', 'nuclear','oil']
-#allCap_long= allCap_long[allCap_long['Technology'].isin(index)]
+[capacity,investcap] = build_capacity_table(allCap)
 
-yf = {
-    year: group.pivot_table(
-        index='Technology',         # rows = Technology
-        #columns='Market_Node',      # columns = Market_Node
-        #values='Value',             # cell values
-    ).reindex(index=index).fillna(0)
-    for year, group in allCap_long.groupby('Target year')
-}
-
-capacity = build_capacity_table(yf)
+investcap.to_csv('InvestCap.csv', index=False)
+investcap.to_hdf(snakemake.output.investcap, "investcap")
 
 capacity.to_csv('ManipulatedCap.csv', index=False)
-#capacity.to_hdf(snakemake.output.all_capacities, "capacities")
 
 existing = build_legacy_caps()
 new = build_new_investments()
