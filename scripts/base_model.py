@@ -9,124 +9,170 @@ import powerplantmatching as pm
 import pypsa
 import pycountry
 import os 
+import h5py
+
+import time
 
 
 # In[2]:
 
 
-def prepare_capacity_table(capacity):
-    
-    capacity_matching = pd.Series(
-        ["nuclear", "lignite", "coal", "gas", "oil", "other", "ROR", "ROR", "reservoir", "reservoir", "PHS",
-         "reservoir (pumping)", "PHS (pumping)", "onwind", "offwind", "CSP", "solar", "biomass", "biomass", "battery"],
-        capacity.index
-    )
-
-    capacity = capacity.groupby(capacity_matching, ).sum()
-    
-    pm_plants = pm.powerplants()
-    gas_share = pd.DataFrame()
-    gas_share["CCGT"] = pm_plants.groupby(["Fueltype", "Technology", "Country"]).sum(numeric_only=True).loc["Natural Gas", "CCGT",:].Capacity.div(
-        pm_plants.groupby(["Fueltype", "Technology", "Country"]).sum(numeric_only=True).loc["Natural Gas", :].Capacity.groupby(level=1).sum(),
-        fill_value=0
-    )
-
-    gas_share.index = [pycountry.countries.lookup(i).alpha_2 for i in gas_share.index]
-
-    gas_share["OCGT"] = 1- gas_share["CCGT"]
-
-    gas_share = gas_share.reindex(capacity.columns.str[:2]).fillna(gas_share.mean())
-    gas_share.index = capacity.columns
-
-    capacity = pd.concat([
-        capacity.drop("gas"),
-        gas_share.multiply(capacity.loc["gas"],axis=0).T
-    ])
-    
-    return capacity
-
-
-# In[3]:
-
-def build_capacity_table():
-
-    capacity_years = pd.DataFrame()
-
-    for sheet in plant_sheets.index:
-
-        capacity_raw = pd.read_excel(excel_file, sheet, header=1, index_col=1).dropna(how="all", axis=1).iloc[:20]
-
-        capacity_years[sheet[2:]] = prepare_capacity_table(capacity_raw).stack().astype(float)
-
-    capacity_years.columns = capacity_years.columns.astype(int)
-    capacity_years = capacity_years.reindex(years,axis=1)
-    capacity_years.loc[distributed_resources, :] = capacity_years.loc[distributed_resources, :].interpolate(axis=1)
-
-    return capacity_years.fillna(method="ffill", axis=1)[year].unstack(1)
-
 def build_inflows(inflows):
+
     base_year_hydro = pd.Series(
-        inflows.index.levels[4].astype(int), 
-        inflows.index.levels[4]).subtract(year).abs().idxmin()
+    inflows.index.levels[3].astype(int), 
+    inflows.index.levels[3]).subtract(year).abs().idxmin()
 
-    inflows = inflows.loc[:, str(climate_year), :, :, base_year_hydro]
-
-    inflow_grouper = pd.Series(["ROR", "PHS", "reservoir", "reservoir", "ROR"], inflows.index.levels[1])
-
-    inflows = inflows.unstack(1).groupby(inflow_grouper, axis=1).sum().multiply(1e3) # conversion to MWh
+    inflows = inflows.loc[:, str(climate_year),:, base_year_hydro,:]
     
+    inflow_grouper = pd.Series(["hydro", "ROR", "PHS Open", "pondage"],inflows.index.levels[2])
+    
+    #inflow_grouper.to_csv('commodity_filtered.csv', index=False)
+
+    inflows = inflows.unstack(2).groupby(inflow_grouper, axis=1).sum().multiply(1) 
     inflows = inflows.unstack(0).stack(0)
+    
     inflows.index = [" ".join(i) for i in inflows.index]
     
     inflows = inflows.T
     
-    inflows.index = snapshots
-    
+    inflows.index = snapshots  
+   
+    inflows.to_csv('inflows.csv', index=False)
+   
     return inflows
 
 
 # In[6]:
 
 
-def add_existing_storage():  
+def add_existing_storage(all_c):  
  
-    storage = capacity.loc[["PHS", "reservoir", "battery"]].unstack().reset_index().copy()
+ 
+    hydro = pd.read_csv(snakemake.input.hydrodata,header=0)
+    
+    all_c = all_c.reset_index(name="Value")
+    
+    closest_year = all_c.loc[(all_c['Target year'] - base_year).abs().idxmin(), 'Target year']
+
+    all_cy = all_c[all_c['Target year'] == closest_year]
+    
+    #all_cy.to_csv('all_cy.csv', index=False)
+
+    all_cdata = (all_cy
+      .pivot(index="Technology", columns="Market_Node", values=all_cy.columns[-1]) 
+      )
+
+    storage = all_cdata.loc[["PHS","PHS Open","hydro","pondage","battery"]].unstack().reset_index().copy()
     storage.columns = ["bus", "carrier", "p_nom"]
     storage.index = storage.bus + " " + storage.carrier
 
-    p_min_pu = capacity.loc[["PHS (pumping)", "reservoir (pumping)",]].div(capacity.loc[["PHS", "reservoir"]].add(1e-5).values)
-    p_min_pu.index = ["PHS", "reservoir"]
+    hydro = hydro[hydro.apply(lambda row: row.astype(str).str.contains("ERAA 2025 pre-CfE").any(), axis=1)]
+    #hydro.to_csv('hydro.csv', index=False)
 
-    storage["p_min_pu"] = (
-        p_min_pu.unstack()
-        .reindex(pd.MultiIndex.from_arrays([storage.bus, storage.carrier]))
-    ).values
+    
+    target_year = hydro.loc[hydro["TARGET_YEAR"].sub(base_year).abs().idxmin(), "TARGET_YEAR"]
+    hydro_y = hydro[hydro["TARGET_YEAR"] == target_year]
+    
+    #hydro_y.to_csv('hydroyear.csv', index=False)
+    
+    hydro_pump = -(
+    hydro_y.loc[
+        hydro_y["PEMMDB_PLANT_TYPE"].isin(["Closed loop pumping", "Open loop pumping"])
+    ]
+    .pivot(index="PEMMDB_PLANT_TYPE", columns="MARKET_NODE", values="MAX PUMPING CAP (MW)")
+    .fillna(0)
+    .rename(index={
+        "Closed loop pumping": "PHS",
+        "Open loop pumping": "PHS Open"
+    })
+)
+
+    hydro_pump=hydro_pump.drop(columns=["UA00"], errors='ignore').loc[:, (hydro_pump != 0).any(axis=0)]
+    #hydro_pump.to_csv('hydrostorage.csv', index=False)      
+
+    hydro_cap=all_cdata.loc[all_cdata.index.isin(["PHS", "PHS Open"])]
+    
+    #hydro_cap.loc[:, hydro_cap.notna().any(axis=0)].to_csv('hydrocapacity.csv', index=False)
+
+    p_min_pu = hydro_pump.div(hydro_cap.loc[:, hydro_cap.notna().any(axis=0)].add(1e-5).values).fillna(0)
+    p_min_pu.index = ["PHS", "PHS Open"]
+    
+    p_min_pu.to_csv('p_min_pu.csv', index=False)
+    
+    valid_countries = p_min_pu.columns[(p_min_pu != 0).any(axis=0)]
+    p_min_pu_filtered = p_min_pu[valid_countries]
+    p_min_pu_stacked = p_min_pu_filtered.stack().fillna(0)  # MultiIndex: (carrier, bus)
+    storage_index = pd.MultiIndex.from_arrays([storage.carrier, storage.bus])
+    storage["p_min_pu"] = p_min_pu_stacked.reindex(storage_index).values 
+    
+    #storage.to_csv('storage.csv', index=False)
 
     storage.loc[storage.carrier=="battery", "p_min_pu"] = -1
+    storage.loc[storage.carrier=="hydro", "p_min_pu"] = 0
+    storage.loc[storage.carrier=="pondage", "p_min_pu"] = 0
 
     storage = storage[storage.p_nom >0]
+    
+    #storage.to_csv('storage.csv', index=False)
+    
+    storage_inflows = inflows[storage.loc[storage.carrier=="PHS Open"].index]
+    
+    #storage_inflows .to_csv('storage_inflows0.csv', index=False)
+    
+    storage_inflows = pd.concat([storage_inflows,inflows[storage.loc[storage.carrier == "hydro"].index]],axis=1)
+    storage_inflows = pd.concat([storage_inflows,inflows[storage.loc[storage.carrier == "pondage"].index]],axis=1)
+    
+    storage_inflows.to_csv('storage_inflows.csv', index=False)
+    
+    hydro_stored = 1000000*(hydro_y.loc[hydro_y["PEMMDB_PLANT_TYPE"].isin(["Closed loop pumping", "Open loop pumping", "Reservoir", "Pondage"])]
+      .pivot(index="PEMMDB_PLANT_TYPE", columns="MARKET_NODE", values="Storage Capacity [TWh]")
+      .fillna(0)
+      .rename(index={
+          "Closed loop pumping": "PHS",
+          "Open loop pumping": "PHS Open",
+          "Reservoir": "hydro",
+          "Pondage": "pondage"                    
+      })
+)       
 
-    storage_inflows = inflows[storage.loc[storage.carrier=="reservoir"].index]
-
-    storage_capacity_raw = pd.read_excel(excel_file, sheet, index_col=1, header=28).dropna(how="all", axis=1)
-
-    storage_capacity= storage_capacity_raw.groupby(
-        ["ROR", "reservoir", "reservoir", "PHS", "battery"]
-    ).sum()
-
-    storage["max_hours"] = storage_capacity.unstack().reindex(
-        pd.MultiIndex.from_arrays(
-            [storage.bus, storage.carrier]  
-        )
-    ).div(
-        storage.p_nom.values
-    ).values
-
-    map_storage = pd.Series( ["battery inverter", "PHS", "hydro"], ["battery", "PHS", "reservoir"])
+    print(hydro_stored)
+        
+    battery = pd.read_csv(snakemake.input.battery,header=0)
+    battery = battery[battery.apply(lambda row: row.astype(str).str.contains("ERAA 2025 pre-CfE").any(), axis=1)]
+    battery.to_csv('battery.csv', index=False)
+    
+    battery_y = battery[battery["TARGET_YEAR"] == base_year]
+    
+    battery_y.to_csv('battery_y.csv', index=False)
+    
+    battery_by_node = battery_y.groupby("MARKET_NODE")["STORAGE CAPACITY (MWh)"].sum().reset_index()
+    
+    battery_by_node.to_csv('battery_y.csv', index=False)
+    battery_by_node["Technology"] = "battery"
+    battery_pivot = battery_by_node.pivot(index="Technology", columns="MARKET_NODE", values="STORAGE CAPACITY (MWh)").fillna(0)
+    
+    battery_pivot.to_csv('battery_pivot.csv', index=False)
+    
+    storage_capacity=pd.concat([hydro_stored, battery_pivot])
+    
+    storage_capacity.to_csv('storage_capacity.csv', index=False)
+      
+    valid_countries = storage_capacity.columns[(storage_capacity != 0).any(axis=0)]
+    stored_filtered = storage_capacity[valid_countries]
+        
+    stored_stacked = stored_filtered.stack() 
+    
+    storage_index = pd.MultiIndex.from_arrays([storage.carrier, storage.bus])
+    
+    #Data in #.## TWh, so 5000 MWh as minimum
+    storage["max_hours"] = stored_stacked.reindex(storage_index).clip(lower=5000).div(storage.p_nom.values).values 
+       
+    map_storage = pd.Series( ["battery inverter", "PHS", "hydro","hydro","hydro"], ["battery", "PHS", "PHS Open","hydro","pondage"])
 
     storage["efficiency_store"] = technology_data.loc[:, "efficiency", :].reindex(storage.carrier.map(map_storage)).value.values
     
-    print(storage.efficiency_store)
+    storage.to_csv('storage.csv', index=False)
 
     n.madd(
         "StorageUnit",
@@ -138,54 +184,99 @@ def add_existing_storage():
 
 
 def prepare_commodity_prices(commodity_prices):
-
-    commodity_prices = commodity_prices_raw.iloc[:, 2:].groupby(commodity_prices.index).mean()
-    commodity_prices = commodity_prices.groupby(["co2", "CCGT", "coal", "oil", "hydrogen", "oil", "lignite", "nuclear", "oil"]).mean()
-       
-    converter = pd.DataFrame(3.6 , commodity_prices.index, commodity_prices.columns)
-    converter["CO2"] = 3.6/1000
-    converter.loc["co2"] = 1
     
+    fuels = ["co2", "gas", "coal", "oil","lignite", "hydrogen", "nuclear"]
+    C02= [57,0, 94, 0,101, 0, 85.3] #gas, co2, coal, hydrogen, lignite, nuclear, oil
+        
+    def assign_fuel_group(fuel_name):
+      fuel_name_lower = str(fuel_name).lower()
+      for f in fuels:
+          if f.lower() in fuel_name_lower:
+              return "CCGT" if f.lower() == "gas" else f
+      return None
+    
+    commodity_prices["Fuel"] = commodity_prices["Fuel"].apply(assign_fuel_group)  
+    
+    commodity_prices_filtered = commodity_prices[commodity_prices["Fuel"].notna()]
+    
+    commodity_prices["Fuel"] = commodity_prices["Fuel"].replace("gas", "CCGT")
+    
+    #commodity_prices.to_csv('commodity_filteredFuel.csv', index=False)
+    
+    commodity_prices = (
+    commodity_prices_filtered
+    .groupby(["Year", "Fuel"], as_index=False)["Value"]
+    .mean()
+    )
+
+     
+    commodity_prices = commodity_prices.pivot(index="Fuel", columns="Year", values="Value").reset_index()
+     
+    commodity_prices["CO2"] = C02
+     
+    #commodity_prices.to_csv('commodity_column.csv', index=False) 
+       
+    #commodity_prices_filtered.to_csv('commodity_filtered.csv', index=False)  
+    
+    commodity_prices = commodity_prices.set_index("Fuel")
+    
+    commodity_prices = commodity_prices.apply(pd.to_numeric, errors="coerce")
+      
+    converter = pd.DataFrame(3.6 , commodity_prices.index, commodity_prices.columns)
+    converter["CO2"] = 3.6/1000 
+    converter.loc["co2"] = 1
+
     commodity_prices = converter*commodity_prices
 
-    to_add = commodity_prices.reindex(["CCGT", "CCGT", "CCGT"])
-    to_add.index = ["OCGT", "biomass", "other"]
-    to_add.loc[["other"]] = 0
+
+    to_add = commodity_prices.reindex(["CCGT", "CCGT"])
+    to_add.index = ["OCGT", "biomass"]
+    #to_add.loc[["other"]] = 0
     to_add.loc[["biomass"]] = biomass_price
     to_add.loc[["biomass"], "CO2"] = 0
     commodity_prices = pd.concat([commodity_prices, to_add])
+    commodity_prices.to_csv('commodity_prices.csv', index=False)
     
     return commodity_prices
 
 def add_renewables():
-    
-    res = capacity.loc[["onwind","offwind", "solar", "CSP", "ROR"]].unstack().copy()
+       
+    res = capacity.loc[["CSP","CSPS","onwind","offwind","PVfixed","PVIroof", "PVRroof", "PVtrack","ROR"]].unstack().copy()
     res = res.reset_index()
     res.columns = ["bus", "carrier", "p_nom"]
     res.index = res.bus + " " + res.carrier
 
     res = res[res.p_nom>0]
-
-    vre = ["onwind", "offwind", "solar", "CSP"]
-
-    base_year_res = int(plant_sheets[plant_sheets >= year].subtract(year).idxmin()[2:])
     
+    vre=["CSP","CSPS","onwind","offwind","PVfixed","PVIroof", "PVRroof","PVtrack"]
+   
     p_max_pu = pd.concat(
-        [pd.read_hdf("resources/res_profile.h5", tech).loc[:, str(climate_year), str(base_year_res), :] for tech in vre],
+        [pd.read_hdf(snakemake.input.res_profile, tech).loc[:, "WS{:02}".format(climate_year), str(base_year), :] for tech in vre],
         axis=1
     )
-
-
+    
+    #print("found RES in res_profile")
+    
     p_max_pu.columns = vre
     p_max_pu = p_max_pu.unstack(0).stack(0)
     p_max_pu.index = [" ".join(i) for i in p_max_pu.index]
     p_max_pu.columns = snapshots
     p_max_pu = p_max_pu.T
 
+    #print(len(inflows[res.filter(like="ROR", axis=0).index]))
+    #print(len(res.filter(like="ROR", axis=0).p_nom))
+
     p_max_pu = pd.concat(
-        [p_max_pu, inflows[res.filter(like="ROR", axis=0).index].div(res.filter(like="ROR", axis=0).p_nom)],
+        [p_max_pu, inflows[res.filter(like="ROR", axis=0).index].div(res.filter(like="ROR", axis=0).p_nom).clip(upper=1)],
         axis=1
     )
+    
+    #p_max_pu = pd.concat(
+    #    [p_max_pu, inflows[res.filter(like="pondage", axis=0).index].div(res.filter(like="pondage", axis=0).p_nom)],
+    #    axis=1
+    #)
+    
+    p_max_pu[res.index].to_csv('res.csv', index=False)
 
     n.madd(
         "Generator",
@@ -196,7 +287,7 @@ def add_renewables():
     )
     
 def add_dispatchables():
-    
+         
     plants = dispatchable_plants.query("(entry <= @year) & exit > @year")
 
     plants["marginal_cost"] = (
@@ -213,7 +304,13 @@ def add_dispatchables():
             )
         ).add(plants.var_om.values).values
     )
-
+    #plants.loc[:, "p_min_pu"] = 0
+    plants.loc[:, "committable"]= True
+    #plants.loc[:, "up_time_before"] = 2
+    #plants.loc[:, "down_time_before"] = 100
+    
+    
+    plants.to_csv('plants.csv', index=False)
     n.madd(
         "Generator",
         plants.index,
@@ -233,19 +330,25 @@ def group_luxembourg(demand, links):
 
 def add_dsr():
     
-    p_nom_dsr.columns = ["band " + i.split(" ")[2] for i in p_nom_dsr.columns]
-
-    marginal_cost_dsr.columns = ["band " + i.split(" ")[8] for i in marginal_cost_dsr.columns]
-
-    dsr = pd.concat([p_nom_dsr.stack(), marginal_cost_dsr.stack()],axis=1)
-
-    dsr = dsr.loc[:, base_year, :]
-
-    dsr = dsr.set_index((i[0] + " dsr " + i[1] for i in dsr.index), append=True).reset_index([0,1]).drop("level_1",axis=1)
-
-    dsr.columns = ["bus", "p_nom", "marginal_cost"]
+    
+    dsr=pd.read_hdf(snakemake.input.dsr)
+    
+    dsr = dsr.loc[base_year, :]
+    
+    dsr.unstack(1).columns = ["bus", "p_nom", "marginal_cost"]
+    
+    dsr=dsr.drop(columns=["hours","TARGET_YEAR"])
     
     dsr["carrier"] = "DSR"
+    
+    dsr.index = [f"{bus} {carrier} {i}" for i, (bus, carrier) in enumerate(zip(dsr.bus, dsr.carrier))]
+
+    
+#    dsr.index = [dsr.bus + " " + dsr.carrier + " ".join(i) for i in len(inflows.index)] 
+    
+    dsr.to_csv('DSR.csv', index=False)
+    
+    print(dsr.index)
 
     n.madd(
         "Generator",
@@ -260,7 +363,9 @@ def set_investment_bounds():
     n.generators.loc[n.generators.invest_status == "policy", "p_nom_max"] = n.generators.loc[n.generators.invest_status == "policy", "p_nom"]
     n.generators.loc[n.generators.invest_status == "policy", "p_nom_min"] = n.generators.loc[n.generators.invest_status == "policy", "p_nom"]
     
-commodity_prices_raw = pd.read_excel(snakemake.input.commodity_prices, index_col = 0)
+commodity_prices_raw = pd.read_csv(snakemake.input.commodity_prices,header=0)
+
+all_cap=pd.read_hdf(snakemake.input.all_capacities)
 
 year = int(snakemake.params.ty)
 climate_year = int(snakemake.params.cy)
@@ -271,34 +376,38 @@ save_path = snakemake.output.network
 
 biomass_price = snakemake.config["biomass_price"]
 
-dispatchable = ["CCGT", "OCGT", 'biomass', 'coal', 'lignite', 'nuclear','oil',  'other', ]
+dispatchable = ["CCGT", "OCGT", 'biomass', 'coal', 'lignite', 'nuclear','oil','hydrogen']
 distributed_resources = ["onwind", "offwind", "CSP","solar", "battery"]
 
 technologies_for_investment = snakemake.config["investment"]["technologies_new_investment"]
 
 inflows_raw = pd.read_hdf(snakemake.input.inflow, "inflow")
-excel_file = pd.ExcelFile(snakemake.input.pemmdb)
 
 snapshots = pd.date_range(start="2010-01-01", freq="h", periods=8760)#.strftime('%m-%d %H:%M:%S')
-#snapshots = snapshots = pd.period_range(start="01-01 00:00:00", freq="h", periods=8760)
 
-plant_sheets = [i for i in excel_file.sheet_names if "TY" in i]
-plant_sheets = pd.Series([int(i[2:]) for i in plant_sheets], plant_sheets )
-sheet = plant_sheets[plant_sheets <= year].subtract(year).idxmax()
+base_year = pd.Series(
+all_cap.index.levels[0].astype(int), 
+all_cap.index.levels[0]).subtract(year).abs().idxmin()
 
-base_year = int(sheet[2:])
+#all_cap.to_csv('capacitybase0.csv', index=False)
 
 technology_data = pd.read_csv(snakemake.input.technology_data, index_col=[0,1])
-
 demand = pd.read_hdf(snakemake.input.demand)
-demand = demand.loc[:, climate_year, :, str(base_year), :].unstack(1)
+
+demand = demand.loc[:, "WS{:02}".format(climate_year), :, str(base_year), :].unstack(1)
 demand.index = snapshots
-demand.drop("TR00",axis=1, inplace=True)
+
+demand.to_csv('demand.csv', index=False)
+#demand.drop("TR00",axis=1, inplace=True)
+
 
 links = pd.read_hdf(snakemake.input.ntc, "p_nom")
-links_p_max_pu = pd.read_hdf(snakemake.input.ntc, "p_max_pu")
 links = links[base_year].unstack(1)
+links = links.iloc[:len(snapshots)]
+
+links_p_max_pu = pd.read_hdf(snakemake.input.ntc, "p_max_pu")
 links_p_max_pu = links_p_max_pu[base_year].unstack(2)
+links_p_max_pu = links_p_max_pu.iloc[:len(snapshots)]
 links_p_max_pu.index = snapshots
 links.dropna(inplace=True)
 links_p_max_pu.dropna(axis=1, inplace=True)
@@ -306,17 +415,18 @@ links["carrier"] = [i[-2:] for i in links.index]
 
 demand, links = group_luxembourg(demand, links)
 
-commodity_prices = prepare_commodity_prices(commodity_prices_raw)
-dispatchable_plants = pd.read_hdf(snakemake.input.dispatchable_plants)
+demand.to_csv('demand.csv', index=False)
 
+commodity_prices = prepare_commodity_prices(commodity_prices_raw[commodity_prices_raw.apply(lambda row: row.astype(str).str.contains("ERAA 2025 post-CfE").any(), axis=1)])
+
+dispatchable_plants = pd.read_hdf(snakemake.input.dispatchable_plants)
 
 n = pypsa.Network()
 n.set_snapshots(snapshots)
 
-capacity = build_capacity_table()
+capacity=pd.read_hdf(snakemake.input.investcap)[base_year].unstack(1)
 
-p_nom_dsr = pd.read_excel(excel_file, "Explicit DSR", index_col = [0,1]).iloc[:, :8]
-marginal_cost_dsr = pd.read_excel(excel_file, "Explicit DSR", index_col = [0,1]).iloc[:, 8:16]
+#capacity.to_csv('capacitiesTable.csv', index=False) 
 
 buses = (
     capacity.sum()[capacity.abs().sum() >0].index
@@ -324,6 +434,8 @@ buses = (
     .union(links.bus0.unique())
     .union(links.bus1.unique())
 )
+
+pd.Series(buses).to_csv('buses.csv', index=False)
 
 n.madd(
     "Bus", 
@@ -340,10 +452,14 @@ n.madd(
 )
 
 inflows = build_inflows(inflows_raw)
-add_existing_storage()
+
+add_existing_storage(all_cap)
+
 add_dispatchables()
-print(n.generators)
+#print(n.generators)
+
 add_renewables()
+
 add_dsr()
 
 set_investment_bounds()
@@ -358,9 +474,12 @@ n.madd(
     carrier = links.carrier,
 )
 
-n.generators.loc[(n.generators.bus == "CY00") & (n.generators.carrier == "CCGT"), "p_min_pu"] = 0 # remove minimum load of CCGT in Cyprus as this can exceed actual load.
+#n.generators.loc[(n.generators.bus == "CY00") & (n.generators.carrier == "CCGT"), "p_min_pu"] = 0 # remove minimum load of CCGT in Cyprus as this can exceed actual load.
 
-print(n.generators)
+n.generators.to_csv('capacitiesTable.csv', index=False)
+n.loads.to_csv('DemandTable.csv', index=False)
+n.links.to_csv('LinksTable.csv', index=False)
+n.storage_units.to_csv('StorageTable.csv', index=False)
 
 dirname = os.path.dirname(save_path)  
 

@@ -27,7 +27,7 @@ demand = pd.DataFrame()
 # structural change to collect 2024 data
 for file in files:
     
-    print("\n" + file + "\n")
+    #print("\n" + file + "\n")
 
     #demand_excel = pd.ExcelFile(file)
 
