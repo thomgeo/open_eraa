@@ -227,10 +227,13 @@ rule build_ntc:
 
 rule build_dispatchable_capacities:
 	input:	
+		dsr = "data/dsr.zip",
 		pemmdb = "data/pemmdb.zip",
 		thermal = "data/thermal.zip"
 	params:	data_folder = "data/"
 	output:	dispatchable_capacities = "resources/dispatchable_capacities.h5",
+			all_capacities = "resources/all_capacities.h5",
+			dsr = "resources/dsr.h5",
 	script:	"scripts/build_dispatchable_capacities.py"
 
 rule build_bidding_zones:
