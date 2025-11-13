@@ -12,6 +12,8 @@ module technology_data:
 target_years = range(config["time_horizon"]["start"], config["time_horizon"]["end"])
 climate_years = range(1, 2)
 
+ruleorder: base_model > update_capacities
+
 rule retrieve_all_data:
 	input:
 		"data/pecd.zip",
@@ -243,33 +245,6 @@ rule base_model:
 		network= "resources/networks/0/cy{cy}_ty{ty}.nc"
 	script:	"scripts/base_model.py"	
 
-"""
-from shutil import copyfile, move, rmtree, unpack_archive
-
-configfile: "config/config.yaml"
-
-target_years = range(config["time_horizon"]["start"], config["time_horizon"]["end"])
-climate_years = range(1, 2)
-
-ruleorder: base_model > update_capacities
-#ruleorder: build_initial_capacity_table > capacity_adjustment
-
-
-rule buildFB:
-	input:	FB_files = "data/fb_domains.zip",
-	params:	data_folder = "data/",
-		climate_year=climate_years,
-		target_year=target_years
-	output:	FB = "resources/FB.h5",
-	script:	"scripts/buildFB.py"
-
-
-
-rule build_initial_capacity_table:
-    input:  networks = expand("resources/networks/0/cy{cy}_ty{ty}.nc", cy=climate_years[0], ty=target_years)
-    output: initial_capacity_table = "resources/capacity_tables/0.csv"
-    script: "scripts/build_initial_capacity_table.py"
-
 rule solve_model:
 	input:	network = "resources/networks/{iter}/cy{cy}_ty{ty}.nc",
 		pemmdb = "data/pemmdb.xlsx",
@@ -283,33 +258,22 @@ rule solve_model:
 		solved_network= "results/networks/{iter}/cy{cy}_ty{ty}.nc",
 		revenues = "results/revenues/{iter}/cy{cy}_ty{ty}.h5",
 		lole = "results/lole/{iter}/cy{cy}_ty{ty}.csv",
-	script:	"scripts/solve_model.py"	
+	script:	"scripts/solve_model.py"
 
+rule build_initial_capacity_table:
+	input:	networks = expand("resources/networks/0/cy{cy}_ty{ty}.nc", cy=climate_years[0], ty=target_years)
+	output:	initial_capacity_table = "resources/capacity_tables/0.csv"
+	script: "scripts/build_initial_capacity_table.py"
 
 rule build_ordc_parameters:
 	input:	pemmdb = "data/Dashboard_raw_data/Reserve requirements.csv",
 	output:	ordc_hdf="data/ordc_parameters.h5",
 	script:	"scripts/build_ordc_parameters.py"
 
-#rule capacity_adjustment:
-#	input:	demand = "resources/demand.h5",
-#		revenue_files = lambda w: expand("results/revenues/{iter}/cy{cy}_ty{ty}.h5", cy = climate_years, ty = target_years, iter = int(w.iter)-1),
-#		previous_capacity_table = lambda w: ("resources/capacity_tables/{iter}.csv").format(iter = int(w.iter)-1),
-#		costs = technology_data("outputs/costs_2025.csv"),
-#		capacity_adjustment_size = "data/capacity_adjustement_size.csv"
-#	params:	iteration = "{iter}"
-#	output:	next_capacity_table = "resources/capacity_tables/{iter}.csv",
-#		revenue_ratios_existing = "results/revenue_ratios/{iter}_existing.csv",
-#		revenue_rarios_new = "results/revenue_ratios/{iter}_new.csv",
-#	script:	"scripts/capacity_adjustment.py"
-		
 rule update_capacities:
 	input:	old_network = lambda w: ("resources/networks/{iter}/cy{cy}_ty{ty}.nc").format(iter = int(w.iter)-1, cy = w.cy, ty = w.ty),
 		capacity_table = "resources/capacity_tables/{iter}.csv"
 	params:	ty = "{ty}",
 		cy = "{cy}",
 	output:	new_network= "resources/networks/{iter}/cy{cy}_ty{ty}.nc"	
-	script: "scripts/update_capacities.py"		
-
-
-"""
+	script: "scripts/update_capacities.py"
