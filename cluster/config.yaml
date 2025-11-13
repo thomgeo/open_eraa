@@ -1,17 +1,26 @@
-jobs: 20
-cluster:     
-    sbatch 
-    --partition C7
-    --cpus-per-task 1 
-    --time 14-0:0:0 
-    --nodes 1
-    --tasks-per-node 2
-    --output logs/{rule}_{wildcards}.o
-    --error logs/{rule}_{wildcards}.e
-    --job-name ERAA-{rule}-{wildcards}
-#restart-times: 3
-#resources:
-#    - gurobi=1
-#rerun-incomplete: True
-#latency-wait: 35
+executor: cluster-generic
+cluster-generic-submit-cmd:
+  mkdir -p logs/{rule} &&
+  sbatch
+    --partition=C7
+    --cpus-per-task={threads}
+    --tasks-per-node=4
+    --mem={resources.mem_mb}
+    --job-name=LMP-{rule}-{wildcards}
+    --output=logs/{rule}/{rule}-{wildcards}-%j.out
+    --exclude=nikola25
+    --parsable
+default-resources:
+  - partition=C7
+  - mem_mb=1000
+restart-times: 3
+max-jobs-per-second: 10
+max-status-checks-per-second: 1
+local-cores: 1
+latency-wait: 60
+jobs: 50
 keep-going: True
+rerun-incomplete: True
+printshellcmds: True
+scheduler: greedy
+use-conda: True

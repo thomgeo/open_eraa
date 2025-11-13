@@ -8,6 +8,8 @@ import glob
 import os 
 import time 
 
+print("starting")
+
 save_hdf = snakemake.output.inflow
 
 all_files = glob.glob(snakemake.params.data_folder + "PECD - RES/Hydro Inflows_250704/*")
@@ -69,7 +71,7 @@ dirname = os.path.dirname(save_hdf)
 if not os.path.exists(dirname):
     os.mkdir(dirname)
 
-inflow.to_hdf(save_hdf2, "inflow")  
+inflow.to_hdf(save_hdf, "inflow")  
 HRR_inflow[:,"1","AT00","2030"].to_csv('scaledinflow.csv', index=False)     
 
 

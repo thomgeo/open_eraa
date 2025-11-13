@@ -13,7 +13,7 @@ import os
 
 save_hdf=snakemake.output.demand
 
-
+("Starting with building the demand curves")
 with zipfile.ZipFile(snakemake.input.demand_files) as zip_f:
     zip_f.extractall(snakemake.params.demand_folder)
 
@@ -24,10 +24,13 @@ files = glob.glob(snakemake.params.demand_folder + "Demand data/Demand timeserie
 
 demand = pd.DataFrame()
 
+
+print("Start reading demand files")
+
 # structural change to collect 2024 data
 for file in files:
     
-    #print("\n" + file + "\n")
+    print("\n" + file + "\n")
 
     #demand_excel = pd.ExcelFile(file)
 
@@ -46,6 +49,8 @@ for file in files:
     demand = pd.concat([demand, demand_target_year], axis=1)
 
 demand = demand.stack()
+
+print("Finished reading demand files")
 
 demand.index.names = ["hour", "climate year", "zone", "target year"]
 

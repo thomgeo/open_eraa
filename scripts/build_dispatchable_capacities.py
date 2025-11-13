@@ -307,11 +307,12 @@ allCap = {
 
 #distributed_resources = ["onwind", "offwind", "CSP","solar", "battery"]
 dispatchable = ["CCGT", "OCGT", 'biomass', 'coal','lignite', 'nuclear','oil','hydrogen']
-technologies_for_investment = snakemake.config["investment"]["technologies_new_investment"]
+technologies_for_investment = snakemake.config["power_plants"]["technologies_new_investment"]
 
 properties_raw = pd.read_excel(excel_file2, "Common Data", index_col=[2,3], skiprows=10, header=0).dropna(how="all").iloc[2:, 1:].dropna(how="all", axis=1).iloc[:27, 1:17]
 
 properties_raw2 = pd.read_excel(excel_file2, "Common Data", index_col=[2,3], skiprows=44, header=[0,3]).iloc[:, 1:].dropna(how="all", axis=1).dropna(how="all").iloc[:27, 1:17]
+
 properties_raw2.columns = [" ".join(i) for i in properties_raw2.columns]
 properties_raw = pd.concat([properties_raw, properties_raw2],axis=1)
 
@@ -342,4 +343,4 @@ dispatchable_plants = pd.concat([existing, new])
 
 dispatchable_plants.to_hdf(snakemake.output.dispatchable_capacities, "dispatchable")
 
-dispatchable_plants.to_csv('output_pandas.csv', index=False)
+#dispatchable_plants.to_csv('output_pandas.csv', index=False)
