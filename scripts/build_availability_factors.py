@@ -76,3 +76,5 @@ csp_availabilities.to_hdf(save_hdf, "CSP")
 csps_availabilities.to_hdf(save_hdf, "CSPS")
 
 
+print("Made it here!")
+

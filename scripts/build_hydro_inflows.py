@@ -8,14 +8,16 @@ import glob
 import os 
 import time 
 
-save_hdf2 = snakemake.output.inflow
+print("starting")
 
-all_files2 = glob.glob(snakemake.params.data_folder + "PECD - RES/Hydro Inflows_250704/*")
+save_hdf = snakemake.output.inflow
 
-HRI = [i for i in all_files2 if "HRI" in i]
-HRR = [i for i in all_files2 if "HRR" in i]
-HOL = [i for i in all_files2 if "HOL" in i]
-HPI = [i for i in all_files2 if "HPI" in i]
+all_files = glob.glob(snakemake.params.data_folder + "PECD - RES/Hydro Inflows_250704/*")
+
+HRI = [i for i in all_files if "HRI" in i]
+HRR = [i for i in all_files if "HRR" in i]
+HOL = [i for i in all_files if "HOL" in i]
+HPI = [i for i in all_files if "HPI" in i]
 
 def get_inflows(files,tech):
 
@@ -64,12 +66,12 @@ inflow = pd.concat([inflow, HPI_inflow], axis=1)
 
 inflow = inflow.T.set_index((i for i in inflow.columns)).T.stack(0)
 
-dirname = os.path.dirname(save_hdf2)
+dirname = os.path.dirname(save_hdf)
 
 if not os.path.exists(dirname):
     os.mkdir(dirname)
 
-inflow.to_hdf(save_hdf2, "inflow")  
+inflow.to_hdf(save_hdf, "inflow")  
 HRR_inflow[:,"1","AT00","2030"].to_csv('scaledinflow.csv', index=False)     
 
 
