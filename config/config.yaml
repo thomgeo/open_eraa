@@ -67,6 +67,9 @@ solving:
   solver_decomposition:
     name: cplex
     options:  cplex-decomposition
+  solver_maintenance:
+    name: cplex
+    options:  cplex-maintenance
   solver_options:
     highs-default:
       # refer to https://ergo-code.github.io/HiGHS/options/definitions.html#solver
@@ -120,5 +123,13 @@ solving:
       feasopt.tolerance: 1.e-6
     cplex-decomposition:
       mip.tolerances.mipgap: 0.01
+    cplex-maintenance:
+      mip.tolerances.mipgap: 0.01
+      emphasis.mip: 4
+      threads: 4 
+      lpmethod: 4
+      barrier.convergetol: 1.e-2
+      feasopt.tolerance: 1.e-6
+      emphasis.numerical: 1
     cbc-default: {} # Used in CI
     glpk-default: {} # Used in CI  

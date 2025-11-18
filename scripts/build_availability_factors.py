@@ -68,12 +68,12 @@ if not os.path.exists(dirname):
 
 onshore_availabilities.to_hdf(save_hdf, "onwind")
 offshore_availabilities.to_hdf(save_hdf, "offwind")
-PVtrack_availabilities.to_hdf(save_hdf, "PVtrack")
-PVfixed_availabilities.to_hdf(save_hdf, "PVfixed")
-PVRroof_availabilities.to_hdf(save_hdf, "PVRroof")
-PVIroof_availabilities.to_hdf(save_hdf, "PVIroof")
+PVtrack_availabilities.to_hdf(save_hdf, "solar-track")
+PVfixed_availabilities.to_hdf(save_hdf, "solar-fix")
+PVRroof_availabilities.to_hdf(save_hdf, "solar-rsd")
+PVIroof_availabilities.to_hdf(save_hdf, "solar-ind")
 csp_availabilities.to_hdf(save_hdf, "CSP")
-csps_availabilities.to_hdf(save_hdf, "CSPS")
+csps_availabilities.to_hdf(save_hdf, "CSP-stor")
 
 
 print("Made it here!")
