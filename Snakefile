@@ -24,6 +24,8 @@ rule retrieve_all_data:
 		"resources/demand.h5",
 		"resources/inflow.h5",	
 		"data/ntc.zip",
+		"resources/capacity_tables/individual_plants.h5",
+		"resources/maintenance_profiles.h5"
 		#"resources/ntcs.h5",
 		#"resources/dispatchable_capacities.h5",
 		#"resources/dsr.h5",
@@ -269,6 +271,14 @@ rule build_ordc_parameters:
 	input:	pemmdb = "data/Dashboard_raw_data/Reserve requirements.csv",
 	output:	ordc_hdf="data/ordc_parameters.h5",
 	script:	"scripts/build_ordc_parameters.py"
+
+rule build_maintenance_profiles:
+	input:	power_plants="resources/capacity_tables/individual_plants.h5",
+		demand = "resources/demand.h5",
+		common_data = "data/Common data/Common Data.xlsx",
+		all_caps = "resources/all_capacities.h5",
+	output:	maintenance_profiles = "resources/maintenance_profiles.h5"
+	script:	"scripts/build_maintenance_profiles.py"
 
 rule update_capacities:
 	input:	old_network = lambda w: ("resources/networks/{iter}/cy{cy}_ty{ty}.nc").format(iter = int(w.iter)-1, cy = w.cy, ty = w.ty),
