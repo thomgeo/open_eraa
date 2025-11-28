@@ -210,8 +210,6 @@ def prepare_capacity_table(capacity):
     
     return [capacity,capacity_disp]
 
-years = range(2028, 2036)
-
 #Different methodology to get data 
 with zipfile.ZipFile(snakemake.input.pemmdb) as zip_f:
     zip_f.extractall(snakemake.params.data_folder)
@@ -229,15 +227,16 @@ all_columns = pd.read_csv(
     nrows=0
 ).columns.tolist()
 
-# Drop the last column
 columns_to_use = all_columns[:-1]
 
-# Read CSV with only the selected columns
 properties_raw2 = pd.read_csv(
     snakemake.params.data_folder + "Other data/Explicit DSR detailed.csv",
     usecols=columns_to_use,
     header=0
 )
+
+years = properties_raw2['TARGET_YEAR'].unique()
+
 
 allDSR = {
   year: group.rename(columns={
@@ -290,11 +289,9 @@ allCap = {
     for year, group in filtered_rows.groupby("Target year")
 }
 
-# Combine into one DataFrame with hierarchical indices
 allCap_df = pd.concat(allCap, names=["Target year"]).fillna(0)
 
 allCap_df.to_hdf(snakemake.output.all_capacities, "capacities")
-allCap_df.to_csv('allCapdf.csv', index=False)
 
 allCap = {
     year: (
@@ -321,18 +318,11 @@ mask = properties_raw.index.get_level_values(0).str.contains("fuel cell", case=F
 properties_raw = properties_raw[~mask]
 properties_raw = properties_raw.fillna(0)
 
-#properties_raw.to_csv('propertiesprev.csv', index=False)
-
 properties = build_thermal_properties(properties_raw)
-
-#properties.to_csv('propertiesfinal.csv', index=False)
 
 [capacity,investcap] = build_capacity_table(allCap)
 
-investcap.to_csv('InvestCap.csv', index=False)
 investcap.to_hdf(snakemake.output.investcap, "investcap")
-
-capacity.to_csv('ManipulatedCap.csv', index=False)
 
 existing = build_legacy_caps()
 new = build_new_investments()
@@ -343,4 +333,3 @@ dispatchable_plants = pd.concat([existing, new])
 
 dispatchable_plants.to_hdf(snakemake.output.dispatchable_capacities, "dispatchable")
 
-#dispatchable_plants.to_csv('output_pandas.csv', index=False)
