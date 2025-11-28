@@ -8,7 +8,7 @@ import pandas as pd
 from entsoe import EntsoePandasClient
 from entsoe.exceptions import InvalidBusinessParameterError, NoMatchingDataError
 from requests import HTTPError
-
+import time
 
 def get_balancing(zone_list):
     
@@ -61,33 +61,46 @@ end = pd.Timestamp(snakemake.config["balancing"]["end_extraction"], tz="Europe/B
 
 ordc_hdf = snakemake.output.ordc_hdf
 
+rr_hdf = snakemake.output.reserve_requirements
+
 business_types = [ 'A96',  'A97']
 
-reserve_requirements = pd.read_excel(snakemake.input.pemmdb, "Reserve Requirements",index_col=[0,1])[["FCR (MW)", "FRR (MW)"]].sum(axis=1)
+reserve_requirements = pd.read_csv(snakemake.input.pemmdb,index_col=[2,1])
+
+reserve_requirements = reserve_requirements[reserve_requirements['data_version'] == "ERAA 2024"]
+
+#reserve_requirements.to_csv("reserve_requirements0.csv")
+
+reserve_requirements = reserve_requirements.groupby(["MARKET_NODE","YEAR"])["Value"].sum()
+
+#reserve_requirements.to_csv("reserve_requirements1.csv")
 
 reserve_requirements = reserve_requirements[reserve_requirements >0]
 
-reserve_requirements.index = reserve_requirements.index.remove_unused_levels()
+if isinstance(reserve_requirements.index, pd.MultiIndex):
+    reserve_requirements.index = reserve_requirements.index.remove_unused_levels()
 
+reserve_requirements.to_hdf(rr_hdf, "reserve_requirements")
+reserve_requirements.to_csv("reserve_requirements.csv")
 
 bz_map = pd.Series(
     reserve_requirements.index.levels[0].str[:2],
     index = reserve_requirements.index.levels[0]
 )
 
-bz_map.drop(["UKNI", "NOM1", "NOS0", "NON1"], inplace=True) # norway to be built separately because ERAA contains only 3 NO zones 
+#ERAA now considers 5 zones in Norway
+#bz_map.drop(["UKNI", "NOM1", "NOS0", "NON1"], inplace=True) # norway to be built separately because ERAA contains only 3 NO zones 
                                                             # while ENTSO-E transparency features 5 zones.
 
 bz_map.loc[
-    ["DKW1", "DKE1", "SE01", "SE02", "SE03", "SE04", "DE00", 'ITCA', 'ITCN', 'ITCS', 'ITN1', 'ITS1', 'ITSA', 'ITSI']
+    ["DKW1", "DKE1", "SE01", "SE02", "SE03", "SE04", "DE00", 'ITCA', 'ITCN', 'ITCS', 'ITN1', 'ITS1', 'ITSA', 'ITSI',"NOS1", "NOS2", "NOS3","NOM1", "NON1"]
 ] = ["DK_1","DK_2", 'SE_1', 'SE_2', 'SE_3', 'SE_4', 'DE_LU','IT_CALA', 
-     'IT_CNOR', 'IT_CSUD',  'IT_NORD',  'IT_SUD' ,  'IT_SARD', 'IT_SICI']
+     'IT_CNOR', 'IT_CSUD',  'IT_NORD',  'IT_SUD' ,  'IT_SARD', 'IT_SICI','NO_1', 'NO_2', 'NO_3', 'NO_4', 'NO_5']
 
-
-norway = pd.Series(
-    ["NOS0", "NOS0", "NOM1", "NON1", "NOS0"],
-    ['NO_1', 'NO_2', 'NO_3', 'NO_4', 'NO_5'] 
-)
+#norway = pd.Series(
+#    ["NOS0", "NOS0", "NOM1", "NON1", "NOS0"],
+#    ['NO_1', 'NO_2', 'NO_3', 'NO_4', 'NO_5'] 
+#)
 
 
 balancing = get_balancing(bz_map.values)
@@ -104,29 +117,29 @@ balancing_std = balancing.stack().groupby(
 ).std()
 
 
-balancing_norway = get_balancing(norway.index)
+#balancing_norway = get_balancing(norway.index)
 
-balancing_mean = pd.concat(
-    [
-        balancing_mean, 
-        balancing_norway.stack().groupby(
-            norway.reindex([i[2] for i in balancing_norway.stack().index]).values
-        ).mean()
-    ]
-)
+#balancing_mean = pd.concat(
+#    [
+#        balancing_mean, 
+#        balancing_norway.stack().groupby(
+#            norway.reindex([i[2] for i in balancing_norway.stack().index]).values
+#        ).mean()
+#    ]
+#)
 
 
 # In[19]:
 
 
-balancing_std = pd.concat(
-    [
-        balancing_std, 
-        balancing_norway.stack().groupby(
-            norway.reindex([i[2] for i in balancing_norway.stack().index]).values
-        ).std()
-    ]
-)
+#balancing_std = pd.concat(
+#    [
+#        balancing_std, 
+#        balancing_norway.stack().groupby(
+#            norway.reindex([i[2] for i in balancing_norway.stack().index]).values
+#        ).std()
+#    ]
+#)
 
 
 
