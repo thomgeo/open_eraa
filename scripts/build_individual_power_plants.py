@@ -478,9 +478,9 @@ def add_technical_properties_existing(properties, age_matching):
     eraa_plants_detailed.start_up_cost = start_up_cost
     
     eraa_plants_detailed.ramp_limit_down_real = ramp_limit_down
-    eraa_plants_detailed.ramp_limit_down = eraa_plants_detailed.ramp_limit_down_real.clip(upper=1.) 
+    eraa_plants_detailed.ramp_limit_down = pd.Series(ramp_limit_down).clip(upper=1.).values 
     eraa_plants_detailed.ramp_limit_up_real = ramp_limit_up
-    eraa_plants_detailed.ramp_limit_up = eraa_plants_detailed.ramp_limit_up_real.clip(upper=1.)
+    eraa_plants_detailed.ramp_limit_up = pd.Series(ramp_limit_up).clip(upper=1.).values
     eraa_plants_detailed.p_min_pu = p_min_pu
     eraa_plants_detailed.min_up_time = min_up_time
     eraa_plants_detailed.min_down_time = min_down_time
