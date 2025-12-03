@@ -28,12 +28,30 @@ rule retrieve_all_data:
 		"resources/capacity_tables/individual_plants.h5",
 		"resources/maintenance_profiles.h5",
 		#"resources/ntcs.h5",
+	input:
+		#"data/pecd.zip",
+		#"data/fb_domains.zip",
+		#"data/pemmdb.zip",
+		#"data/thermal.zip",
+		#"resources/res_profile.h5",
+		#"resources/demand.h5",
+		#"resources/inflow.h5",	
+		#"data/ntc.zip",
 		#"resources/dispatchable_capacities.h5",
+		#"resources/capacity_tables/individual_plants.h5",
+		#"resources/maintenance_profiles.h5",
+		#"resources/ntcs.h5",
 		#"resources/dsr.h5",
 		#"resources/all_capacities.h5",
 		#"resources/investcap.h5",
 		"resources/networks/0/cy1_ty2030.nc",
 		#expand("resources/networks/0/cy{cy}_ty{ty}.nc", cy = climate_years, ty=target_years)
+		#"resources/networks/0/cy{cy}_ty{ty}.nc",
+		#expand("resources/networks/0/cy{cy}_ty{ty}.nc", cy = climate_years, ty=target_years),
+		#"data/ordc_parameters.h5",
+		#"data/reserve_requirements.h5",
+		#"data/NFB.h5",
+		expand("results/lole/0/cy{cy}_ty{ty}.csv",cy = climate_years, ty=target_years)
 
 
 rule retrieve_ntc:
@@ -168,11 +186,19 @@ rule build_hydro_inflows:
 
 rule buildFB:
 	input:	FB_files = "data/fb_domains.zip",
+		network = expand("resources/networks/0/cy{cy}_ty{ty}.nc", cy=climate_years, ty=target_years)
 	params:	data_folder = "data/",
 		climate_year=climate_years,
 		target_year=target_years
 	output:	FB = "resources/FB.h5",
 	script:	"scripts/buildFB.py"
+
+rule build_NordicFB:
+	input:	fb_domains = "data/fb_domains.zip",
+		network = expand("resources/networks/0/cy{cy}_ty{ty}.nc", cy=climate_years, ty=target_years)
+	params:	folder = "data/",
+	output:	NFB = "data/NFB.h5",
+	script:	"scripts/build_NordicFB.py"
 
 rule build_ntc:
 	input:	ntc="data/ntc.zip",
@@ -237,8 +263,10 @@ rule base_model:
 		res_profile = "resources/res_profile.h5",
 		technology_data = "technology-data/outputs/costs_2025.csv",
 		dispatchable_plants = "resources/dispatchable_capacities.h5",
+		individual_plants = "resources/capacity_tables/individual_plants.h5",
 		all_capacities = "resources/all_capacities.h5",
 		investcap = "resources/investcap.h5",
+		maintenance="resources/maintenance_profiles.h5",
 		#FB = "resources/FB.h5",
 	params:
 		ty = "{ty}",
@@ -249,29 +277,33 @@ rule base_model:
 	script:	"scripts/base_model.py"	
 
 rule solve_model:
-	input:	network = "resources/networks/{iter}/cy{cy}_ty{ty}.nc",
-		pemmdb = "data/pemmdb.xlsx",
+	input:	network = "resources/networks/0/cy{cy}_ty{ty}.nc",
+		reserve_requirements="data/reserve_requirements.h5",
 		ordc_parameters = "data/ordc_parameters.h5",
-		fb_domains = "data/fb_domains.zip"
+		fb_domains = "data/fb_domains.zip",
+		NFB = "data/NFB.h5",
 	params:
 		ty = "{ty}",
 		cy = "{cy}",
 		years = target_years,
+		data_folder = "data/",
 	output:
-		solved_network= "results/networks/{iter}/cy{cy}_ty{ty}.nc",
-		revenues = "results/revenues/{iter}/cy{cy}_ty{ty}.h5",
-		lole = "results/lole/{iter}/cy{cy}_ty{ty}.csv",
-	script:	"scripts/solve_model.py"
+		solved_network= "results/networks/0/cy{cy}_ty{ty}.nc",
+		revenues = "results/revenues/0/cy{cy}_ty{ty}.h5",
+		lole = "results/lole/0/cy{cy}_ty{ty}.csv",
+	script:	"scripts/solve_model.py"	
+
+
+rule build_ordc_parameters:
+	input:	pemmdb = "data/Dashboard_raw_data/Reserve requirements.csv",
+	output:	ordc_hdf="data/ordc_parameters.h5",
+		reserve_requirements="data/reserve_requirements.h5",
+	script:	"scripts/build_ordc_parameters.py"
 
 rule build_initial_capacity_table:
 	input:	networks = expand("resources/networks/0/cy{cy}_ty{ty}.nc", cy=climate_years[0], ty=target_years)
 	output:	initial_capacity_table = "resources/capacity_tables/0.csv"
 	script: "scripts/build_initial_capacity_table.py"
-
-rule build_ordc_parameters:
-	input:	pemmdb = "data/Dashboard_raw_data/Reserve requirements.csv",
-	output:	ordc_hdf="data/ordc_parameters.h5",
-	script:	"scripts/build_ordc_parameters.py"
 
 rule build_maintenance_profiles:
 	input:	power_plants="resources/capacity_tables/individual_plants.h5",

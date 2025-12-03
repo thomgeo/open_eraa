@@ -72,6 +72,6 @@ if not os.path.exists(dirname):
     os.mkdir(dirname)
 
 inflow.to_hdf(save_hdf, "inflow")  
-HRR_inflow[:,"1","AT00","2030"].to_csv('scaledinflow.csv', index=False)     
+#HRR_inflow[:,"1","AT00","2030"].to_csv('scaledinflow.csv', index=False)     
 
 

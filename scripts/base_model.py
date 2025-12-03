@@ -6,6 +6,7 @@
 
 import pandas as pd
 import powerplantmatching as pm
+import numpy as np
 import pypsa
 import pycountry
 import os 
@@ -25,10 +26,8 @@ def build_inflows(inflows):
     inflows = inflows.loc[:, str(climate_year),:, base_year_hydro,:]
     
     inflow_grouper = pd.Series(["hydro", "ROR", "PHS Open", "pondage"],inflows.index.levels[2])
-    
-    #inflow_grouper.to_csv('commodity_filtered.csv', index=False)
 
-    inflows = inflows.unstack(2).groupby(inflow_grouper, axis=1).sum().multiply(1) 
+    inflows = inflows.unstack(2).groupby(inflow_grouper, axis=1).sum().multiply(3.5) 
     inflows = inflows.unstack(0).stack(0)
     
     inflows.index = [" ".join(i) for i in inflows.index]
@@ -55,8 +54,6 @@ def add_existing_storage(all_c):
     closest_year = all_c.loc[(all_c['Target year'] - base_year).abs().idxmin(), 'Target year']
 
     all_cy = all_c[all_c['Target year'] == closest_year]
-    
-    #all_cy.to_csv('all_cy.csv', index=False)
 
     all_cdata = (all_cy
       .pivot(index="Technology", columns="Market_Node", values=all_cy.columns[-1]) 
@@ -67,13 +64,9 @@ def add_existing_storage(all_c):
     storage.index = storage.bus + " " + storage.carrier
 
     hydro = hydro[hydro.apply(lambda row: row.astype(str).str.contains("ERAA 2025 pre-CfE").any(), axis=1)]
-    #hydro.to_csv('hydro.csv', index=False)
 
-    
     target_year = hydro.loc[hydro["TARGET_YEAR"].sub(base_year).abs().idxmin(), "TARGET_YEAR"]
     hydro_y = hydro[hydro["TARGET_YEAR"] == target_year]
-    
-    #hydro_y.to_csv('hydroyear.csv', index=False)
     
     hydro_pump = -(
     hydro_y.loc[
@@ -86,26 +79,18 @@ def add_existing_storage(all_c):
         "Open loop pumping": "PHS Open"
     })
 )
-
-    hydro_pump=hydro_pump.drop(columns=["UA00"], errors='ignore').loc[:, (hydro_pump != 0).any(axis=0)]
-    #hydro_pump.to_csv('hydrostorage.csv', index=False)      
+    hydro_pump=hydro_pump.drop(columns=["UA00"], errors='ignore').loc[:, (hydro_pump != 0).any(axis=0)]  
 
     hydro_cap=all_cdata.loc[all_cdata.index.isin(["PHS", "PHS Open"])]
-    
-    #hydro_cap.loc[:, hydro_cap.notna().any(axis=0)].to_csv('hydrocapacity.csv', index=False)
 
     p_min_pu = hydro_pump.div(hydro_cap.loc[:, hydro_cap.notna().any(axis=0)].add(1e-5).values).fillna(0)
     p_min_pu.index = ["PHS", "PHS Open"]
     
-    p_min_pu.to_csv('p_min_pu.csv', index=False)
-    
     valid_countries = p_min_pu.columns[(p_min_pu != 0).any(axis=0)]
     p_min_pu_filtered = p_min_pu[valid_countries]
-    p_min_pu_stacked = p_min_pu_filtered.stack().fillna(0)  # MultiIndex: (carrier, bus)
+    p_min_pu_stacked = p_min_pu_filtered.stack().fillna(0) 
     storage_index = pd.MultiIndex.from_arrays([storage.carrier, storage.bus])
     storage["p_min_pu"] = p_min_pu_stacked.reindex(storage_index).values 
-    
-    #storage.to_csv('storage.csv', index=False)
 
     storage.loc[storage.carrier=="battery", "p_min_pu"] = -1
     storage.loc[storage.carrier=="hydro", "p_min_pu"] = 0
@@ -113,17 +98,10 @@ def add_existing_storage(all_c):
 
     storage = storage[storage.p_nom >0]
     
-    #storage.to_csv('storage.csv', index=False)
-    
-    storage_inflows = inflows[storage.loc[storage.carrier=="PHS Open"].index]
-    
-    #storage_inflows .to_csv('storage_inflows0.csv', index=False)
-    
+    storage_inflows = inflows[storage.loc[storage.carrier=="PHS Open"].index] 
     storage_inflows = pd.concat([storage_inflows,inflows[storage.loc[storage.carrier == "hydro"].index]],axis=1)
     storage_inflows = pd.concat([storage_inflows,inflows[storage.loc[storage.carrier == "pondage"].index]],axis=1)
-    
-    storage_inflows.to_csv('storage_inflows.csv', index=False)
-    
+        
     hydro_stored = 1000000*(hydro_y.loc[hydro_y["PEMMDB_PLANT_TYPE"].isin(["Closed loop pumping", "Open loop pumping", "Reservoir", "Pondage"])]
       .pivot(index="PEMMDB_PLANT_TYPE", columns="MARKET_NODE", values="Storage Capacity [TWh]")
       .fillna(0)
@@ -135,7 +113,8 @@ def add_existing_storage(all_c):
       })
 )       
 
-    print(hydro_stored)
+    
+    storage_inflows.index.to_series().to_csv('storage_inflows_index.csv', index=True)
         
     battery = pd.read_csv(snakemake.input.battery,header=0)
     battery = battery[battery.apply(lambda row: row.astype(str).str.contains("ERAA 2025 pre-CfE").any(), axis=1)]
@@ -163,8 +142,7 @@ def add_existing_storage(all_c):
     stored_stacked = stored_filtered.stack() 
     
     storage_index = pd.MultiIndex.from_arrays([storage.carrier, storage.bus])
-    
-    #Data in #.## TWh, so 5000 MWh as minimum
+
     storage["max_hours"] = stored_stacked.reindex(storage_index).clip(lower=5000).div(storage.p_nom.values).values 
        
     map_storage = pd.Series( ["battery inverter", "PHS", "hydro","hydro","hydro"], ["battery", "PHS", "PHS Open","hydro","pondage"])
@@ -200,8 +178,6 @@ def prepare_commodity_prices(commodity_prices):
     
     commodity_prices["Fuel"] = commodity_prices["Fuel"].replace("gas", "CCGT")
     
-    #commodity_prices.to_csv('commodity_filteredFuel.csv', index=False)
-    
     commodity_prices = (
     commodity_prices_filtered
     .groupby(["Year", "Fuel"], as_index=False)["Value"]
@@ -226,7 +202,6 @@ def prepare_commodity_prices(commodity_prices):
 
     to_add = commodity_prices.reindex(["CCGT", "CCGT"])
     to_add.index = ["OCGT", "biomass"]
-    #to_add.loc[["other"]] = 0
     to_add.loc[["biomass"]] = biomass_price
     to_add.loc[["biomass"], "CO2"] = 0
     commodity_prices = pd.concat([commodity_prices, to_add])
@@ -236,14 +211,14 @@ def prepare_commodity_prices(commodity_prices):
 
 def add_renewables():
        
-    res = capacity.loc[["CSP","CSP-stor","onwind","offwind","solar-fix","solar-rsd", "solar-ind","solar-track", "ROR"]].unstack().copy()
+    res = capacity.loc[["CSP","CSP-stor","onwind","offwind","solar-fix","solar-ind", "solar-rsd", "solar-track","ROR"]].unstack().copy()
     res = res.reset_index()
     res.columns = ["bus", "carrier", "p_nom"]
     res.index = res.bus + " " + res.carrier
 
     res = res[res.p_nom>0]
     
-    vre=["CSP","CSP-stor","onwind","offwind","solar-fix","solar-rsd", "solar-ind","solar-track"]
+    vre=["CSP","CSP-stor","onwind","offwind","solar-fix","solar-ind", "solar-rsd", "solar-track"]
    
     p_max_pu = pd.concat(
         [pd.read_hdf(snakemake.input.res_profile, tech).loc[:, "WS{:02}".format(climate_year), str(base_year), :] for tech in vre],
@@ -255,21 +230,19 @@ def add_renewables():
     p_max_pu.index = [" ".join(i) for i in p_max_pu.index]
     p_max_pu.columns = snapshots
     p_max_pu = p_max_pu.T
-
     p_max_pu = pd.concat(
         [p_max_pu, inflows[res.filter(like="ROR", axis=0).index].div(res.filter(like="ROR", axis=0).p_nom).clip(upper=1)],
         axis=1
     )
-    
 
     n.add(
         "Generator",
         res.index,
         **res,
-        p_max_pu = p_max_pu[res.index],
+        p_max_pu=p_max_pu[res.index], 
         invest_status="policy"
     )
-    
+
 def add_dispatchables():
          
     plants = dispatchable_plants.query("(entry <= @year) & exit > @year")
@@ -288,14 +261,38 @@ def add_dispatchables():
             )
         ).add(plants.var_om.values).values
     )
-
-    plants.loc[:, "committable"]= True    
+    #plants.loc[:, "p_min_pu"] = 0
+    plants.loc[:, "committable"]= True
+    #plants.loc[:, "up_time_before"] = 2
+    #plants.loc[:, "down_time_before"] = 100
     
-    plants.to_csv('plants.csv', index=False)
+    p_max_puA = pd.read_hdf(snakemake.input.maintenance, key=f"maintenance{base_year}") 
+    
+    #duplicates = plants[plants.index.duplicated()]
+      
+    p_max_puA.index=snapshots
+    p_max_pu_columns_aligned = pd.DataFrame(0, index=snapshots, columns=plants.index)
+    
+    p_min_pu=pd.DataFrame(np.tile(plants["p_min_pu"].values, (len(snapshots), 1)), index=snapshots, columns=plants.index)
+    
+    common_cols = plants.index.intersection(p_max_puA.columns)
+    
+    p_max_pu_columns_aligned.loc[:, common_cols] = p_max_puA[common_cols].astype(int)
+
+    p_max_pu =1-p_max_pu_columns_aligned
+    
+    p_min_pu=np.minimum(p_min_pu, p_max_pu)
+    
+    p_min_pu.to_csv('p_min_pu1.csv', index=True)
+
+    plants.drop(columns="p_min_pu", inplace=True)
+    
     n.add(
         "Generator",
         plants.index,
         **plants,
+        p_max_pu=p_max_pu[plants.index], 
+        p_min_pu=p_min_pu[plants.index], 
     )
 
 def group_luxembourg(demand, links):
@@ -353,19 +350,17 @@ save_path = snakemake.output.network
 biomass_price = snakemake.config["biomass_price"]
 
 dispatchable = ["CCGT", "OCGT", 'biomass', 'coal', 'lignite', 'nuclear','oil','hydrogen']
-distributed_resources = ["onwind", "offwind", "CSP","solar", "battery"]
+distributed_resources = ["onwind", "offwind", "CSP","f", "battery"]
 
 technologies_for_investment = snakemake.config["power_plants"]["technologies_new_investment"]
 
 inflows_raw = pd.read_hdf(snakemake.input.inflow, "inflow")
 
-snapshots = pd.date_range(start="2010-01-01", freq="h", periods=8760)#.strftime('%m-%d %H:%M:%S')
+snapshots = pd.date_range(start="2010-01-01", freq="h", periods=8760)
 
 base_year = pd.Series(
 all_cap.index.levels[0].astype(int), 
 all_cap.index.levels[0]).subtract(year).abs().idxmin()
-
-#all_cap.to_csv('capacitybase0.csv', index=False)
 
 technology_data = pd.read_csv(snakemake.input.technology_data, index_col=[0,1])
 demand = pd.read_hdf(snakemake.input.demand)
@@ -389,7 +384,7 @@ demand, links = group_luxembourg(demand, links)
 
 commodity_prices = prepare_commodity_prices(commodity_prices_raw[commodity_prices_raw.apply(lambda row: row.astype(str).str.contains("ERAA 2025 post-CfE").any(), axis=1)])
 
-dispatchable_plants = pd.read_hdf(snakemake.input.dispatchable_plants)
+dispatchable_plants = pd.read_hdf(snakemake.input.individual_plants,key='detailed')
 
 n = pypsa.Network()
 n.set_snapshots(snapshots)
@@ -428,6 +423,13 @@ add_renewables()
 add_dsr()
 
 set_investment_bounds()
+
+
+links_p_max_pu = links_p_max_pu.reindex(
+      index=n.snapshots,   
+      columns=links.index, 
+      fill_value=1
+)
 
 n.add(
     "Link",
