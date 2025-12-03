@@ -15,6 +15,19 @@ climate_years = range(1, 2)
 ruleorder: base_model > update_capacities
 
 rule retrieve_all_data:
+	input:	
+		expand("resources/FBMC/Nordic_{year}.h5", year=[2028, 2030, 2033, 2035]),
+		"data/pecd.zip",
+		"data/fb_domains.zip",
+		"data/pemmdb.zip",
+		"data/thermal.zip",
+		"resources/res_profile.h5",
+		"resources/demand.h5",
+		"resources/inflow.h5",	
+		"data/ntc.zip",
+		"resources/capacity_tables/individual_plants.h5",
+		"resources/maintenance_profiles.h5",
+		#"resources/ntcs.h5",
 	input:
 		#"data/pecd.zip",
 		#"data/fb_domains.zip",
@@ -31,6 +44,8 @@ rule retrieve_all_data:
 		#"resources/dsr.h5",
 		#"resources/all_capacities.h5",
 		#"resources/investcap.h5",
+		"resources/networks/0/cy1_ty2030.nc",
+		#expand("resources/networks/0/cy{cy}_ty{ty}.nc", cy = climate_years, ty=target_years)
 		#"resources/networks/0/cy{cy}_ty{ty}.nc",
 		#expand("resources/networks/0/cy{cy}_ty{ty}.nc", cy = climate_years, ty=target_years),
 		#"data/ordc_parameters.h5",
@@ -297,6 +312,14 @@ rule build_maintenance_profiles:
 		all_caps = "resources/all_capacities.h5",
 	output:	maintenance_profiles = "resources/maintenance_profiles.h5"
 	script:	"scripts/build_maintenance_profiles.py"
+
+rule build_flow_based_data:
+	input:	zip_file = "data/fb_domains.zip",
+	output:	core_domain = "resources/FBMC/Core_{year}.h5",
+		nordic_domain = "resources/FBMC/Nordic_{year}.h5",
+	params:	folder="data/fb_domains/"	
+	script:	"scripts/build_flow_based_data.py"
+	
 
 rule update_capacities:
 	input:	old_network = lambda w: ("resources/networks/{iter}/cy{cy}_ty{ty}.nc").format(iter = int(w.iter)-1, cy = w.cy, ty = w.ty),

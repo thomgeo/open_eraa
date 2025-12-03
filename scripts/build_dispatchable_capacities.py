@@ -81,8 +81,10 @@ def build_legacy_caps():
     existing["efficiency"] = properties["Standard efficiency in NCV terms"].loc[:, "existing"].reindex(existing.carrier).values
 
     existing["start_up_cost"] = properties["Start-up fix cost (e.g. wear) warm start"].loc[:, "existing"].reindex(existing.carrier, level=1).fillna(0).values
-    existing["ramp_limit_up"] = properties["Ramp up rate % of max output power / min"].loc[:, "existing"].reindex(existing.carrier).values*60
-    existing["ramp_limit_down"] = properties["Ramp down rate % of max output power / min"].loc[:, "existing"].reindex(existing.carrier).values*60
+    existing["ramp_limit_up_real"] = properties["Ramp up rate % of max output power / min"].loc[:, "existing"].reindex(existing.carrier).values*60
+    existing["ramp_limit_up"] = existing["ramp_limit_up_real"].clip(upper=1.)
+    existing["ramp_limit_down_real"] = properties["Ramp down rate % of max output power / min"].loc[:, "existing"].reindex(existing.carrier).values*60
+    existing["ramp_limit_down"] = existing["ramp_limit_down_real"].clip(upper=1.0)
     existing["p_min_pu"] = properties["Minimum stable generation (% of max power)"].loc[:, "existing"].reindex(existing.carrier).values
     existing["min_up_time"] = properties["Min Time on"].loc[:, "existing"].reindex(existing.carrier).values
     existing["min_down_time"] = properties["Min Time off"].loc[:, "existing"].reindex(existing.carrier).values
@@ -120,8 +122,10 @@ def build_new_investments():
 
     new["start_up_cost"] = properties["Start-up fix cost (e.g. wear) warm start"].loc[:, "new"].reindex(new.carrier, level=1).fillna(0).values
 
-    new["ramp_limit_up"] = properties["Ramp up rate % of max output power / min"].loc[:, "new"].reindex(new.carrier).values*60
-    new["ramp_limit_down"] = properties["Ramp down rate % of max output power / min"].loc[:, "new"].reindex(new.carrier).values*60
+    new["ramp_limit_up_real"] = properties["Ramp up rate % of max output power / min"].loc[:, "new"].reindex(new.carrier).values*60
+    existing["ramp_limit_up"] = existing["ramp_limit_up_real"].clip(upper=1.)
+    new["ramp_limit_down_real"] = properties["Ramp down rate % of max output power / min"].loc[:, "new"].reindex(new.carrier).values*60
+    existing["ramp_limit_down"] = existing["ramp_limit_down_real"].clip(upper=1.)
     new["p_min_pu"] = properties["Minimum stable generation (% of max power)"].loc[:, "new"].reindex(new.carrier).values
     new["min_up_time"] = properties["Min Time on"].loc[:, "new"].reindex(new.carrier).values
     new["min_down_time"] = properties["Min Time off"].loc[:, "new"].reindex(new.carrier).values

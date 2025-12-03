@@ -41,7 +41,53 @@ def get_ntc_tables(excel_file):
     p_max_pu = p_max_pu[p_nom.index]
     
     return p_nom, p_max_pu
+
+def split_uk_france_interconnection(p_nom, p_max_pu):
     
+    p_nom_uk_fr = p_nom.loc["UK00-FR00-DC"].copy()
+    p_nom_uk_fr.loc["p_nom"] = 2000
+    p_nom_uk_fr = pd.concat([p_nom_uk_fr, p_nom_uk_fr], keys=["UK00-FR00_1-DC", "UK00-FR00_2-DC"])
+    p_nom.drop("UK00-FR00-DC", inplace=True)
+    p_nom = pd.concat([p_nom, p_nom_uk_fr]).sort_index()
+    
+    p_max_pu_uk_fr = p_max_pu.loc[:, :, ["UK00-FR00-DC"], :].copy()
+    
+    p_max_pu_uk_fr.index = p_max_pu_uk_fr.index.remove_unused_levels()
+    
+    p_max_pu_uk_fr_1 = p_max_pu_uk_fr.copy()
+    p_max_pu_uk_fr_2 = p_max_pu_uk_fr.copy()
+    
+    p_max_pu_uk_fr_1.index = p_max_pu_uk_fr_1.index.set_levels(["UK00-FR00_1-DC"], level=2)
+    p_max_pu_uk_fr_2.index = p_max_pu_uk_fr_2.index.set_levels(["UK00-FR00_2-DC"], level=2)
+    
+    p_max_pu = pd.concat([
+        p_max_pu.drop("UK00-FR00-DC", level=2),
+        pd.concat([p_max_pu_uk_fr_1, p_max_pu_uk_fr_2])
+    ]).sort_index()
+
+    p_nom_fr_uk = p_nom.loc["FR00-UK00-DC"].copy()
+    p_nom_fr_uk.loc["p_nom"] = 2000
+    p_nom_fr_uk = pd.concat([p_nom_fr_uk, p_nom_fr_uk], keys=["FR00-UK00_1-DC", "FR00-UK00_2-DC"])
+    p_nom.drop("FR00-UK00-DC", inplace=True)
+    p_nom = pd.concat([p_nom, p_nom_fr_uk]).sort_index()
+    
+    p_max_pu_fr_uk = p_max_pu.loc[:, :, ["FR00-UK00-DC"], :].copy()
+    
+    p_max_pu_fr_uk.index = p_max_pu_fr_uk.index.remove_unused_levels()
+    
+    p_max_pu_fr_uk_1 = p_max_pu_fr_uk.copy()
+    p_max_pu_fr_uk_2 = p_max_pu_fr_uk.copy()
+    
+    p_max_pu_fr_uk_1.index = p_max_pu_fr_uk_1.index.set_levels(["FR00-UK00_1-DC"], level=2)
+    p_max_pu_fr_uk_2.index = p_max_pu_fr_uk_2.index.set_levels(["FR00-UK00_2-DC"], level=2)
+    
+    p_max_pu = pd.concat([
+        p_max_pu.drop("FR00-UK00-DC", level=2),
+        pd.concat([p_max_pu_fr_uk_1, p_max_pu_fr_uk_2])
+    ]).sort_index()
+    
+
+    return p_nom, p_max_pu    
 folder = snakemake.params.folder
 ntc = snakemake.input.ntc
 
@@ -71,6 +117,11 @@ for file in sorted([i for i in glob.glob("data/NTCs/*") if "NTCs" in i]):
     
 for col in p_max_pu.columns:
     p_max_pu[col] = p_max_pu[col].astype(float)
+
+p_nom = p_nom.set_index(i for i in p_nom.index)
+p_max_pu = p_max_pu.set_index((i for i in p_max_pu.index))
+
+p_nom, p_max_pu = split_uk_france_interconnection(p_nom, p_max_pu)
 
 p_nom.to_hdf(save_hdf, "p_nom")
 p_max_pu.to_hdf(save_hdf, "p_max_pu")

@@ -10,7 +10,6 @@ import numpy as np
 import pypsa
 import pycountry
 import os 
-import h5py
 
 import time
 
@@ -150,17 +149,13 @@ def add_existing_storage(all_c):
 
     storage["efficiency_store"] = technology_data.loc[:, "efficiency", :].reindex(storage.carrier.map(map_storage)).value.values
     
-    storage_inflows = storage_inflows.reindex(
-      index=n.snapshots,   
-      columns=storage.index, 
-      fill_value=0
-  )
-    
-    n.madd(
+    storage.to_csv('storage.csv', index=False)
+
+    n.add(
         "StorageUnit",
         storage.index,
         **storage,
-        inflow=storage_inflows,
+        inflow=storage_inflows.reindex(storage.index, axis=1, fill_value=0.),
         invest_status = "existing"
     )
 
@@ -240,7 +235,7 @@ def add_renewables():
         axis=1
     )
 
-    n.madd(
+    n.add(
         "Generator",
         res.index,
         **res,
@@ -292,7 +287,7 @@ def add_dispatchables():
 
     plants.drop(columns="p_min_pu", inplace=True)
     
-    n.madd(
+    n.add(
         "Generator",
         plants.index,
         **plants,
@@ -328,7 +323,7 @@ def add_dsr():
     
     print(dsr.index)
 
-    n.madd(
+    n.add(
         "Generator",
         dsr.index,
         **dsr,
@@ -387,8 +382,6 @@ links["carrier"] = [i[-2:] for i in links.index]
 
 demand, links = group_luxembourg(demand, links)
 
-demand.to_csv('demand.csv', index=False)
-
 commodity_prices = prepare_commodity_prices(commodity_prices_raw[commodity_prices_raw.apply(lambda row: row.astype(str).str.contains("ERAA 2025 post-CfE").any(), axis=1)])
 
 dispatchable_plants = pd.read_hdf(snakemake.input.individual_plants,key='detailed')
@@ -405,16 +398,14 @@ buses = (
     .union(links.bus1.unique())
 )
 
-pd.Series(buses).to_csv('buses.csv', index=False)
-
-n.madd(
+n.add(
     "Bus", 
     buses, 
     carrier = "electricity", 
     country = buses.str[:2]
 )
 
-n.madd(
+n.add(
     "Load", 
     demand.columns,
     bus=demand.columns,
@@ -426,7 +417,6 @@ inflows = build_inflows(inflows_raw)
 add_existing_storage(all_cap)
 
 add_dispatchables()
-
 
 add_renewables()
 
@@ -441,22 +431,17 @@ links_p_max_pu = links_p_max_pu.reindex(
       fill_value=1
 )
 
-n.madd(
+n.add(
     "Link",
     links.index,
     bus0 = links.bus0,
     bus1 = links.bus1,
     p_nom = links.p_nom,
-    p_max_pu = links_p_max_pu,
+    p_max_pu = links_p_max_pu.reindex(links.index, fill_value=1, axis=1),
     carrier = links.carrier,
 )
 
 #n.generators.loc[(n.generators.bus == "CY00") & (n.generators.carrier == "CCGT"), "p_min_pu"] = 0 # remove minimum load of CCGT in Cyprus as this can exceed actual load.
-
-n.generators.to_csv('capacitiesTable.csv', index=False)
-n.loads.to_csv('DemandTable.csv', index=False)
-n.links.to_csv('LinksTable.csv', index=False)
-n.storage_units.to_csv('StorageTable.csv', index=False)
 
 dirname = os.path.dirname(save_path)  
 
