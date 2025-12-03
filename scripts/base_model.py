@@ -9,7 +9,6 @@ import powerplantmatching as pm
 import pypsa
 import pycountry
 import os 
-import h5py
 
 import time
 
@@ -174,11 +173,11 @@ def add_existing_storage(all_c):
     
     storage.to_csv('storage.csv', index=False)
 
-    n.madd(
+    n.add(
         "StorageUnit",
         storage.index,
         **storage,
-        inflow=storage_inflows,
+        inflow=storage_inflows.reindex(storage.index, axis=1, fill_value=0.),
         invest_status = "existing"
     )
 
@@ -213,10 +212,6 @@ def prepare_commodity_prices(commodity_prices):
     commodity_prices = commodity_prices.pivot(index="Fuel", columns="Year", values="Value").reset_index()
      
     commodity_prices["CO2"] = C02
-     
-    #commodity_prices.to_csv('commodity_column.csv', index=False) 
-       
-    #commodity_prices_filtered.to_csv('commodity_filtered.csv', index=False)  
     
     commodity_prices = commodity_prices.set_index("Fuel")
     
@@ -241,21 +236,19 @@ def prepare_commodity_prices(commodity_prices):
 
 def add_renewables():
        
-    res = capacity.loc[["CSP","CSPS","onwind","offwind","PVfixed","PVIroof", "PVRroof", "PVtrack","ROR"]].unstack().copy()
+    res = capacity.loc[["CSP","CSP-stor","onwind","offwind","solar-fix","solar-rsd", "solar-ind","solar-track", "ROR"]].unstack().copy()
     res = res.reset_index()
     res.columns = ["bus", "carrier", "p_nom"]
     res.index = res.bus + " " + res.carrier
 
     res = res[res.p_nom>0]
     
-    vre=["CSP","CSPS","onwind","offwind","PVfixed","PVIroof", "PVRroof","PVtrack"]
+    vre=["CSP","CSP-stor","onwind","offwind","solar-fix","solar-rsd", "solar-ind","solar-track"]
    
     p_max_pu = pd.concat(
         [pd.read_hdf(snakemake.input.res_profile, tech).loc[:, "WS{:02}".format(climate_year), str(base_year), :] for tech in vre],
         axis=1
     )
-    
-    #print("found RES in res_profile")
     
     p_max_pu.columns = vre
     p_max_pu = p_max_pu.unstack(0).stack(0)
@@ -263,22 +256,13 @@ def add_renewables():
     p_max_pu.columns = snapshots
     p_max_pu = p_max_pu.T
 
-    #print(len(inflows[res.filter(like="ROR", axis=0).index]))
-    #print(len(res.filter(like="ROR", axis=0).p_nom))
-
     p_max_pu = pd.concat(
         [p_max_pu, inflows[res.filter(like="ROR", axis=0).index].div(res.filter(like="ROR", axis=0).p_nom).clip(upper=1)],
         axis=1
     )
     
-    #p_max_pu = pd.concat(
-    #    [p_max_pu, inflows[res.filter(like="pondage", axis=0).index].div(res.filter(like="pondage", axis=0).p_nom)],
-    #    axis=1
-    #)
-    
-    p_max_pu[res.index].to_csv('res.csv', index=False)
 
-    n.madd(
+    n.add(
         "Generator",
         res.index,
         **res,
@@ -304,14 +288,11 @@ def add_dispatchables():
             )
         ).add(plants.var_om.values).values
     )
-    #plants.loc[:, "p_min_pu"] = 0
-    plants.loc[:, "committable"]= True
-    #plants.loc[:, "up_time_before"] = 2
-    #plants.loc[:, "down_time_before"] = 100
-    
+
+    plants.loc[:, "committable"]= True    
     
     plants.to_csv('plants.csv', index=False)
-    n.madd(
+    n.add(
         "Generator",
         plants.index,
         **plants,
@@ -342,15 +323,10 @@ def add_dsr():
     dsr["carrier"] = "DSR"
     
     dsr.index = [f"{bus} {carrier} {i}" for i, (bus, carrier) in enumerate(zip(dsr.bus, dsr.carrier))]
-
-    
-#    dsr.index = [dsr.bus + " " + dsr.carrier + " ".join(i) for i in len(inflows.index)] 
-    
-    dsr.to_csv('DSR.csv', index=False)
     
     print(dsr.index)
 
-    n.madd(
+    n.add(
         "Generator",
         dsr.index,
         **dsr,
@@ -379,7 +355,7 @@ biomass_price = snakemake.config["biomass_price"]
 dispatchable = ["CCGT", "OCGT", 'biomass', 'coal', 'lignite', 'nuclear','oil','hydrogen']
 distributed_resources = ["onwind", "offwind", "CSP","solar", "battery"]
 
-technologies_for_investment = snakemake.config["investment"]["technologies_new_investment"]
+technologies_for_investment = snakemake.config["power_plants"]["technologies_new_investment"]
 
 inflows_raw = pd.read_hdf(snakemake.input.inflow, "inflow")
 
@@ -397,10 +373,6 @@ demand = pd.read_hdf(snakemake.input.demand)
 demand = demand.loc[:, "WS{:02}".format(climate_year), :, str(base_year), :].unstack(1)
 demand.index = snapshots
 
-demand.to_csv('demand.csv', index=False)
-#demand.drop("TR00",axis=1, inplace=True)
-
-
 links = pd.read_hdf(snakemake.input.ntc, "p_nom")
 links = links[base_year].unstack(1)
 links = links.iloc[:len(snapshots)]
@@ -415,8 +387,6 @@ links["carrier"] = [i[-2:] for i in links.index]
 
 demand, links = group_luxembourg(demand, links)
 
-demand.to_csv('demand.csv', index=False)
-
 commodity_prices = prepare_commodity_prices(commodity_prices_raw[commodity_prices_raw.apply(lambda row: row.astype(str).str.contains("ERAA 2025 post-CfE").any(), axis=1)])
 
 dispatchable_plants = pd.read_hdf(snakemake.input.dispatchable_plants)
@@ -426,8 +396,6 @@ n.set_snapshots(snapshots)
 
 capacity=pd.read_hdf(snakemake.input.investcap)[base_year].unstack(1)
 
-#capacity.to_csv('capacitiesTable.csv', index=False) 
-
 buses = (
     capacity.sum()[capacity.abs().sum() >0].index
     .union(demand.columns)
@@ -435,16 +403,14 @@ buses = (
     .union(links.bus1.unique())
 )
 
-pd.Series(buses).to_csv('buses.csv', index=False)
-
-n.madd(
+n.add(
     "Bus", 
     buses, 
     carrier = "electricity", 
     country = buses.str[:2]
 )
 
-n.madd(
+n.add(
     "Load", 
     demand.columns,
     bus=demand.columns,
@@ -456,7 +422,6 @@ inflows = build_inflows(inflows_raw)
 add_existing_storage(all_cap)
 
 add_dispatchables()
-#print(n.generators)
 
 add_renewables()
 
@@ -464,22 +429,17 @@ add_dsr()
 
 set_investment_bounds()
 
-n.madd(
+n.add(
     "Link",
     links.index,
     bus0 = links.bus0,
     bus1 = links.bus1,
     p_nom = links.p_nom,
-    p_max_pu = links_p_max_pu,
+    p_max_pu = links_p_max_pu.reindex(links.index, fill_value=1, axis=1),
     carrier = links.carrier,
 )
 
 #n.generators.loc[(n.generators.bus == "CY00") & (n.generators.carrier == "CCGT"), "p_min_pu"] = 0 # remove minimum load of CCGT in Cyprus as this can exceed actual load.
-
-n.generators.to_csv('capacitiesTable.csv', index=False)
-n.loads.to_csv('DemandTable.csv', index=False)
-n.links.to_csv('LinksTable.csv', index=False)
-n.storage_units.to_csv('StorageTable.csv', index=False)
 
 dirname = os.path.dirname(save_path)  
 

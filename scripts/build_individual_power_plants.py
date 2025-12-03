@@ -477,8 +477,10 @@ def add_technical_properties_existing(properties, age_matching):
     
     eraa_plants_detailed.start_up_cost = start_up_cost
     
-    eraa_plants_detailed.ramp_limit_down = ramp_limit_down
-    eraa_plants_detailed.ramp_limit_up = ramp_limit_up
+    eraa_plants_detailed.ramp_limit_down_real = ramp_limit_down
+    eraa_plants_detailed.ramp_limit_down = eraa_plants_detailed.ramp_limit_down_real.clip(upper=1.) 
+    eraa_plants_detailed.ramp_limit_up_real = ramp_limit_up
+    eraa_plants_detailed.ramp_limit_up = eraa_plants_detailed.ramp_limit_up_real.clip(upper=1.)
     eraa_plants_detailed.p_min_pu = p_min_pu
     eraa_plants_detailed.min_up_time = min_up_time
     eraa_plants_detailed.min_down_time = min_down_time
@@ -506,8 +508,10 @@ def build_new_investments(df):
     new.index = new.bus + " " + new.carrier + " new " + new.entry.astype(str)
     new["efficiency"] = properties.loc[:, "new", :]["Standard efficiency in NCV terms"].reindex(new.carrier).values
     new["start_up_cost"] = properties["Start-up fix cost (e.g. wear) warm start"].loc[:, "new"].reindex(new.carrier, level=1).fillna(0).values
-    new["ramp_limit_up"] = properties["Ramp up rate % of max output power / min"].loc[:, "new"].reindex(new.carrier).values*60
-    new["ramp_limit_down"] = properties["Ramp down rate % of max output power / min"].loc[:, "new"].reindex(new.carrier).values*60
+    new["ramp_limit_up_real"] = properties["Ramp up rate % of max output power / min"].loc[:, "new"].reindex(new.carrier).values*60
+    new["ramp_limit_up"] = new["ramp_limit_up_real"].clip(upper=1.)
+    new["ramp_limit_down_real"] = properties["Ramp down rate % of max output power / min"].loc[:, "new"].reindex(new.carrier).values*60
+    new["ramp_limit_down"] = new["ramp_limit_down_real"].clip(upper=1.)
     new["p_min_pu"] = properties["Minimum stable generation (% of max power)"].loc[:, "new"].reindex(new.carrier).values
     new["min_up_time"] = properties["Min Time on"].loc[:, "new"].reindex(new.carrier).values
     new["min_down_time"] = properties["Min Time off"].loc[:, "new"].reindex(new.carrier).values
