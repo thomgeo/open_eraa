@@ -536,12 +536,18 @@ PTDF_nordic = pd.read_hdf(snakemake.input.nordic_domain, "PTDF")
 domain_assignment_nordic = pd.read_hdf(snakemake.input.nordic_domain, "domain_assignment")
 
 domain_assignment_nordic = domain_assignment_nordic.loc[target_year][weather_scenario].sort_index()
-domain_assignment_nordic = domain_assignment_nordic.drop(domain_assignment_nordic.loc[2, 29, :].index)
+
+if 29 in domain_assignment_nordic.loc[2].index.remove_unused_levels().levels[0]:
+    domain_assignment_nordic = domain_assignment_nordic.drop(domain_assignment_nordic.loc[[2], 29, :].index)
+
 domain_assignment_nordic.index = n.snapshots
 
 domain_assignment_core = domain_assignment_core.loc[target_year][weather_scenario]
 domain_assignment_core.sort_index(inplace=True)
-domain_assignment_core = domain_assignment_core.drop(domain_assignment_core.loc[2, 29, :].index)
+
+if 29 in domain_assignment_core.loc[2].index.remove_unused_levels().levels[0]:
+    domain_assignment_core = domain_assignment_core.drop(domain_assignment_core.loc[[2], 29, :].index)
+    
 domain_assignment_core.index = n.snapshots
 
 RAM_core = RAM_core.T.reindex(domain_assignment_core.values)
