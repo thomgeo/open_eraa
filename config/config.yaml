@@ -59,6 +59,7 @@ power_plants:
     hydrogen: 400
   de_minimis: 50
   technologies_new_investment: ["OCGT", "CCGT"]
+  aggregation_level: all # choose from all, small, none,  
 
 solving:
   options:

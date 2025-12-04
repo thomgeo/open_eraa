@@ -261,14 +261,12 @@ def add_dispatchables():
             )
         ).add(plants.var_om.values).values
     )
-    #plants.loc[:, "p_min_pu"] = 0
-    plants.loc[:, "committable"]= True
-    #plants.loc[:, "up_time_before"] = 2
-    #plants.loc[:, "down_time_before"] = 100
     
+    plants.loc[:, "committable"]= True
+    
+    """
     p_max_puA = pd.read_hdf(snakemake.input.maintenance, key=f"maintenance{base_year}") 
     
-    #duplicates = plants[plants.index.duplicated()]
       
     p_max_puA.index=snapshots
     p_max_pu_columns_aligned = pd.DataFrame(0, index=snapshots, columns=plants.index)
@@ -286,13 +284,14 @@ def add_dispatchables():
     p_min_pu.to_csv('p_min_pu1.csv', index=True)
 
     plants.drop(columns="p_min_pu", inplace=True)
+    """
     
     n.add(
         "Generator",
         plants.index,
         **plants,
-        p_max_pu=p_max_pu[plants.index], 
-        p_min_pu=p_min_pu[plants.index], 
+        #p_max_pu=p_max_pu[plants.index], 
+        #p_min_pu=p_min_pu[plants.index], 
     )
 
 def group_luxembourg(demand, links):
@@ -384,7 +383,12 @@ demand, links = group_luxembourg(demand, links)
 
 commodity_prices = prepare_commodity_prices(commodity_prices_raw[commodity_prices_raw.apply(lambda row: row.astype(str).str.contains("ERAA 2025 post-CfE").any(), axis=1)])
 
-dispatchable_plants = pd.read_hdf(snakemake.input.individual_plants,key='detailed')
+if snakemake.config["power_plants"]["aggregation_level"] == "none":
+  dispatchable_plants = pd.read_hdf(snakemake.input.individual_plants, key='detailed')
+elif snakemake.config["power_plants"]["aggregation_level"] == "small":
+  dispatchable_plants = pd.read_hdf(snakemake.input.individual_plants, key='small_aggregated')
+else: 
+  dispatchable_plants = pd.read_hdf(snakemake.input.dispatchable_plants)
 
 n = pypsa.Network()
 n.set_snapshots(snapshots)
