@@ -35,7 +35,7 @@ for file in files:
 
     zone = os.path.splitext(os.path.basename(file))[0].split("_")[0]
         
-    demand_target_year[zone] = pd.read_csv(file, index_col=[0,3], header=0).reset_index(drop=True).stack()
+    demand_target_year[zone] = pd.read_csv(file, index_col=[0,3], header=0).iloc[:,2:].reset_index(drop=True).stack()
 
     demand_target_year = demand_target_year.stack()
 

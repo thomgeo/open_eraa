@@ -5,11 +5,18 @@ time_horizon:
   
 biomass_price:  7 # EUR/MWh
   
-storage_preopt_aggregation: "48h"
+storage:
+  preopt_aggregation: 8
+  target_deviation_penalty: 500
+  
+rolling_horizon:
+  window: 168
+  overlap: 0
+
 
 VOLL:  10e3
 
-delivery_time_reserves: 10 #in minutes
+
 
 entso-e:
   api_key:  "99516228-fb84-4a73-9b38-d0703b72cce0"
@@ -35,9 +42,24 @@ balancing:
     active:  false
     n_ints:  20
   price_cap:  15e3
+  delivery_time:
+    FRR: 10.
+    FCR: 0.5
 
-investment:
+power_plants:
+  typical_size:
+    CCGT : 400
+    OCGT : 50
+    biomass : 50
+    coal : 400
+    lignite : 400
+    nuclear : 800
+    oil : 50
+    other: 50
+    hydrogen: 400
+  de_minimis: 50
   technologies_new_investment: ["OCGT", "CCGT"]
+  aggregation_level: all # choose from all, small, none,  
 
 solving:
   options:
@@ -52,7 +74,13 @@ solving:
     #nhours: 10
   solver:
     name: cplex
-    options: cplex-default
+    options:  cplex-default
+  solver_decomposition:
+    name: cplex
+    options:  cplex-decomposition
+  solver_maintenance:
+    name: cplex
+    options:  cplex-maintenance
   solver_options:
     highs-default:
       # refer to https://ergo-code.github.io/HiGHS/options/definitions.html#solver
@@ -102,14 +130,21 @@ solving:
       threads: 4
       lpmethod: 4 # barrier
       solutiontype: 2 # non basic solution, ie no crossover
-      barrier.convergetol: 1.e-5
+      barrier.convergetol: 1.e-3
       feasopt.tolerance: 1.e-6
-      #barrier.limits.objrange: 1.e+75
-      #barrier.crossover: 1
-      #barrier.display: 2
-      #barrier.algorithm: 3
-      #barrier.startalg:  2
-      #preprocessing.dual: -1
-      #barrier.colnonzeros: 50,
+      preprocessing.dual: -1
+      barrier.algorithm: 2
+      barrier.startalg: 3
+      emphasis.numerical: 1
+    cplex-decomposition:
+      mip.tolerances.mipgap: 0.01
+    cplex-maintenance:
+      mip.tolerances.mipgap: 0.01
+      emphasis.mip: 4
+      threads: 4 
+      lpmethod: 4
+      barrier.convergetol: 1.e-2
+      feasopt.tolerance: 1.e-6
+      emphasis.numerical: 1
     cbc-default: {} # Used in CI
     glpk-default: {} # Used in CI  
