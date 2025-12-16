@@ -9,6 +9,7 @@ import numpy as np
 import glob
 import zipfile
 import os
+import tqdm
 
 
 save_hdf=snakemake.output.demand
@@ -25,7 +26,7 @@ files = glob.glob(snakemake.params.demand_folder + "Demand data/Demand timeserie
 demand = pd.DataFrame()
 
 # structural change to collect 2024 data
-for file in files:
+for file in tqdm.tqdm(files):
     
     print("\n" + file + "\n")
 

@@ -181,6 +181,7 @@ rule build_availability_factors:
 		"scripts/build_availability_factors.py"
 
 rule build_hydro_inflows:
+	input:	res_profile = "resources/res_profile.h5", # this is a pseudo input. It serves only for starting the build_hydro_inflows rule once the previous rule has unpacked the PECD data
 	params:	
 		data_folder = "data/"
 	output:
@@ -205,6 +206,10 @@ rule build_dispatchable_capacities:
 		all_capacities = "resources/all_capacities.h5",
 		dsr = "resources/dsr.h5",
 		investcap = "resources/investcap.h5",
+		commodity_prices = "data/Dashboard_raw_data/Commodity Prices.csv",
+		battery = "data/Dashboard_raw_data/Batteries additional information.csv",
+		hydrodata = "data/Dashboard_raw_data/Hydro additional information.csv",
+		reserve_requirements = "data/Dashboard_raw_data/Reserve requirements.csv",
 	script:	"scripts/build_dispatchable_capacities.py"
 
 rule build_demand:
