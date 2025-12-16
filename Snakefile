@@ -205,6 +205,10 @@ rule build_dispatchable_capacities:
 		all_capacities = "resources/all_capacities.h5",
 		dsr = "resources/dsr.h5",
 		investcap = "resources/investcap.h5",
+		battery_data = "data/Dashboard_raw_data/Batteries additional information.csv",
+		price_data = "data/Dashboard_raw_data/Commodity Prices.csv",
+		hydro_data = "data/Dashboard_raw_data/Hydro additional information.csv",
+		reserve_data = "data/Dashboard_raw_data/Reserve requirements.csv",
 	script:	"scripts/build_dispatchable_capacities.py"
 
 rule build_demand:
