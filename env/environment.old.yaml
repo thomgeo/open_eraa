@@ -10,7 +10,7 @@ dependencies:
 - pip
 
 
-#- pypsa>=1.03
+- pypsa>=1.03
 - linopy>=0.4.4
 - powerplantmatching>=0.5.15
 - cplex
@@ -70,7 +70,5 @@ dependencies:
   - tsam>=2.3.1
   - entsoe-py
   - snakemake-storage-plugin-http
-  - git+https://github.com/PyPSA/PyPSA.git@6c978176757495b4b1fea8095f89deb78144c5b4
-
 
 

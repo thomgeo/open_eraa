@@ -14,9 +14,9 @@ def get_flow_based_groupers(PTDF_zone, PTDF_DC, PTDF_AHC):
 
     AC = n.links.query("(carrier == 'AC') & (bus0 in @zones) & (bus1 in @zones)")
     AC_bus0 = AC.bus0.copy()
-    AC_bus0.name = "bus"
+    AC_bus0.name = "name"
     AC_bus1 = AC.bus1.copy()
-    AC_bus1.name = "bus"
+    AC_bus1.name = "name"
     
     DC = pd.Series(PTDF_DC.columns + "-DC", PTDF_DC.columns)
     DC = DC.to_frame("direct")
@@ -82,7 +82,7 @@ def prepare_PTDFs(PTDF, domain_assignment, nordic=False):
     PTDF_DC = PTDF_timeseries( PTDF["PTDF_EvFB"], domain_assignment, nordic=nordic)
     PTDF_AHC = PTDF_timeseries(PTDF["PTDF*_AHC,SZ"], domain_assignment, nordic=nordic)
     
-    PTDF_zone.columns.name = "bus"
+    PTDF_zone.columns.name = "name"
     PTDF_DC.columns.name = "name"
     PTDF_AHC.columns.name = "name"
 
@@ -95,7 +95,7 @@ def prepare_PTDFs(PTDF, domain_assignment, nordic=False):
 
 def prepare_for_uc():
     
-    n.optimize.add_load_shedding(sign=1, marginal_cost=VOLL)
+    n.optimize.add_load_shedding(sign=1, marginal_cost=VOLL, buses=n.loads.bus.unique())
 
     """
     n.add(
@@ -112,8 +112,8 @@ def prepare_for_uc():
     )
     """
     
-    n.generators.ramp_limit_up = n.generators.ramp_limit_up.clip(upper=1.).fillna(1.)
-    n.generators.ramp_limit_down = n.generators.ramp_limit_down.clip(upper=1.).fillna(1.)
+    #n.generators.ramp_limit_up = n.generators.ramp_limit_up.clip(upper=1.).fillna(1.)
+    #n.generators.ramp_limit_down = n.generators.ramp_limit_down.clip(upper=1.).fillna(1.)
     
     n.generators.shut_down_cost = n.generators.start_up_cost
     
@@ -214,128 +214,20 @@ def flow_based_market_coupling(n, snapshots):
     
     m.add_constraints(
         (net_position_DC_core*PTDF_DC_core.loc[snapshots].stack().to_xarray()).sum("name")
-        + (net_position_zone_core*PTDF_zone_core.loc[snapshots].stack().to_xarray()).sum("bus")
+        + (net_position_zone_core*PTDF_zone_core.loc[snapshots].stack().to_xarray()).sum("name")
         + (net_position_AHC_core*PTDF_AHC_core.loc[snapshots].stack().to_xarray()).sum("name")
-        <= RAM_core.loc[snapshots].stack().to_xarray(),
+        <= RAM_core.loc[snapshots].stack().sort_index().to_xarray(),
         name="CNEC_capacity_constraint_core"
     )
     
     m.add_constraints(
         (net_position_DC_nordic*PTDF_DC_nordic.loc[snapshots].stack().to_xarray()).sum("name")
-        + (net_position_zone_nordic*PTDF_zone_nordic.loc[snapshots].stack().to_xarray()).sum("bus")
+        + (net_position_zone_nordic*PTDF_zone_nordic.loc[snapshots].stack().to_xarray()).sum("name")
         + (net_position_AHC_nordic*PTDF_AHC_nordic.loc[snapshots].stack().to_xarray()).sum("name")
-        <= RAM_nordic.loc[snapshots].stack().to_xarray(),
+        <= RAM_nordic.loc[snapshots].stack().sort_index().to_xarray(),
         name="CNEC_capacity_constraint_nordic"
     )
 
-
-"""
-def flow_based_preoptimization(n, snapshots):
-
-    m = n.model
-    
-    core = PTDF_zone_core.columns
-    nordic = PTDF_zone_nordic.columns
-
-    core_groupers = get_flow_based_groupers(PTDF_zone_core, PTDF_DC_core, PTDF_AHC_core)
-    
-    AC_core_bus0 = core_groupers[0]
-    AC_core_bus1 = core_groupers[1]
-    AC_core = core_groupers[2]
-    grouper_DC_core_direct = core_groupers[3]
-    grouper_DC_core_opposite = core_groupers[4] 
-    DC_core = core_groupers[5]
-    grouper_AHC_core_direct  = core_groupers[6]
-    grouper_AHC_core_opposite = core_groupers[7]
-    AHC_core_matching = core_groupers[8]
-
-    nordic_groupers = get_flow_based_groupers(PTDF_zone_nordic, PTDF_DC_nordic, PTDF_AHC_nordic)
-    
-    AC_nordic_bus0 = nordic_groupers[0]
-    AC_nordic_bus1 = nordic_groupers[1]
-    AC_nordic = nordic_groupers[2]
-    grouper_DC_nordic_direct= nordic_groupers[3]
-    grouper_DC_nordic_opposite = nordic_groupers[4]
-    DC_nordic = nordic_groupers[5]
-    grouper_AHC_nordic_direct = nordic_groupers[6]
-    grouper_AHC_nordic_opposite = nordic_groupers[7]
-    AHC_nordic_matching = nordic_groupers[8]
-
-    
-    net_position_zone_core = m.add_variables(coords=[snapshots, core], name="Bus-zonal_NP_core")
-    net_position_AHC_core = m.add_variables(coords=[snapshots, AHC_core_matching.index], name="Link-AHC_NP_core")
-    net_position_DC_core = m.add_variables(coords = [snapshots, DC_core.index], name="Link-DC_NP_core")
-    
-    net_position_zone_nordic = m.add_variables(coords=[snapshots, nordic], name="Bus-zonal_NP_nordic")
-    net_position_AHC_nordic = m.add_variables(coords=[snapshots, AHC_nordic_matching.index], name="Link-AHC_NP_nordic")
-    net_position_DC_nordic = m.add_variables(coords = [snapshots, DC_nordic.index], name="Link-DC_NP_nordic")
-    
-
-    m.add_constraints(
-        net_position_zone_core  == (
-            m["Link-p"].loc[:, AC_core.index].groupby(AC_core_bus0.to_xarray()).sum()
-            - m["Link-p"].loc[:, AC_core.index].groupby(AC_core_bus1.to_xarray()).sum()
-        ),
-        name="Bus-zonal_net_position_core"
-    )
-    
-    m.add_constraints(
-        net_position_DC_core == (
-            m["Link-p"].loc[:, DC_core.direct.values].groupby(grouper_DC_core_direct).sum() 
-            - m["Link-p"].loc[:, DC_core.opposite.values].groupby(grouper_DC_core_opposite).sum() 
-        ),
-        name="Link-DC_net_position_core"
-    )
-    
-    
-    m.add_constraints(
-        net_position_AHC_core == (
-            m["Link-p"].loc[:, AHC_core_matching.direct.values].groupby(grouper_AHC_core_direct).sum()
-            - m["Link-p"].loc[:, AHC_core_matching.opposite.values].groupby(grouper_AHC_core_opposite).sum()
-        ), name="Link-AHC_net_position_core"
-    )
-    
-    m.add_constraints(
-        net_position_zone_nordic  == (
-            m["Link-p"].loc[:, AC_nordic.index].groupby(AC_nordic_bus0.to_xarray()).sum()
-            - m["Link-p"].loc[:, AC_nordic.index].groupby(AC_nordic_bus1.to_xarray()).sum()
-        ),
-        name="Bus-zonal_net_position_nordic"
-    )
-    
-    m.add_constraints(
-        net_position_DC_nordic == (
-            m["Link-p"].loc[:, DC_nordic.direct.values].groupby(grouper_DC_nordic_direct).sum() 
-            - m["Link-p"].loc[:, DC_nordic.opposite.values].groupby(grouper_DC_nordic_opposite).sum() 
-        ),
-        name="Link-DC_net_position_nordic"
-    )
-    
-    
-    m.add_constraints(
-        net_position_AHC_nordic == (
-            m["Link-p"].loc[:, AHC_nordic_matching.direct.values].groupby(grouper_AHC_nordic_direct).sum()
-            - m["Link-p"].loc[:, AHC_nordic_matching.opposite.values].groupby(grouper_AHC_nordic_opposite).sum()
-        ), name="Link-AHC_net_position_nordic"
-    )
-  
-    m.add_constraints(
-        (net_position_DC_core*PTDF_DC_core.loc[snapshots].stack().to_xarray()).sum("name")
-        + (net_position_zone_core*PTDF_zone_core.loc[snapshots].stack().to_xarray()).sum("bus")
-        + (net_position_AHC_core*PTDF_AHC_core.loc[snapshots].stack().to_xarray()).sum("name")
-        <= RAM_core.resample("{}h".format(storage_preopt_aggregation)).mean().loc[snapshots].stack().to_xarray(),
-        name="CNEC_capacity_constraint_core"
-    )
-    
-    m.add_constraints(
-        (net_position_DC_nordic*PTDF_DC_nordic.loc[snapshots].stack().to_xarray()).sum("name")
-        + (net_position_zone_nordic*PTDF_zone_nordic.loc[snapshots].stack().to_xarray()).sum("bus")
-        + (net_position_AHC_nordic*PTDF_AHC_nordic.loc[snapshots].stack().to_xarray()).sum("name")
-        <= RAM_nordic.resample("{}h".format(storage_preopt_aggregation)).mean().loc[snapshots].stack().to_xarray(),
-        name="CNEC_capacity_constraint_nordic"
-    )
-
-"""
 
 def storage_targets(n, snapshots):
 
@@ -404,12 +296,12 @@ def balancing_market(n, snapshots):
     FCR_status = m["Generator-status"].loc[:, committable_FCR.index]
     
     m.add_constraints(
-        gen_FRR.loc[:, committable_FRR.index]<=FRR_status*committable_FRR.ramp_limit_up_real*delivery_time_FRR*committable_FRR.p_nom,
+        gen_FRR.loc[:, committable_FRR.index]<=FRR_status*committable_FRR.ramp_limit_up*delivery_time_FRR*committable_FRR.p_nom,
         name="Generator-FRR_ramping_limit"
     )
     
     m.add_constraints(
-        gen_FCR.loc[:, committable_FCR.index]<=FCR_status*committable_FCR.ramp_limit_up_real*delivery_time_FCR*committable_FCR.p_nom,
+        gen_FCR.loc[:, committable_FCR.index]<=FCR_status*committable_FCR.ramp_limit_up*delivery_time_FCR*committable_FCR.p_nom,
             name="Generator-FCR_ramping_limit"
     )
 

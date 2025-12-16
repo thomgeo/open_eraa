@@ -27,6 +27,7 @@ rule retrieve_all_data:
 		"data/ntc.zip",
 		"resources/capacity_tables/individual_plants.h5",
 		"resources/maintenance_profiles.h5",
+		"data/invest_cost.zip",
 		#"resources/ntcs.h5",
 		#"resources/dispatchable_capacities.h5",
 		#"resources/dsr.h5",
@@ -147,6 +148,28 @@ rule retrieve_DSR:
 	run:
 		move(input[0], output[0])
 
+rule retrieve_investment_cost:
+	input:	storage("https://eepublicdownloads.blob.core.windows.net/public-cdn-container/clean-documents/sdc-documents/ERAA/ERAA_2025/Economic%20and%20technical%20investment%20parameters.zip"),
+	output:
+		protected("data/invest_cost.zip"),
+	resources:
+		mem_mb=5000,
+	retries:
+		2
+	log:
+		"logs/investment_cost.log"
+	run:
+		move(input[0], output[0])
+
+
+rule prepare_common_data:
+	input:	invest = "data/invest_cost.zip",
+		thermal = "data/thermal.zip"
+	params:	data_folder = "data/"
+	output:	economic_data = "resources/economic_data.h5",
+		technology_parameters = "resources/technology_parameters.h5",
+	script:	"scripts/prepare_common_data.py"
+
 rule build_availability_factors:
 	input:
 		pecd = "data/pecd.zip",
@@ -165,15 +188,6 @@ rule build_hydro_inflows:
 	script:
 		"scripts/build_hydro_inflows.py"
 
-
-rule buildFB:
-	input:	FB_files = "data/fb_domains.zip",
-	params:	data_folder = "data/",
-		climate_year=climate_years,
-		target_year=target_years
-	output:	FB = "resources/FB.h5",
-	script:	"scripts/buildFB.py"
-
 rule build_ntc:
 	input:	ntc="data/ntc.zip",
 	params:	folder = "data/"
@@ -185,6 +199,7 @@ rule build_dispatchable_capacities:
 		dsr = "data/dsr.zip",
 		pemmdb = "data/pemmdb.zip",
 		thermal = "data/thermal.zip",
+		technology_parameters = "resources/technology_parameters.h5",
 	params:	data_folder = "data/"
 	output:	dispatchable_capacities = "resources/dispatchable_capacities.h5",
 		all_capacities = "resources/all_capacities.h5",
@@ -214,7 +229,7 @@ rule build_bidding_zones:
 
 
 rule build_individual_power_plants:
-	input:	technology_data="data/Common data/Common Data.xlsx",
+	input:	technology_parameters = "resources/technology_parameters.h5",
 			bidding_zones = "resources/bidding_zones.geojson",
 			dispatchable_capacities = "resources/dispatchable_capacities.h5",
 	params:
@@ -277,7 +292,7 @@ rule build_ordc_parameters:
 rule build_maintenance_profiles:
 	input:	power_plants="resources/capacity_tables/individual_plants.h5",
 		demand = "resources/demand.h5",
-		common_data = "data/Common data/Common Data.xlsx",
+		technology_parameters = "resources/technology_parameters.h5",
 		all_caps = "resources/all_capacities.h5",
 	output:	maintenance_profiles = "resources/maintenance_profiles.h5"
 	script:	"scripts/build_maintenance_profiles.py"

@@ -61,341 +61,11 @@ def prepare_power_plant_table():
     return power_plants
 
 
-# In[3]:
 
+def get_age_matching():
+    
+    age_matching = pd.DataFrame(index=technology_parameters.index, dtype=str)
 
-def run_disaggregation(bus, carrier):
-
-    weight_float = 4
-    
-    existing_large = power_plants.query("(carrier == @carrier) and (bus == @bus)").Capacity.copy()
-    weights_large = power_plants.loc[existing_large.index, ("DateIn", "DateRetrofit")].max(axis=1).subtract(2025).div(100).add(1.5).fillna(1)
-    
-    m = linopy.Model()
-    
-    years = caps_per_year.columns
-    years.name ="year"
-    
-    status_existing_large = m.add_variables(binary=True, coords=[years, existing_large.index], name="status_existing_large")
-
-    added_float = m.add_variables(lower=0, coords=[years], name="added_float")
-    retired_float = m.add_variables(lower=0, coords=[years], name="retired_float")
-
-    m.add_constraints(
-        (
-            (status_existing_large*existing_large).sum("id")
-            + added_float - retired_float
-            == caps_per_year.loc[bus, carrier]
-            
-        ),
-        name="capacity_balance"
-    )
-    
-    m.add_objective(
-        (
-            (- status_existing_large)*existing_large*weights_large 
-            + retired_float*weight_float 
-            + added_float*weight_float 
-        ).sum()    
-    )
-        
-    m.add_constraints(
-        added_float >= added_float.shift({"year":1}),
-        name="new_small_plants_constraint"
-    )
-    
-    m.add_constraints(
-        added_float >= retired_float,
-        name="less_retirement_than_addition"
-    )
-    
-    
-    m.add_constraints(
-        retired_float >= retired_float.shift({"year":1}),
-        name="retired_small_plants_constraint"
-    )
-    
-    m.add_constraints(
-        status_existing_large.shift({"year":-1}) <=status_existing_large,
-        name="decommissioning_large_plants_constraint"
-    )
-
-    m.solve(
-        solver_name="cplex", 
-        **solver_options
-    )
-
-    return m
-
-
-# In[4]:
-
-
-def decompose_residual_cap(i, residual_cap, blocks, block_sizes):
-    
-    m = linopy.Model()
-    years = residual_cap.columns
-    
-    vin = m.add_variables(binary=True, coords = [years, blocks], name="entry")
-    vout = m.add_variables(binary=True, coords=[years, blocks], name="exit")
-    total_cap_year = m.add_variables(lower=0, name="total_cap_year", coords=[years])
-    
-    m.add_constraints(vin >= vin.shift({"year":1}))
-    m.add_constraints(vout >= vout.shift({"year":1}))
-    m.add_constraints(vin >= vout)  
-    m.add_constraints(((vin-vout)*block_sizes).sum("block") == residual_cap.loc[i])
-    
-    m.add_objective(total_cap_year*1)
-    m.solve(solver_name="cplex", **solver_options)
-
-    return m
-
-
-# In[5]:
-
-
-def decompose_power_plant_table():
-
-    status = pd.Series(index=caps_per_year.index)
-    
-    status_existing_large = []
-    added_float = []
-    retired_float = []
-    
-    for i in caps_per_year.index:
-    
-        print(i)
-        
-        m = run_disaggregation(i[0], i[1])
-        status.loc[i] = m.termination_condition
-        status_existing_large.append(m.solution["status_existing_large"].to_series())
-        added_float.append(m.solution["added_float"].to_series())
-        retired_float.append(m.solution["retired_float"].to_series())
-    
-    if (status != "optimal").sum() == 0:
-        print("Large decomposition finished successfully")
-    else:
-        raise ValueError('Not all decompositions converged')
-    
-    eraa_plants_detailed = power_plants[["bus", "carrier", "Capacity", "Efficiency"]].copy()
-    eraa_plants_detailed.columns = eraa_plants_detailed.columns.str.replace("Efficiency", "efficiency").str.replace("Capacity", "p_nom")
-    
-    status_existing_large = pd.concat(status_existing_large, axis=0).unstack(0).round().astype(int)
-    
-    fully_retired = status_existing_large[~status_existing_large.sum(axis=1).astype("bool")].index
-    eraa_plants_detailed.drop(fully_retired, inplace=True)
-    status_existing_large.drop(fully_retired,errors="ignore", inplace=True)
-    
-    eraa_plants_detailed["entry"] = target_years[0]
-    eraa_plants_detailed["exit"] = np.nan
-    
-    eraa_plants_detailed = eraa_plants_detailed.loc[status_existing_large.index]
-    eraa_plants_detailed.loc[status_existing_large[target_years[-1]] == 1, "exit"] = target_years[-1] + 1
-    
-    for i in eraa_plants_detailed[eraa_plants_detailed.exit.isna()].index:
-        eraa_plants_detailed.loc[i, "exit"] = status_existing_large.loc[i].iloc[1:][status_existing_large.loc[i].diff().iloc[1:].round(1) == -1].index[0]
-    
-    added_float = pd.concat(added_float, keys=caps_per_year.index).unstack(2)
-    retired_float = pd.concat(retired_float, keys=caps_per_year.index).unstack(2)
-    capacity_balance = added_float.subtract(retired_float)
-    
-    n_plants = capacity_balance.unstack(0).div(typical_size,axis=0).stack(1).reorder_levels([1,0]).apply(np.floor).sort_index()
-    
-    change_in_plants = n_plants.diff(axis=1)
-    change_in_plants[target_years[0]] = n_plants[target_years[0]]
-    
-    
-    residual_cap = capacity_balance.subtract(
-        n_plants.unstack(0)
-        .multiply(typical_size, axis=0)
-        .stack(1).reorder_levels([1,0]).sort_index()
-    ).round()
-    
-    residual_cap = residual_cap.round(-1)
-    
-    change_resid_cap = residual_cap.diff(axis=1)
-    change_resid_cap[target_years[0]] = residual_cap[target_years[0]]
-    change_resid_cap[target_years[-1] + 1] = -change_resid_cap.sum(axis=1)
-    
-    status = pd.Series(index = residual_cap.index)
-    
-    entry = []
-    exit = []
-    block = []
-    
-    for i in residual_cap.index:
-        
-        block_sizes = change_resid_cap.loc[i].abs()[change_resid_cap.loc[i].abs() > 0 ].values
-        
-        block_sizes = np.append(block_sizes,
-            change_resid_cap.loc[i].abs().sort_values().diff().abs()[change_resid_cap.loc[i].abs().sort_values().diff().abs()>0].values
-        )
-        
-        blocks = pd.Index(range(len(block_sizes)), name="block")
-        
-        block_sizes = pd.Series(block_sizes, blocks)
-        
-        m = decompose_residual_cap(i, residual_cap, blocks, block_sizes)
-    
-        status.loc[i] = m.termination_condition
-        entry.append(m.solution["entry"].to_series())
-        exit.append(m.solution["exit"].to_series())
-        block.append(block_sizes)
-    
-    if (status != "optimal").sum() == 0:
-        print("Residual decomposition finished successfully")
-    else:
-        raise ValueError('Not all decompositions converged')
-    
-    entry = pd.concat(entry, keys=residual_cap.index).unstack("year")
-    exit = pd.concat(exit, keys=residual_cap.index).unstack("year")
-    entry_years = pd.Series(np.nan, index=entry.index)
-    exit_years = pd.Series(np.nan, index=exit.index)
-    
-    for i in entry.index:
-        if entry.loc[i].max()>0:
-            entry_years.loc[i] = entry.loc[i][entry.loc[i]>0].index[0]
-        if exit.loc[i].max()>0:
-            exit_years.loc[i] = exit.loc[i][exit.loc[i]>0].index[0]
-    
-    
-    residual_plants = pd.concat(block, keys=residual_cap.index).to_frame("p_nom")
-    residual_plants["entry"] = entry_years
-    residual_plants["exit"] = exit_years
-    residual_plants = residual_plants[~residual_plants.entry.isna()]
-    residual_plants.exit = residual_plants.exit.fillna(target_years[-1] + 1)
-    entry_plants = change_in_plants.clip(lower=0).astype(int)
-    exit_plants = change_in_plants.clip(upper=0).astype(int)
-    exit_plants[target_years[-1] + 1] = - entry_plants.sum(axis=1).add(exit_plants.sum(axis=1))
-    
-    for i in change_in_plants[change_in_plants.abs().sum(axis=1)>0].index:
-        
-    
-        bus = i[0]
-        carrier = i[1]
-        p_nom = typical_size[carrier]
-    
-        entry_years = entry_plants.loc[i][entry_plants.loc[i]>0].cumsum()
-        exit_years = -exit_plants.loc[i][exit_plants.loc[i]!=0].cumsum()
-        
-        entry_years = pd.Series(
-            entry_years.index, entry_years.values
-        ).reindex(
-            range(1, entry_years.astype(int).max()+1)
-        ).bfill().astype(int)
-        
-        entry_years.index -=1
-        
-        exit_years = pd.Series(
-            exit_years.index, exit_years.values
-        ).reindex(
-            range(1, exit_years.astype(int).max()+1)
-        ).bfill().astype(int)
-        
-        exit_years.index -=1
-    
-        for number in entry_years.index:
-    
-            entry = entry_years.loc[number]
-            exit = exit_years.loc[number]
-            name = "{bus} {carrier} {number}".format(bus=bus, carrier=carrier, number=number)
-    
-            add_plant = pd.Series(
-                [bus, carrier, p_nom, np.nan, entry, exit],
-                index = eraa_plants_detailed.columns,
-                name=name    
-            )
-    
-            eraa_plants_detailed = pd.concat([eraa_plants_detailed, add_plant.to_frame().T],axis=0)
-    
-    
-        
-    
-    for i in residual_plants.index:
-    
-        bus = i[0]
-        carrier = i[1]
-        number = i[2]
-        p_nom = residual_plants.loc[i, "p_nom"]
-        entry = residual_plants.loc[i, "entry"]
-        exit = residual_plants.loc[i, "exit"]
-    
-        name = "{bus} small {carrier} {number}".format(bus=bus, carrier=carrier, number=number)
-    
-        add_plant = pd.Series(
-                [bus, carrier, p_nom, np.nan, entry, exit],
-                index = eraa_plants_detailed.columns,
-                name=name    
-            )
-    
-        eraa_plants_detailed = pd.concat([eraa_plants_detailed, add_plant.to_frame().T],axis=0)
-
-    eraa_plants_detailed.exit = eraa_plants_detailed.exit.astype(int)
-    eraa_plants_detailed.entry = eraa_plants_detailed.entry.astype(int)
-
-    eraa_plants_detailed = eraa_plants_detailed[eraa_plants_detailed.entry != eraa_plants_detailed.exit]
-
-    eraa_plants_detailed.columns.name = ""
-
-    return eraa_plants_detailed, status_existing_large
-
-
-# In[6]:
-
-
-def build_thermal_properties():
-    
-    properties_raw = pd.read_excel(excel_file, "Common Data", index_col=[2,3], skiprows=10, header=0).dropna(how="all").iloc[2:, 1:].dropna(how="all", axis=1).iloc[:27, 1:17]
-    
-    properties_raw2 = pd.read_excel(excel_file, "Common Data", index_col=[2,3], skiprows=44, header=[0,3]).iloc[:, 1:].dropna(how="all", axis=1).dropna(how="all").iloc[:27, 1:17]
-    
-    properties_raw2.columns = [" ".join(i) for i in properties_raw2.columns]
-    properties_raw = pd.concat([properties_raw, properties_raw2],axis=1)
-    
-    mask = properties_raw.index.get_level_values(0).str.contains("fuel cell", case=False) | \
-           properties_raw.index.get_level_values(1).str.contains("fuel cell", case=False)
-    properties_raw = properties_raw[~mask]
-    properties_raw = properties_raw.fillna(0)
-    
-    properties = properties_raw.copy()
-    
-    properties.index = pd.MultiIndex.from_tuples([(i[0], i[1].replace("New", "new")) for i in properties.index])
-    
-    
-    for col in properties.columns:
-        try: 
-            properties[col] = properties[col].astype(float)
-        except:
-            None
-    
-    properties.set_index(properties.index.remove_unused_levels(), inplace=True)
-    
-    properties_matching = pd.Series(
-        ["OCGT", "coal", "oil", "hydrogen", "oil", "lignite", "nuclear", "oil"],
-        properties.index.levels[0]
-    )
-    
-    properties_matching = properties_matching.reindex([i[0] for i in properties.index])
-    
-    properties_matching.index = properties.index
-    
-    mask = (
-    properties_matching.index.get_level_values(1).str.contains("CCGT") &
-    (properties_matching.index.get_level_values(0) != "Hydrogen"))
-    
-    properties_matching.loc[mask] = "CCGT"
-    
-    age_categorization = pd.Series([i[1] for i in properties_matching.index], properties_matching.index, name="age")
-    age_categorization = age_categorization.str.replace("CCGT ", "").str.replace("OCGT ", "").str.replace("conventional ", "")
-    
-    properties_matching = properties_matching.to_frame("carrier")
-    properties_matching["age"] = age_categorization
-    properties.index = pd.MultiIndex.from_arrays([properties_matching.carrier, properties_matching.age])
-    
-    properties.drop(("OCGT", "old"), inplace=True)
-    
-    age_matching = pd.DataFrame(index=properties.index, dtype=str)
-    
     age_matching["from"] = np.nan
     age_matching["to"] = np.nan
     
@@ -415,19 +85,18 @@ def build_thermal_properties():
     age_matching.loc[idx[["CCGT"], "new"], "from"] = 2020
     age_matching.drop(["old"], level=1, inplace=True)
     age_matching.drop("CCS", level=1, inplace=True)
-    #age_matching.drop("hydrogen", level=0, inplace=True)
     age_matching.drop(('oil','-'), inplace=True)
-    age_matching.loc["nuclear", "-"] = 1900, 2040
+    age_matching.loc[["nuclear", "hydrogen", "biomass", "other"], :] = 1900, 2040
 
-    return properties, age_matching
+    return age_matching
     
-def add_technical_properties_existing(properties, age_matching):
+def add_technical_properties_existing(eraa_plants_detailed, detailed_plants, properties, age_matching):
 
     idx = pd.IndexSlice
     
     eraa_plants_detailed["age_class"] = np.nan
     
-    for plant in status_existing_large.index:
+    for plant in detailed_plants.index:
     
         datein = power_plants.loc[plant, "DateIn"]
         carrier = power_plants.loc[plant, "carrier"]
@@ -438,13 +107,8 @@ def add_technical_properties_existing(properties, age_matching):
             eraa_plants_detailed.loc[plant, "age_class"] = "old 2"    
     
     eraa_plants_detailed.age_class = eraa_plants_detailed.age_class.fillna("new")
-    eraa_plants_detailed.loc[eraa_plants_detailed.carrier =="nuclear", "age_class"] = "-"
+    all_plants.loc[all_plants.carrier.isin(["biomass", "nuclear", "other"]), "age_class"] = "-"
     eraa_plants_detailed.loc[eraa_plants_detailed.carrier =="hydrogen", "age_class"] = "CCGT"
-    
-    missing_properties = properties.reindex([("OCGT", "old 2"), ("OCGT", "old 2")]).copy()
-    missing_properties.index = [("biomass", "new"), ("other", "new")]
-    missing_properties.loc[:,"CO2 emission factor"] = 0
-    properties = pd.concat([properties, missing_properties])
     
     eraa_plants_detailed['invest_status'] = "existing"
     eraa_plants_detailed['p_nom_max'] = eraa_plants_detailed.p_nom
@@ -466,35 +130,42 @@ def add_technical_properties_existing(properties, age_matching):
         carrier = eraa_plants_detailed.loc[plant, "carrier"]
         age_class = eraa_plants_detailed.loc[plant, "age_class"]
         
-        start_up_cost.append(properties.loc[idx[carrier, age_class], "Start-up fix cost (e.g. wear) warm start"])
-        ramp_limit_up.append(properties.loc[idx[carrier, age_class], "Ramp up rate % of max output power / min"]*60)
-        ramp_limit_down.append(properties.loc[idx[carrier, age_class], "Ramp down rate % of max output power / min"]*60)
-        p_min_pu.append(properties.loc[idx[carrier, age_class], "Minimum stable generation (% of max power)"])
-        min_up_time.append(properties.loc[idx[carrier, age_class], "Min Time on"])
-        min_down_time.append(properties.loc[idx[carrier, age_class], "Min Time off"])
-        var_om.append(properties.loc[idx[carrier, age_class], "Variable O&M cost"])
-        efficiency.append(properties.loc[idx[carrier, age_class], "Standard efficiency in NCV terms"])
+        start_up_cost.append(properties.loc[idx[carrier, age_class], "start_up_fix_cost"])
+        ramp_limit_up.append(properties.loc[idx[carrier, age_class], "ramp_limit_up"])
+        ramp_limit_down.append(properties.loc[idx[carrier, age_class], "ramp_limit_down"])
+        p_min_pu.append(properties.loc[idx[carrier, age_class], "p_min_pu"])
+        min_up_time.append(properties.loc[idx[carrier, age_class], "min_up_time"])
+        min_down_time.append(properties.loc[idx[carrier, age_class], "min_down_time"])
+        var_om.append(properties.loc[idx[carrier, age_class], "var_OM"])
+        efficiency.append(properties.loc[idx[carrier, age_class], "efficiency"])
     
     eraa_plants_detailed.start_up_cost = start_up_cost
     
+    """
     eraa_plants_detailed.ramp_limit_down_real = ramp_limit_down
-    eraa_plants_detailed.ramp_limit_down = pd.Series(ramp_limit_down).clip(upper=1.).values 
+    eraa_plants_detailed.ramp_limit_down = eraa_plants_detailed.ramp_limit_down_real.clip(upper=1.) 
     eraa_plants_detailed.ramp_limit_up_real = ramp_limit_up
-    eraa_plants_detailed.ramp_limit_up = pd.Series(ramp_limit_up).clip(upper=1.).values
+    eraa_plants_detailed.ramp_limit_up = eraa_plants_detailed.ramp_limit_up_real.clip(upper=1.)
+    """
+    
+    eraa_plants_detailed.ramp_limit_down = ramp_limit_down
+    eraa_plants_detailed.ramp_limit_up = ramp_limit_up
     eraa_plants_detailed.p_min_pu = p_min_pu
     eraa_plants_detailed.min_up_time = min_up_time
     eraa_plants_detailed.min_down_time = min_down_time
     eraa_plants_detailed.var_om = var_om
     eraa_plants_detailed.efficiency = efficiency
-    
+
     eraa_plants_detailed.p_nom = eraa_plants_detailed.p_nom.astype(float)
     eraa_plants_detailed.p_nom_max = eraa_plants_detailed.p_nom_max.astype(float)
+
+    return eraa_plants_detailed
     
-def build_new_investments(df):
+def build_new_investments(df, properties):
 
     technologies_for_investment = ["OCGT", "CCGT"]
-    years = eraa_plants_detailed.entry.unique()
-    zones_for_investment = eraa_plants.bus.unique()
+    years = df.entry.unique()
+    zones_for_investment = df.bus.unique()
 
     new = pd.DataFrame(
         0.01, 
@@ -506,25 +177,23 @@ def build_new_investments(df):
 
     new.reset_index(inplace=True)
     new.index = new.bus + " " + new.carrier + " new " + new.entry.astype(str)
-    new["efficiency"] = properties.loc[:, "new", :]["Standard efficiency in NCV terms"].reindex(new.carrier).values
-    new["start_up_cost"] = properties["Start-up fix cost (e.g. wear) warm start"].loc[:, "new"].reindex(new.carrier, level=1).fillna(0).values
-    new["ramp_limit_up_real"] = properties["Ramp up rate % of max output power / min"].loc[:, "new"].reindex(new.carrier).values*60
-    new["ramp_limit_up"] = new["ramp_limit_up_real"].clip(upper=1.)
-    new["ramp_limit_down_real"] = properties["Ramp down rate % of max output power / min"].loc[:, "new"].reindex(new.carrier).values*60
-    new["ramp_limit_down"] = new["ramp_limit_down_real"].clip(upper=1.)
-    new["p_min_pu"] = properties["Minimum stable generation (% of max power)"].loc[:, "new"].reindex(new.carrier).values
-    new["min_up_time"] = properties["Min Time on"].loc[:, "new"].reindex(new.carrier).values
-    new["min_down_time"] = properties["Min Time off"].loc[:, "new"].reindex(new.carrier).values
+    new["efficiency"] = properties.loc[:, "new", :]["efficiency"].reindex(new.carrier).values
+    new["start_up_cost"] = properties["start_up_fix_cost"].loc[:, "new"].reindex(new.carrier, level=1).fillna(0).values
+    new["ramp_limit_up"] = properties["ramp_limit_up"].loc[:, "new"].reindex(new.carrier).values*60
+    new["ramp_limit_down"] = properties["ramp_limit_down"].loc[:, "new"].reindex(new.carrier).values*60
+    new["p_min_pu"] = properties["p_min_pu"].loc[:, "new"].reindex(new.carrier).values
+    new["min_up_time"] = properties["min_up_time"].loc[:, "new"].reindex(new.carrier).values
+    new["min_down_time"] = properties["min_down_time"].loc[:, "new"].reindex(new.carrier).values
     new["exit"] = target_years[-1] + 1
     new["p_nom_max"] = np.inf
     new["p_nom_min"] = 0.01
-    new["var_om"] = properties.loc[:, "new",:].reindex(new.carrier)["Variable O&M cost"].values
+    new["var_om"] = properties.loc[:, "new",:].reindex(new.carrier)["var_OM"].values
     new["invest_status"] = "new"
     new["age_class"] = "new"
     
     return pd.concat([df, new])
     
-def aggregate_small():
+def aggregate_small(eraa_plants_detailed):
 
     small_plants = eraa_plants_detailed[eraa_plants_detailed.p_nom.round()<=de_minimis]
     
@@ -537,22 +206,136 @@ def aggregate_small():
     agg_func.loc[["p_nom", "p_nom_max"]] = "sum"
     agg_func.loc["age_class"] = pd.Series.mode
     
-    aggregated_small = small_plants.groupby(["bus", "carrier", "entry", "exit", 'invest_status']).agg(agg_func).reset_index()
+    aggregated_small = small_plants.groupby(["bus", "carrier", "entry", "exit", 'invest_status', "cluster"]).agg(agg_func).reset_index()
     small_index = pd.Index(aggregated_small.bus + " small " + aggregated_small.carrier + " ")
     aggregated_small.index = small_index + pd.Series(small_index).to_frame().groupby(0).cumcount().astype(str)
     
     eraa_plants = eraa_plants_detailed.drop(small_plants.index)
     return pd.concat([eraa_plants, aggregated_small])
 
+def match_to_cluster(bus, carrier):
+    
+    capacity = power_plants.query("(carrier == @carrier) and (bus == @bus)").Capacity.copy()
+    clusters = aggregated_plants.query("bus == @bus and carrier == @carrier").copy()
+    clusters = clusters.filter(like="exit", axis=0)
+    
+    if (len(capacity)>0) and (len(clusters)>0):
+        
+        m = linopy.Model()    
+        clusters.index.name = "cluster"      
+        cluster_matching = m.add_variables(binary=True, coords=[clusters.index, capacity.index], name="cluster_matching")       
+        matched_capacity = m.add_variables(lower=0, coords=[clusters.index], name="matched_capacity")
+        
+        m.add_constraints(
+            matched_capacity <= clusters.p_nom,
+            name="upper_limit_is_total"
+        )
+                
+        m.add_constraints(
+            (cluster_matching*capacity).sum("id") == matched_capacity,
+            name="match_plants_to_cluster"
+        )
+        
+        m.add_constraints(
+            cluster_matching.sum("cluster") <= 1,
+            name="unique_assignment"
+        )
+        
+        m.add_objective((matched_capacity**2).sum() - (2*clusters.p_nom*matched_capacity).sum())       
+        m.solve(solver_name="cplex", **solver_options)   
+        
+        return m.solution["cluster_matching"].to_series(), m.termination_condition
+    
+    else:
+        return pd.Series([]), "optimal"
 
-excel_file = pd.ExcelFile(snakemake.input.technology_data)
+
+def match_existing_plants():
+    
+    matched_plants=[]
+    status = pd.Series(index= pd.unique(pd.MultiIndex.from_frame(aggregated_plants[["bus", "carrier"]])), dtype=str)
+    for i in status.index:
+        bus, carrier = i
+        print(bus, carrier)
+        matched, status[i] = match_to_cluster(bus, carrier)
+        matched_plants.append(matched)
+    
+    if (status != "optimal").sum() == 0:
+        print("Large decomposition finished successfully")
+    else:
+        raise ValueError('Not all decompositions converged')
+    
+    matched_plants = pd.concat(matched_plants)
+    matched_plants.index = pd.MultiIndex.from_tuples(matched_plants.index)
+    matched_plants = matched_plants.round(0).astype(int)
+    
+    cluster_association = matched_plants[matched_plants == 1].reset_index(0).level_0
+    cluster_association.name="cluster"
+    
+    detailed_plants = power_plants[["bus", "carrier", "Capacity", "Efficiency"]].copy()
+    detailed_plants.columns = detailed_plants.columns.str.replace("Efficiency", "efficiency").str.replace("Capacity", "p_nom")
+    detailed_plants = detailed_plants.reindex(cluster_association.index)
+    detailed_plants["cluster"] = cluster_association
+    detailed_plants.sort_index(inplace=True)
+    detailed_plants["invest_status"] = "existing"
+    detailed_plants["entry"] = target_years[0]
+    detailed_plants["exit"] = [int(i[1]) for i in cluster_association.str.split("exit ")]
+    
+    return detailed_plants, matched_plants
+
+
+def build_generic_plants():
+    
+    unmatched_capacity = aggregated_plants.query("invest_status == 'existing'").p_nom.subtract(
+        matched_plants.unstack(0).multiply(power_plants.loc[matched_plants.index.levels[1], "Capacity"], axis=0).sum(),
+        fill_value=0
+    )
+    
+    typical_size_unmatched = typical_size.reindex(aggregated_plants.reindex(unmatched_capacity.index).carrier.values)
+    typical_size_unmatched.index = unmatched_capacity.index
+    n_generic = (unmatched_capacity//typical_size_unmatched).astype(int)
+    residual = unmatched_capacity.subtract(n_generic.multiply(typical_size_unmatched))
+    
+    generic_plants = []
+    
+    for cluster in n_generic[(n_generic>0)|(residual>0)].index:    
+        generic_unit = aggregated_plants.loc[cluster][["bus", "carrier", "efficiency","p_nom", "entry", "exit", "invest_status"]].copy()
+        generic_unit.p_nom = float(typical_size[generic_unit.carrier])
+        generic_unit["cluster"] = cluster
+        generic_unit["efficiency"] = np.nan
+    
+        add_on = " ".join(cluster.split(" ")[-2:])
+        for number in range(n_generic[cluster]):
+            unit_to_add = generic_unit.copy()
+            
+            unit_to_add.name = "{bus} {carrier} {add_on} {number}".format(
+                bus=generic_unit["bus"], carrier=generic_unit["carrier"], number=number, add_on=add_on
+            )
+            
+            generic_plants.append(unit_to_add)
+    
+        residual_unit = generic_unit.copy()
+        
+        residual_unit.name = "{bus} {carrier} {add_on} {number}".format(
+            bus=generic_unit["bus"], carrier=generic_unit["carrier"], number=n_generic[cluster], add_on=add_on
+        )
+        
+        residual_unit.p_nom = residual[cluster]
+        generic_plants.append(residual_unit)
+    
+    generic_plants = pd.concat(generic_plants, axis=1).T
+
+    return generic_plants
+
+
+
+technology_parameters = pd.read_hdf(snakemake.input.technology_parameters)
 
 typical_size = pd.Series(snakemake.params.typical_size)
-solver_options = {"mip.tolerances.mipgap" : 0.01}
 aggregated_plants = pd.read_hdf(snakemake.input.dispatchable_capacities)
 bidding_zones = gpd.read_file(snakemake.input.bidding_zones)
 bidding_zones = bidding_zones.to_crs("EPSG:3035")
-de_minimis = snakemake.params.de_minimis
+de_minimis = float(snakemake.params.de_minimis)
 
 solver = snakemake.config["solving"]["solver_decomposition"]["name"]
 options = snakemake.config["solving"]["solver_decomposition"]["options"]
@@ -561,24 +344,18 @@ solver_options = snakemake.config["solving"]["solver_options"][options]
 power_plants = prepare_power_plant_table()
 target_years = sorted(aggregated_plants.entry.unique())
 
-caps_per_year = pd.DataFrame()
+detailed_plants, matched_plants = match_existing_plants()
+generic_plants = build_generic_plants()
+all_plants = pd.concat([detailed_plants, generic_plants])
 
-for year in target_years:
-    caps_per_year[year] = aggregated_plants.query("(entry <= @year) and (exit > @year)").groupby(["bus", "carrier"]).p_nom.sum()
-
-caps_per_year.fillna(0, inplace=True)
-
-eraa_plants_detailed, status_existing_large = decompose_power_plant_table()
-properties, age_matching = build_thermal_properties()
-add_technical_properties_existing(properties, age_matching)
-eraa_plants = aggregate_small()
-eraa_plants_detailed = build_new_investments(eraa_plants_detailed)
-eraa_plants = build_new_investments(eraa_plants)
+age_matching = get_age_matching()
+all_plants = add_technical_properties_existing(all_plants, detailed_plants, technology_parameters, age_matching)
+small_aggregated = aggregate_small(all_plants)
+all_plants = build_new_investments(all_plants, technology_parameters)
+small_aggregated = build_new_investments(small_aggregated, technology_parameters)
 
 hdf_file = snakemake.output.individual_power_plants
-
 os.makedirs(os.path.dirname(hdf_file), exist_ok=True)
-
-eraa_plants_detailed.to_hdf(hdf_file, key="detailed")
-eraa_plants.to_hdf(hdf_file, key="small_aggregated")
+all_plants.to_hdf(hdf_file, key="detailed")
+small_aggregated.to_hdf(hdf_file, key="small_aggregated")
 
