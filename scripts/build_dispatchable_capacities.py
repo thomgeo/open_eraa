@@ -36,8 +36,6 @@ def build_capacity_table(yf):
     return [capacity_disp.fillna(method="ffill", axis=1), capacity_years.fillna(method="ffill", axis=1)]
 
 
-# In[43]:
-
 def build_legacy_caps():
 
     existing = pd.DataFrame()
@@ -78,25 +76,31 @@ def build_legacy_caps():
         existing = existing[["bus", "p_nom", "carrier", "entry", "exit"]]
         existing = existing[existing.p_nom >0]
     
-    existing["efficiency"] = properties["Standard efficiency in NCV terms"].loc[:, "existing"].reindex(existing.carrier).values
 
-    existing["start_up_cost"] = properties["Start-up fix cost (e.g. wear) warm start"].loc[:, "existing"].reindex(existing.carrier, level=1).fillna(0).values
-    existing["ramp_limit_up_real"] = properties["Ramp up rate % of max output power / min"].loc[:, "existing"].reindex(existing.carrier).values*60
-    existing["ramp_limit_up"] = existing["ramp_limit_up_real"].clip(upper=1.)
-    existing["ramp_limit_down_real"] = properties["Ramp down rate % of max output power / min"].loc[:, "existing"].reindex(existing.carrier).values*60
-    existing["ramp_limit_down"] = existing["ramp_limit_down_real"].clip(upper=1.0)
-    existing["p_min_pu"] = properties["Minimum stable generation (% of max power)"].loc[:, "existing"].reindex(existing.carrier).values
-    existing["min_up_time"] = properties["Min Time on"].loc[:, "existing"].reindex(existing.carrier).values
-    existing["min_down_time"] = properties["Min Time off"].loc[:, "existing"].reindex(existing.carrier).values
-    existing["var_om"] = properties.loc[:, "existing",:].reindex(existing.carrier)["Variable O&M cost"].values
+    legacy_properties = technological_parameters.drop(["new", "CCS"], level=1).groupby(level=0).mean()
+    
+    legacy_properties.min_down_time = legacy_properties.min_down_time.round().astype(int)
+    legacy_properties.min_up_time = legacy_properties.min_up_time.round().astype(int)
+
+    existing["efficiency"] = legacy_properties["efficiency"].reindex(existing.carrier).values
+    existing["start_up_cost"] = legacy_properties.start_up_fix_cost.reindex(existing.carrier).values
+    existing["ramp_limit_up"] = legacy_properties.ramp_limit_up.reindex(existing.carrier).values
+
+    existing["ramp_limit_down"] = legacy_properties.ramp_limit_down.reindex(existing.carrier).values
+
+    existing["p_min_pu"] = legacy_properties.p_min_pu.reindex(existing.carrier).values
+
+    existing["min_up_time"] = legacy_properties.min_up_time.reindex(existing.carrier).values
+    existing["min_down_time"] = legacy_properties.min_down_time.reindex(existing.carrier).values
+
+    existing["var_om"] = legacy_properties.var_OM.reindex(existing.carrier).fillna(0).values
+
     existing["p_nom_max"] = existing["p_nom"]
     existing["p_nom_min"] = 0.01
     existing["invest_status"] = "existing"
-        
+
     return existing
-
-# In[4]:
-
+    
 def build_new_investments():
 
     zones_for_investment = (
@@ -118,25 +122,22 @@ def build_new_investments():
 
     new.index = new.bus + " " + new.carrier + " new " + new.entry.astype(str)
 
-    new["efficiency"] = properties.loc[:, "new", :]["Standard efficiency in NCV terms"].reindex(new.carrier).values
-
-    new["start_up_cost"] = properties["Start-up fix cost (e.g. wear) warm start"].loc[:, "new"].reindex(new.carrier, level=1).fillna(0).values
-
-    new["ramp_limit_up_real"] = properties["Ramp up rate % of max output power / min"].loc[:, "new"].reindex(new.carrier).values*60
-    existing["ramp_limit_up"] = existing["ramp_limit_up_real"].clip(upper=1.)
-    new["ramp_limit_down_real"] = properties["Ramp down rate % of max output power / min"].loc[:, "new"].reindex(new.carrier).values*60
-    existing["ramp_limit_down"] = existing["ramp_limit_down_real"].clip(upper=1.)
-    new["p_min_pu"] = properties["Minimum stable generation (% of max power)"].loc[:, "new"].reindex(new.carrier).values
-    new["min_up_time"] = properties["Min Time on"].loc[:, "new"].reindex(new.carrier).values
-    new["min_down_time"] = properties["Min Time off"].loc[:, "new"].reindex(new.carrier).values
+    new["efficiency"] = technological_parameters.efficiency.loc[:, "new", :].reindex(new.carrier).values
+    new["start_up_cost"] = technological_parameters.start_up_fix_cost.loc[:, "new"].reindex(new.carrier).values
+    new["ramp_limit_up"] = technological_parameters.ramp_limit_up.loc[:, "new"].reindex(new.carrier).values    
+    new["ramp_limit_down"] = technological_parameters.ramp_limit_down.loc[:, "new"].reindex(new.carrier).values    
+    new["p_min_pu"] = technological_parameters.p_min_pu.loc[:, "new"].reindex(new.carrier).values    
+    new["min_up_time"] = technological_parameters.min_up_time.loc[:, "new"].reindex(new.carrier).values    
+    new["min_down_time"] = technological_parameters.min_down_time.loc[:, "new"].reindex(new.carrier).values    
+    new["var_om"] = technological_parameters.var_OM.loc[:, "new"].reindex(new.carrier).values
     new["exit"] = np.inf
     new["p_nom_max"] = np.inf
     new["p_nom_min"] = 0.01
-    new["var_om"] = properties.loc[:, "new",:].reindex(new.carrier)["Variable O&M cost"].values
     new["invest_status"] = "new"
     
     return new
-    
+
+"""
 def build_thermal_properties(properties):
     
     for col in properties.columns:
@@ -184,7 +185,8 @@ def build_thermal_properties(properties):
     properties_transformed.index.names=["carrier", "invest_status"]
 
     return properties_transformed
-    
+
+"""
     
 def prepare_capacity_table(capacity):
       
@@ -214,17 +216,20 @@ def prepare_capacity_table(capacity):
     
     return [capacity,capacity_disp]
 
+
+technological_parameters = pd.read_hdf(snakemake.input.technology_parameters)
+
 #Different methodology to get data 
 with zipfile.ZipFile(snakemake.input.pemmdb) as zip_f:
     zip_f.extractall(snakemake.params.data_folder)
         
-with zipfile.ZipFile(snakemake.input.thermal) as zip_f:
-    zip_f.extractall(snakemake.params.data_folder)
+#with zipfile.ZipFile(snakemake.input.thermal) as zip_f:
+#    zip_f.extractall(snakemake.params.data_folder)
     
 with zipfile.ZipFile(snakemake.input.dsr) as zip_f:
     zip_f.extractall(snakemake.params.data_folder)
     
-file2 = snakemake.params.data_folder + "Common data/Common Data.xlsx"
+#file2 = snakemake.params.data_folder + "Common data/Common Data.xlsx"
 
 all_columns = pd.read_csv(
     snakemake.params.data_folder + "Other data/Explicit DSR detailed.csv",
@@ -241,8 +246,7 @@ properties_raw2 = pd.read_csv(
 
 years = properties_raw2['TARGET_YEAR'].unique()
 
-
-allDSR = {
+DSR = {
   year: group.rename(columns={
       "MARKET_NODE": "bus",
       "DA activation price (EUR/MWh)": "marginal_cost",
@@ -252,16 +256,16 @@ allDSR = {
   for year, group in properties_raw2.groupby("TARGET_YEAR")
 }
 
-allDSR = pd.concat(allDSR, names=["TARGET_YEAR"]).fillna(0)
+DSR = pd.concat(DSR, names=["TARGET_YEAR"]).fillna(0)
 
-allDSR.to_hdf(snakemake.output.dsr, "dsr")
+DSR.to_hdf(snakemake.output.dsr, "dsr")
 
-excel_file2 = pd.ExcelFile(file2)
+#excel_file2 = pd.ExcelFile(file2)
 
-properties_raw = pd.read_csv(snakemake.params.data_folder + "Dashboard_raw_data/GenerationCapacities.csv", header=0)
+generation = pd.read_csv(snakemake.params.data_folder + "Dashboard_raw_data/GenerationCapacities.csv", header=0)
 
-filtered_rows = properties_raw[
-    properties_raw.apply(
+filtered_rows = generation[
+    generation.apply(
         lambda row: row.astype(str).str.contains("ERAA 2025 pre-CfE").any(), axis=1
     )
 ]
@@ -285,7 +289,7 @@ filtered_rows .loc[
     "Value"
 ] = 0
 
-allCap = {
+all_caps = {
     year: (
         group.groupby(["Technology", "Market_Node"])["Value"]
              .sum()
@@ -293,9 +297,9 @@ allCap = {
     for year, group in filtered_rows.groupby("Target year")
 }
 
-allCap_df = pd.concat(allCap, names=["Target year"]).fillna(0)
+all_caps = pd.concat(all_caps, names=["Target year"]).fillna(0)
 
-allCap_df.to_hdf(snakemake.output.all_capacities, "capacities")
+all_caps.to_hdf(snakemake.output.all_capacities, "capacities")
 
 allCap = {
     year: (
@@ -309,20 +313,6 @@ allCap = {
 #distributed_resources = ["onwind", "offwind", "CSP","solar", "battery"]
 dispatchable = ["CCGT", "OCGT", 'biomass', 'coal','lignite', 'nuclear','oil','hydrogen']
 technologies_for_investment = snakemake.config["power_plants"]["technologies_new_investment"]
-
-properties_raw = pd.read_excel(excel_file2, "Common Data", index_col=[2,3], skiprows=10, header=0).dropna(how="all").iloc[2:, 1:].dropna(how="all", axis=1).iloc[:27, 1:17]
-
-properties_raw2 = pd.read_excel(excel_file2, "Common Data", index_col=[2,3], skiprows=44, header=[0,3]).iloc[:, 1:].dropna(how="all", axis=1).dropna(how="all").iloc[:27, 1:17]
-
-properties_raw2.columns = [" ".join(i) for i in properties_raw2.columns]
-properties_raw = pd.concat([properties_raw, properties_raw2],axis=1)
-
-mask = properties_raw.index.get_level_values(0).str.contains("fuel cell", case=False) | \
-       properties_raw.index.get_level_values(1).str.contains("fuel cell", case=False)
-properties_raw = properties_raw[~mask]
-properties_raw = properties_raw.fillna(0)
-
-properties = build_thermal_properties(properties_raw)
 
 [capacity,investcap] = build_capacity_table(allCap)
 
