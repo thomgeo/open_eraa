@@ -9,8 +9,8 @@ module technology_data:
     prefix:     "technology-data"
 
 
-target_years = [2028, 2030, 2033, 2035]
-climate_years = range(1, 4)
+target_years = [2028]
+climate_years = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36]
 
 ruleorder: base_model > update_capacities
 
@@ -261,6 +261,8 @@ rule base_model:
 		all_capacities = "resources/all_capacities.h5",
 		investcap = "resources/investcap.h5",
 		maintenance="resources/maintenance_profiles.h5",
+		core_domain = "resources/FBMC/Core_{ty}.h5",
+		nordic_domain = "resources/FBMC/Nordic_{ty}.h5",
 	params:
 		ty = "{ty}",
 		cy = "{cy}",
@@ -306,7 +308,8 @@ rule build_flow_based_data:
 	input:	zip_file = "data/fb_domains.zip",
 	output:	core_domain = "resources/FBMC/Core_{year}.h5",
 		nordic_domain = "resources/FBMC/Nordic_{year}.h5",
-	params:	folder="data/fb_domains/"	
+	params:	folder="data/fb_domains/",
+		years = "{year}",	
 	script:	"scripts/build_flow_based_data.py"
 	
 

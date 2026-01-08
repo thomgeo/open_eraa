@@ -20,46 +20,29 @@ def get_flow_based_groupers(PTDF_zone, PTDF_DC, PTDF_AHC):
     
     DC = pd.Series(PTDF_DC.columns + "-DC", PTDF_DC.columns)
     DC = DC.to_frame("direct")
-    DC["opposite"] = [i.split("-")[1] + "-" + i.split("-")[0] + "-DC" for i in DC.index]
     grouper_DC_direct = pd.Series(DC.index, DC.direct, name="name")
-    grouper_DC_opposite = pd.Series(DC.index, DC.opposite, name="name")
     grouper_DC_direct.index.name="name"
-    grouper_DC_opposite.index.name="name"
-    
+    #grouper_DC_direct.to_csv('DCGrouper.csv', index=True)
+
     
     AHC = PTDF_AHC.columns
-    
     AHC_matching = pd.Series(index  = AHC)
     
     for i in AHC:
         matched_links = [j for j in n.links.index if "-".join(j.split("-")[:2]) ==i]
         if len(matched_links) >0:
             AHC_matching.loc[i] = matched_links[0]
-    
+        
     AHC_matching.dropna(inplace=True)
     AHC_matching = AHC_matching.to_frame("direct")
-    
-    for i in AHC_matching.index:
-        direct_link = AHC_matching.loc[i, "direct"]
-    
-        bus0, bus1, carrier = direct_link.split("-")
-        
-        opposite = "{bus1}-{bus0}-{carrier}".format(bus0=bus0, bus1=bus1, carrier=carrier)
-        if opposite in n.links.index:
-            AHC_matching.loc[i, "opposite"] = opposite
-    
-    if "UK00-FR00_1" in AHC_matching.index:
-    
-        AHC_matching.loc["UK00-FR00_1", "opposite"] = "UK00-FR00_1-DC"
-        AHC_matching.loc["UK00-FR00_2", "opposite"] = "UK00-FR00_2-DC"
-    
+  
     grouper_AHC_direct = pd.Series(AHC_matching.index, AHC_matching.direct.values)
     grouper_AHC_direct.index.names = ["name"]
     
-    grouper_AHC_opposite = pd.Series(AHC_matching.index, AHC_matching.opposite.values)
-    grouper_AHC_opposite.index.names = ["name"]
+    #grouper_AHC_direct.to_csv('AHC_Grouper.csv', index=True)
 
-    return AC_bus0, AC_bus1, AC, grouper_DC_direct, grouper_DC_opposite, DC, grouper_AHC_direct, grouper_AHC_opposite, AHC_matching, 
+
+    return AC_bus0, AC_bus1, AC, grouper_DC_direct, DC, grouper_AHC_direct, AHC_matching,
 
 
 def PTDF_timeseries(PTDF, domain_assignment, nordic=False):
@@ -136,11 +119,10 @@ def flow_based_market_coupling(n, snapshots):
     AC_core_bus1 = core_groupers[1]
     AC_core = core_groupers[2]
     grouper_DC_core_direct = core_groupers[3]
-    grouper_DC_core_opposite = core_groupers[4] 
-    DC_core = core_groupers[5]
-    grouper_AHC_core_direct  = core_groupers[6]
-    grouper_AHC_core_opposite = core_groupers[7]
-    AHC_core_matching = core_groupers[8]
+    DC_core = core_groupers[4]
+    grouper_AHC_core_direct  = core_groupers[5]
+    #grouper_AHC_core_opposite = core_groupers[7]
+    AHC_core_matching = core_groupers[6]
 
     nordic_groupers = get_flow_based_groupers(PTDF_zone_nordic, PTDF_DC_nordic, PTDF_AHC_nordic)
     
@@ -148,12 +130,12 @@ def flow_based_market_coupling(n, snapshots):
     AC_nordic_bus1 = nordic_groupers[1]
     AC_nordic = nordic_groupers[2]
     grouper_DC_nordic_direct= nordic_groupers[3]
-    grouper_DC_nordic_opposite = nordic_groupers[4]
-    DC_nordic = nordic_groupers[5]
-    grouper_AHC_nordic_direct = nordic_groupers[6]
-    grouper_AHC_nordic_opposite = nordic_groupers[7]
-    AHC_nordic_matching = nordic_groupers[8]
-    
+    #grouper_DC_nordic_opposite = nordic_groupers[4]
+    DC_nordic = nordic_groupers[4]
+    grouper_AHC_nordic_direct = nordic_groupers[5]
+    #grouper_AHC_nordic_opposite = nordic_groupers[7]
+    AHC_nordic_matching = nordic_groupers[6]
+
     m = n.model
     
     net_position_zone_core = m.add_variables(coords=[snapshots, core], name="Bus-zonal_NP_core")
@@ -171,22 +153,24 @@ def flow_based_market_coupling(n, snapshots):
         ),
         name="Bus-zonal_net_position_core"
     )
+
+    #net_position_zone_core.to_csv('ANET.csv', index=True)
     
-    m.add_constraints(
-        net_position_DC_core == (
+    #m.add_constraints(
+    net_position_DC_core == (
             m["Link-p"].loc[:, DC_core.direct.values].groupby(grouper_DC_core_direct).sum() 
-            - m["Link-p"].loc[:, DC_core.opposite.values].groupby(grouper_DC_core_opposite).sum() 
-        ),
-        name="Link-DC_net_position_core"
+        #    - m["Link-p"].loc[:, DC_core.opposite.values].groupby(grouper_DC_core_opposite).sum() 
+        #),
+       # name="Link-DC_net_position_core"
     )
-    
-    
-    m.add_constraints(
-        net_position_AHC_core == (
+
+    #m.add_constraints(
+    net_position_AHC_core == (
             m["Link-p"].loc[:, AHC_core_matching.direct.values].groupby(grouper_AHC_core_direct).sum()
-            - m["Link-p"].loc[:, AHC_core_matching.opposite.values].groupby(grouper_AHC_core_opposite).sum()
-        ), name="Link-AHC_net_position_core"
+     #       - m["Link-p"].loc[:, AHC_core_matching.opposite.values].groupby(grouper_AHC_core_opposite).sum()
+        #), name="Link-AHC_net_position_core"
     )
+    #net_position_AHC_core=m["Link-p"].loc[:, AHC_core_matching.direct.values].groupby(grouper_AHC_core_direct).sum()
     
     m.add_constraints(
         net_position_zone_nordic  == (
@@ -196,21 +180,22 @@ def flow_based_market_coupling(n, snapshots):
         name="Bus-zonal_net_position_nordic"
     )
     
-    m.add_constraints(
-        net_position_DC_nordic == (
+    #m.add_constraints(
+    net_position_DC_nordic == (
             m["Link-p"].loc[:, DC_nordic.direct.values].groupby(grouper_DC_nordic_direct).sum() 
-            - m["Link-p"].loc[:, DC_nordic.opposite.values].groupby(grouper_DC_nordic_opposite).sum() 
-        ),
-        name="Link-DC_net_position_nordic"
+      #      - m["Link-p"].loc[:, DC_nordic.opposite.values].groupby(grouper_DC_nordic_opposite).sum() 
+     #   ),
+      #  name="Link-DC_net_position_nordic"
     )
+    #net_position_DC_nordic=m["Link-p"].loc[:, DC_nordic.direct.values].groupby(grouper_DC_nordic_direct).sum()
     
-    
-    m.add_constraints(
-        net_position_AHC_nordic == (
+    #m.add_constraints(
+    net_position_AHC_nordic == (
             m["Link-p"].loc[:, AHC_nordic_matching.direct.values].groupby(grouper_AHC_nordic_direct).sum()
-            - m["Link-p"].loc[:, AHC_nordic_matching.opposite.values].groupby(grouper_AHC_nordic_opposite).sum()
-        ), name="Link-AHC_net_position_nordic"
+       #     - m["Link-p"].loc[:, AHC_nordic_matching.opposite.values].groupby(grouper_AHC_nordic_opposite).sum()
+     #   ), name="Link-AHC_net_position_nordic"
     )
+    #net_position_AHC_nordic=m["Link-p"].loc[:, AHC_nordic_matching.direct.values].groupby(grouper_AHC_nordic_direct).sum()
     
     m.add_constraints(
         (net_position_DC_core*PTDF_DC_core.loc[snapshots].stack().to_xarray()).sum("name")
