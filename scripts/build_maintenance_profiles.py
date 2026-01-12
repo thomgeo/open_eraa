@@ -7,67 +7,6 @@
 import pandas as pd
 import linopy
 
-
-# In[2]:
-
-
-def import_maintenance_rates(excel_file):
-
-    table = pd.read_excel(excel_file, "Common Data", index_col=[2,3], skiprows=44, header=[1,3]).iloc[:, 1:].dropna(how="all", axis=1).dropna(how="all")["Planned outage"]
-    
-    table.index = pd.MultiIndex.from_tuples([(i[0], i[1].replace("New", "new")) for i in table.index])
-    
-    number_of_days = table["number of days"].dropna()
-    
-    share_winter = table["% of annual number of days"].dropna()
-    
-    properties_matching = pd.Series(
-            ["OCGT", "coal", "oil", "hydrogen", "oil", "lignite", "nuclear", "oil"],
-            number_of_days.index.levels[0]
-        )
-    
-    properties_matching = properties_matching.reindex([i[0] for i in number_of_days.index])
-    
-    properties_matching.index = number_of_days.index
-    
-        
-        
-        
-    mask = (
-    properties_matching.index.get_level_values(1).str.contains("CCGT") &
-    (properties_matching.index.get_level_values(0) != "Hydrogen"))
-    
-    
-    properties_matching.loc[mask] = "CCGT"
-    
-    age_categorization = pd.Series([i[1] for i in properties_matching.index], properties_matching.index, name="age")
-    
-    age_categorization = age_categorization.str.replace("CCGT ", "").str.replace("OCGT ", "").str.replace("conventional ", "")
-    
-    properties_matching = properties_matching.to_frame("carrier")
-    
-    properties_matching["age"] = age_categorization
-    
-    number_of_days.index = pd.MultiIndex.from_arrays([properties_matching.carrier, properties_matching.age])
-    
-    share_winter.index = pd.MultiIndex.from_arrays([properties_matching.carrier, properties_matching.age])
-    
-    number_of_days.drop(("OCGT", "old"), inplace=True)
-    
-    share_winter.drop(("OCGT", "old"), inplace=True)
-
-    number_of_days.loc["biomass", "new"] = number_of_days.median()
-    number_of_days.loc["other", "new"] = number_of_days.median()
-    
-    share_winter.loc["biomass", "new"] = share_winter.median()
-    share_winter.loc["other", "new"] = share_winter.median()
-    
-    return number_of_days, share_winter
-
-
-# In[3]:
-
-
 def prepare_input_data(bus, year):
     
     availability_factors = pd.concat([pd.read_hdf("resources/res_profile.h5", carrier) for carrier in res_carriers], keys=res_carriers)
@@ -90,9 +29,6 @@ def prepare_input_data(bus, year):
     share_winter_country_plants.index = country_plants.index
 
     return country_plants, max_residual_demand_per_week, outage_days_country_plants, share_winter_country_plants, 
-
-
-# In[9]:
 
 
 def optimize_maintenance_scheduling(max_residual_demand_per_week):
@@ -137,13 +73,10 @@ def optimize_maintenance_scheduling(max_residual_demand_per_week):
 
     return m
 
-
-# In[5]:
-
+technology_parameters = pd.read_hdf(snakemake.input.technology_parameters)
 
 plants = pd.read_hdf(snakemake.input.power_plants, "detailed")
 demand = pd.read_hdf(snakemake.input.demand)
-excel_file = snakemake.input.common_data
 
 solver_name = snakemake.config["solving"]["solver_maintenance"]["name"]
 options = snakemake.config["solving"]["solver_maintenance"]["options"]
@@ -159,7 +92,8 @@ constant = 200
 day = pd.Index(range(365), name="day")
 target_years = all_caps.index.levels[0]
 
-number_of_days, share_winter = import_maintenance_rates(excel_file)
+number_of_days = technology_parameters.maintenance_n_days.copy()
+share_winter = technology_parameters.maintenance_share_winter.copy()
 
 maintenance_profiles = []
 status = []

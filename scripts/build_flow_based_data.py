@@ -32,11 +32,50 @@ def extract_FB_data(excel_file):
 
     return RAM, PTDF, domain_assignment
 
+def select_columns_with_hyphen(df):
+        return df.loc[:, [col for col in df.columns if '-' in (col[1] if isinstance(col, tuple) else col)]]
+        
+def detect_reverse(PTDF_core, PTDF_nordic):
+
+    ptdf_core_C = select_columns_with_hyphen(PTDF_core)
+    ptdf_nordic_C = select_columns_with_hyphen(PTDF_nordic)
+
+    core_col_names = set(col[1] if isinstance(col, tuple) else col for col in ptdf_core_C.columns)
+    nordic_col_names = [col for col in ptdf_nordic_C.columns]
+
+    for index in nordic_col_names:
+        if isinstance(index, tuple):
+            col_name = index[1]
+        else:
+            col_name = index
+
+        if '-' not in col_name or col_name.count('-') != 1:
+            continue
+
+        try:
+            bus0, bus1 = col_name.split('-')
+        except ValueError:
+            continue
+
+        reverse_col = f"{bus1}-{bus0}"
+
+        if reverse_col in core_col_names:
+            if isinstance(index, tuple):
+                new_index = (index[0], reverse_col) 
+            else:
+                new_index = reverse_col 
+
+            print(new_index)
+            PTDF_nordic[new_index] = PTDF_nordic[index] * -1
+            PTDF_nordic=PTDF_nordic.drop(columns=index)
+
+    return PTDF_nordic
 
 fb_zip = snakemake.input.zip_file
 fb_folder=  snakemake.params.folder
 
-year = 2030
+year = int(snakemake.params.years)
+
 core_data = snakemake.output.core_domain
 nordic_data = snakemake.output.nordic_domain
 
@@ -52,6 +91,7 @@ RAM_nordic.drop("CNEC_Name", axis=1, inplace=True)
 
 os.makedirs(os.path.dirname(core_data), exist_ok=True)
 
+PTDF_nordic=detect_reverse(PTDF_core, PTDF_nordic)
 
 RAM_core.loc[year].to_hdf(core_data, key="RAM")
 PTDF_core.loc[year].to_hdf(core_data, key="PTDF")

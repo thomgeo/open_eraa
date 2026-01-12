@@ -335,6 +335,77 @@ def set_investment_bounds():
     n.generators.loc[n.generators.invest_status == "policy", "p_nom_max"] = n.generators.loc[n.generators.invest_status == "policy", "p_nom"]
     n.generators.loc[n.generators.invest_status == "policy", "p_nom_min"] = n.generators.loc[n.generators.invest_status == "policy", "p_nom"]
     
+def links(PTDF_core, PTDF_nordic):
+    
+    DC_core=PTDF_core["PTDF_EvFB"].columns
+    AHC_core=PTDF_core["PTDF*_AHC,SZ"].columns
+    DC_nordic=PTDF_nordic["PTDF_EvFB"].columns
+    AHC_nordic=PTDF_nordic["PTDF*_AHC,SZ"].columns
+    
+    
+    links = pd.read_hdf("resources/ntcs.h5", "p_nom")
+    links = links[base_year].unstack(1)
+    links = links.iloc[:len(snapshots)]
+    links.dropna(inplace=True)
+    links["carrier"] = [i[-2:] for i in links.index]
+    #links.to_csv('Linkp_nom0.csv', index=True)
+    links_df=links.copy()
+    
+    links_df["sorted_link"] = links[["bus0", "bus1"]].apply(lambda x: "-".join(sorted([x[0], x[1]])), axis=1)
+    links_df = links_df.groupby(["sorted_link", "carrier"]).agg(
+        forward_pnom=("p_nom", "first"),
+        reverse_pnom=("p_nom", "last")
+    ).reset_index()
+    
+    #links_df.to_csv('LinkResult.csv', index=True)
+    
+    links_p_max_pu = pd.read_hdf("resources/ntcs.h5", "p_max_pu")  
+    links_p_max_pu = links_p_max_pu[base_year].unstack(2)
+    links_p_max_pu = links_p_max_pu.dropna(how='all', axis=0)
+    links_p_max_pu = links_p_max_pu.iloc[:len(snapshots)]  
+    links_p_max_pu.index = snapshots
+    links_p_max_pu = links_p_max_pu.dropna(how='all',axis=1)
+
+    links_p_min_pu=links_p_max_pu.copy()
+
+    
+    for index, row in links_df.iterrows():
+        bus0, bus1 =row["sorted_link"].split("-")
+        carrier = row["carrier"]
+        reverse_link = f"{bus1}-{bus0}-{carrier}"
+        direct_link = f"{bus0}-{bus1}-{carrier}"
+        aux2=f"{bus1}-{bus0}"
+
+        if [j for j in DC_core if aux2 ==j]or[j for j in DC_nordic if aux2 ==j]or[j for j in AHC_core if aux2 ==j]or[j for j in AHC_nordic if aux2 ==j]:
+            links_p_min_pu[reverse_link]=-links_p_min_pu[direct_link]*row["forward_pnom"]/row["reverse_pnom"]
+            links_p_min_pu = links_p_min_pu.drop(columns=direct_link)
+            links_p_max_pu = links_p_max_pu.drop(columns=direct_link)
+            links=links.drop(index=direct_link)
+        else:
+            if direct_link in links_p_min_pu.columns and reverse_link in links_p_min_pu.columns:
+                links_p_min_pu[direct_link]=-links_p_min_pu[reverse_link]*row["reverse_pnom"]/row["forward_pnom"]
+                links_p_min_pu = links_p_min_pu.drop(columns=reverse_link)
+                links_p_max_pu = links_p_max_pu.drop(columns=reverse_link)
+                links=links.drop(index=reverse_link)
+            elif direct_link in links_p_min_pu.columns:
+                links_p_min_pu[direct_link]=0
+            elif reverse_link in links_p_min_pu.columns:
+                links_p_min_pu[reverse_link]=0
+    
+    links_p_max_pu = links_p_max_pu.drop(columns="UK00-FR00_1-DC")
+    links_p_max_pu = links_p_max_pu.drop(columns="UK00-FR00_2-DC")
+    links_p_min_pu = links_p_min_pu.drop(columns="UK00-FR00_1-DC")
+    links_p_min_pu = links_p_min_pu.drop(columns="UK00-FR00_2-DC")
+    links_p_min_pu["FR00-UK00_1-DC"] = -links_p_min_pu["FR00-UK00_1-DC"]
+    links_p_min_pu["FR00-UK00_2-DC"] = -links_p_min_pu["FR00-UK00_2-DC"]
+    links=links.drop(index="UK00-FR00_1-DC")
+    links=links.drop(index="UK00-FR00_2-DC")
+    
+    #links.to_csv('Linkp_nom.csv', index=True)
+#    links_p_max_pu.to_csv('links_p_max_pu1.csv', index=True)
+#    links_p_min_pu.to_csv('links_p_min_pu.csv', index=True)
+    
+    return links_p_max_pu, links_p_min_pu, links    
 commodity_prices_raw = pd.read_csv(snakemake.input.commodity_prices,header=0)
 
 all_cap=pd.read_hdf(snakemake.input.all_capacities)
@@ -367,17 +438,10 @@ demand = pd.read_hdf(snakemake.input.demand)
 demand = demand.loc[:, "WS{:02}".format(climate_year), :, str(base_year), :].unstack(1)
 demand.index = snapshots
 
-links = pd.read_hdf(snakemake.input.ntc, "p_nom")
-links = links[base_year].unstack(1)
-links = links.iloc[:len(snapshots)]
+PTDF_core = pd.read_hdf(snakemake.input.core_domain, "PTDF")
+PTDF_nordic = pd.read_hdf(snakemake.input.nordic_domain, "PTDF")
 
-links_p_max_pu = pd.read_hdf(snakemake.input.ntc, "p_max_pu")
-links_p_max_pu = links_p_max_pu[base_year].unstack(2)
-links_p_max_pu = links_p_max_pu.iloc[:len(snapshots)]
-links_p_max_pu.index = snapshots
-links.dropna(inplace=True)
-links_p_max_pu.dropna(axis=1, inplace=True)
-links["carrier"] = [i[-2:] for i in links.index]
+links_p_max_pu,links_p_min_pu, links=links(PTDF_core, PTDF_nordic)
 
 demand, links = group_luxembourg(demand, links)
 
@@ -435,6 +499,12 @@ links_p_max_pu = links_p_max_pu.reindex(
       fill_value=1
 )
 
+links_p_min_pu = links_p_min_pu.reindex(
+      index=n.snapshots,   
+      columns=links.index, 
+      fill_value=1, 
+)
+
 n.add(
     "Link",
     links.index,
@@ -442,6 +512,7 @@ n.add(
     bus1 = links.bus1,
     p_nom = links.p_nom,
     p_max_pu = links_p_max_pu.reindex(links.index, fill_value=1, axis=1),
+    p_min_pu = links_p_min_pu.reindex(links.index, fill_value=1, axis=1),
     carrier = links.carrier,
 )
 

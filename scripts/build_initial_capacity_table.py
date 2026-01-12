@@ -17,27 +17,23 @@ networks = pd.Series(
 )
 
 networks.index = networks.index.astype(int)
+networks.index.name = "target_year"
 
 for i, path in enumerate(network_list):
     networks.iloc[i] = pypsa.Network(path)
 
 networks.sort_index(inplace=True)
-capacities = pd.DataFrame()
 
+generation_capacities = []
+storage_capacities = []
 for year in networks.index:
-    capacities = pd.concat(
-        [
-            capacities,
-            (
-                networks[year].generators
-                .set_index(
-                    pd.Series(year, networks[year].generators.index),
-                    append=True
-                )
-            )
-        ]
-    )
+    generation_capacities.append(networks.loc[year].generators)
+    storage_capacities.append(networks.loc[year].storage_units)
+
+generation_capacities = generation_capacities.reorder_levels(["name", "target_year"]).sort_index()
+storage_capacities = storage_capacities.reorder_levels(["name", "target_year"]).sort_index()   
 
 os.makedirs(os.path.dirname(save_path), exist_ok=True)
 
-capacities.to_csv(save_path)
+generation_capacities.to_hdf(save_path, key="generators")
+storage_capacities.to_hdf(save_path, key="storages")

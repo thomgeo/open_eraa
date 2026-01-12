@@ -20,8 +20,8 @@ def get_ntc_data(df):
 
 def get_ntc_tables(excel_file):
     
-    hvac = pd.read_excel(excel_file, "HVAC", header=[7, 8, 9], index_col=[0, 1]).iloc[6:]
-    hvdc = pd.read_excel(excel_file, "HVDC", header=[7, 8, 9], index_col=[0, 1]).iloc[6:]
+    hvac = pd.read_excel(excel_file, "HVAC", header=[7, 8, 9], index_col=[0, 1]).iloc[5:]
+    hvdc = pd.read_excel(excel_file, "HVDC", header=[7, 8, 9], index_col=[0, 1]).iloc[5:]
 
     p_nom_ac, p_max_pu_ac = get_ntc_data(hvac)
     p_nom_ac.index = p_nom_ac.index + "-AC"
