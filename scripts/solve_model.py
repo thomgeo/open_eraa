@@ -401,7 +401,7 @@ solved_network = snakemake.output.solved_network
 n = pypsa.Network(snakemake.input.network)
 
 reserve_requirements = pd.read_csv(snakemake.input.reserve_requirements, index_col=[0,1,2, 3]).Value
-reserve_requirements = reserve_requirements.loc["ERAA 2025 pre-CfE", target_year]
+reserve_requirements = reserve_requirements.loc["ERAA 2024", target_year]
 reserve_requirements.index.names = ["name", "Category"]
 
 RAM_core = pd.read_hdf(snakemake.input.core_domain, "RAM")
