@@ -27,7 +27,7 @@ def build_inflows(inflows):
     
     inflow_grouper = pd.Series(["hydro", "ROR", "PHS Open", "pondage"],inflows.index.levels[2])
 
-    inflows = inflows.unstack(2).groupby(inflow_grouper, axis=1).sum().multiply(3.5) 
+    inflows = inflows.unstack(2).groupby(inflow_grouper, axis=1).sum().multiply(1) 
     inflows = inflows.unstack(0).stack(0)
     
     inflows.index = [" ".join(i) for i in inflows.index]
@@ -36,7 +36,7 @@ def build_inflows(inflows):
     
     inflows.index = snapshots  
    
-    inflows.to_csv('inflows.csv', index=False)
+    #inflows.to_csv('inflows.csv', index=False)
    
     return inflows
 
@@ -114,27 +114,27 @@ def add_existing_storage(all_c):
 )       
 
     
-    storage_inflows.index.to_series().to_csv('storage_inflows_index.csv', index=True)
+    #storage_inflows.index.to_series().to_csv('storage_inflows_index.csv', index=True)
         
     battery = pd.read_csv(snakemake.input.battery,header=0)
     battery = battery[battery.apply(lambda row: row.astype(str).str.contains("ERAA 2025 pre-CfE").any(), axis=1)]
-    battery.to_csv('battery.csv', index=False)
+    #battery.to_csv('battery.csv', index=False)
     
     battery_y = battery[battery["TARGET_YEAR"] == base_year]
     
-    battery_y.to_csv('battery_y.csv', index=False)
+    #battery_y.to_csv('battery_y.csv', index=False)
     
     battery_by_node = battery_y.groupby("MARKET_NODE")["STORAGE CAPACITY (MWh)"].sum().reset_index()
     
-    battery_by_node.to_csv('battery_y.csv', index=False)
+    #battery_by_node.to_csv('battery_y.csv', index=False)
     battery_by_node["Technology"] = "battery"
     battery_pivot = battery_by_node.pivot(index="Technology", columns="MARKET_NODE", values="STORAGE CAPACITY (MWh)").fillna(0)
     
-    battery_pivot.to_csv('battery_pivot.csv', index=False)
+    #battery_pivot.to_csv('battery_pivot.csv', index=False)
     
     storage_capacity=pd.concat([hydro_stored, battery_pivot])
     
-    storage_capacity.to_csv('storage_capacity.csv', index=False)
+    #storage_capacity.to_csv('storage_capacity.csv', index=False)
       
     valid_countries = storage_capacity.columns[(storage_capacity != 0).any(axis=0)]
     stored_filtered = storage_capacity[valid_countries]
@@ -149,7 +149,7 @@ def add_existing_storage(all_c):
 
     storage["efficiency_store"] = technology_data.loc[:, "efficiency", :].reindex(storage.carrier.map(map_storage)).value.values
     
-    storage.to_csv('storage.csv', index=False)
+    #storage.to_csv('storage.csv', index=False)
 
     n.add(
         "StorageUnit",
@@ -205,7 +205,7 @@ def prepare_commodity_prices(commodity_prices):
     to_add.loc[["biomass"]] = biomass_price
     to_add.loc[["biomass"], "CO2"] = 0
     commodity_prices = pd.concat([commodity_prices, to_add])
-    commodity_prices.to_csv('commodity_prices.csv', index=False)
+    #commodity_prices.to_csv('commodity_prices.csv', index=False)
     
     return commodity_prices
 
@@ -281,7 +281,7 @@ def add_dispatchables():
     
     p_min_pu=np.minimum(p_min_pu, p_max_pu)
     
-    p_min_pu.to_csv('p_min_pu1.csv', index=True)
+    #p_min_pu.to_csv('p_min_pu1.csv', index=True)
 
     plants.drop(columns="p_min_pu", inplace=True)
     """
@@ -522,5 +522,6 @@ dirname = os.path.dirname(save_path)
 
 if not os.path.exists(dirname):
     os.makedirs(dirname)
+
 
 n.export_to_netcdf(save_path)
