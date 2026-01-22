@@ -62,21 +62,21 @@ def extract_shape_files():
         zip_f.extract("NUTS_RG_01M_2013_3035_LEVL_1.geojson",snakemake.params.extract_to)
 
     with zipfile.ZipFile(snakemake.input.moldova) as zip_f:
-        zip_f.extract("mda_admbnda_unhcr_20220510_SHP/mda_admbnda_adm0_unhcr_20220510.shp",snakemake.params.extract_to)
+        zip_f.extract("mda_admbnda_adm0_unhcr_20220510_em.shp",snakemake.params.extract_to)
 
     with zipfile.ZipFile("data/moldova_regions.zip") as zip_f:
-        zip_f.extract("mda_admbnda_unhcr_20220510_SHP/mda_admbnda_adm0_unhcr_20220510.shp",snakemake.params.extract_to)
-        zip_f.extract("mda_admbnda_unhcr_20220510_SHP/mda_admbnda_adm0_unhcr_20220510.sbn",snakemake.params.extract_to)
-        zip_f.extract("mda_admbnda_unhcr_20220510_SHP/mda_admbnda_adm0_unhcr_20220510.sbx",snakemake.params.extract_to)
-        zip_f.extract("mda_admbnda_unhcr_20220510_SHP/mda_admbnda_adm0_unhcr_20220510.prj",snakemake.params.extract_to)
-        zip_f.extract("mda_admbnda_unhcr_20220510_SHP/mda_admbnda_adm0_unhcr_20220510.dbf",snakemake.params.extract_to)
-        zip_f.extract("mda_admbnda_unhcr_20220510_SHP/mda_admbnda_adm0_unhcr_20220510.cpg",snakemake.params.extract_to)
-        zip_f.extract("mda_admbnda_unhcr_20220510_SHP/mda_admbnda_adm0_unhcr_20220510.shx",snakemake.params.extract_to)
+        zip_f.extract("mda_admbnda_adm0_unhcr_20220510_em.shp",snakemake.params.extract_to)
+        zip_f.extract("mda_admbnda_adm0_unhcr_20220510_em.sbn",snakemake.params.extract_to)
+        zip_f.extract("mda_admbnda_adm0_unhcr_20220510_em.sbx",snakemake.params.extract_to)
+        zip_f.extract("mda_admbnda_adm0_unhcr_20220510_em.prj",snakemake.params.extract_to)
+        zip_f.extract("mda_admbnda_adm0_unhcr_20220510_em.dbf",snakemake.params.extract_to)
+        zip_f.extract("mda_admbnda_adm0_unhcr_20220510_em.cpg",snakemake.params.extract_to)
+        zip_f.extract("mda_admbnda_adm0_unhcr_20220510_em.shx",snakemake.params.extract_to)
 
 
 def add_missing_zones():
     
-    moldova = gpd.read_file("data/nuts_regions/mda_admbnda_unhcr_20220510_SHP/mda_admbnda_adm0_unhcr_20220510.shp")
+    moldova = gpd.read_file("data/nuts_regions/mda_admbnda_adm0_unhcr_20220510_em.shp")
     
     nuts0 = gpd.read_file("data/nuts_regions/NUTS_RG_01M_2024_3035_LEVL_0.geojson")
     nuts0 = nuts0.to_crs("EPSG:4326")

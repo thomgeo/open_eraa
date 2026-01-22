@@ -126,7 +126,9 @@ rule retrieve_nuts13_shapes:
 
 rule retrieve_moldova_shapes:
 	input:
-		storage("https://data.humdata.org/dataset/3cd53554-3ad7-4aae-b862-9bbbc6fa3bfc/resource/e93ce536-41e6-41ed-a3b4-71268c1d677e/download/mda_admbnda_unhcr_20220510_shp.zip")
+		#storage("https://data.humdata.org/dataset/3cd53554-3ad7-4aae-b862-9bbbc6fa3bfc/resource/602e52f8-e6d7-43ab-9ff5-41c3d01e64ac/download/mda_admin_boundaries.shp.zip")
+		storage("https://data.humdata.org/dataset/d60a098e-3e93-4ace-a533-45ca806cba69/resource/062944cc-b132-441c-83af-cb8a0450e187/download/mda_admbnda_unhcr_20220510_em.zip")
+		#storage("https://data.humdata.org/dataset/3cd53554-3ad7-4aae-b862-9bbbc6fa3bfc/resource/e93ce536-41e6-41ed-a3b4-71268c1d677e/download/mda_admbnda_unhcr_20220510_shp.zip")
 	output:
 		protected("data/moldova_regions.zip")
 	retries:
@@ -303,6 +305,16 @@ rule build_maintenance_profiles:
 		all_caps = "resources/all_capacities.h5",
 	output:	maintenance_profiles = "resources/maintenance_profiles.h5"
 	script:	"scripts/build_maintenance_profiles.py"
+
+rule build_outages:
+	input:	power_plants="resources/capacity_tables/individual_plants.h5",
+		maintenance_profiles = "resources/maintenance_profiles.h5",
+		technology_parameters = "resources/technology_parameters.h5",
+	params:
+		ty = "{year}",
+		op = "{outp}",
+	output:	outage_patterns = "resources/outage_patterns/ty{year}_op{outp}.h5"
+	script:	"scripts/build_outages.py"
 
 rule build_flow_based_data:
 	input:	zip_file = "data/fb_domains.zip",

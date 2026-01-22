@@ -5,6 +5,7 @@
 
 
 import pandas as pd
+import numpy as np
 import linopy
 
 def prepare_input_data(bus, year):
@@ -62,7 +63,6 @@ def optimize_maintenance_scheduling(max_residual_demand_per_week):
     )
     
     m.add_constraints(
-        #daily_margin == max_residual_demand_per_week - ((1 - maintenance)*country_plants.p_nom).sum("plant"),
         daily_margin == ((1 - maintenance)*country_plants_p_nom).sum("plant") - max_residual_demand_per_week_normed + constant,
         name="daily_margin"
     )
@@ -88,7 +88,7 @@ save_hdf = snakemake.output.maintenance_profiles
 all_caps = pd.read_hdf(snakemake.input.all_caps)
 
 winter_time_days = list(range(59)) + list(range(365-31, 365))
-constant = 200
+constant = 1000
 day = pd.Index(range(365), name="day")
 target_years = all_caps.index.levels[0]
 
@@ -120,5 +120,7 @@ for year in target_years:
     maintenance_profiles_year.index = maintenance_profiles_year.index * 24
     maintenance_profiles_year = maintenance_profiles_year.reindex(range(8760)).ffill()
 
+    maintenance_profiles_year = 1 - maintenance_profiles_year.astype(int)
+    
     maintenance_profiles_year.to_hdf(save_hdf, key="maintenance{}".format(year))
 

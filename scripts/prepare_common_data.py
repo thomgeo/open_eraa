@@ -62,7 +62,7 @@ def build_thermal_properties():
             'Minimum stable generation (% of max power)',"Ramp up rate % of max output power / min","Ramp down rate % of max output power / min"]]
 
     properties.columns = ["efficiency", "emission_factor", "var_OM", "min_up_time", "min_down_time",  
-                          "start_up_fuel_consumption", "start_up_fix_cost", "forced_outage_share ", "forced_outage_n_days" ,"maintenance_n_days", "maintenance_share_winter", "p_min_pu", "ramp_limit_up", "ramp_limit_down"]
+                          "start_up_fuel_consumption", "start_up_fix_cost", "forced_outage_share", "forced_outage_n_days" ,"maintenance_n_days", "maintenance_share_winter", "p_min_pu", "ramp_limit_up", "ramp_limit_down"]
     
     properties.loc[:, "ramp_limit_up"] *= 60
     properties.loc[:, "ramp_limit_down"] *= 60
